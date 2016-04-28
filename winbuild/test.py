@@ -16,8 +16,7 @@ def test_one(params):
                    (VIRT_BASE, python, architecture),
                    'test-installed.py',
                    '--processes=-0',
-                   '--process-timeout=30',
-                   ]
+                   '--process-timeout=30', ]
         command.extend(glob.glob('Tests/test*.py'))
         proc = subprocess.Popen(command,
                                 stdin=subprocess.PIPE,
@@ -34,8 +33,8 @@ def test_one(params):
 if __name__ == '__main__':
 
     os.chdir('..')
-    matrix = [(python, architecture) for python in pythons
-              for architecture in ('', X64_EXT)]
+    matrix = [(python, architecture)
+              for python in pythons for architecture in ('', X64_EXT)]
 
     results = map(test_one, matrix)
 

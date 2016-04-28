@@ -2,7 +2,6 @@ from helper import unittest, PillowTestCase
 
 
 class TestImageTk(PillowTestCase):
-
     def test_import(self):
         try:
             from PIL import ImageTk

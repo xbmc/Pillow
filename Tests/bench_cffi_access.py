@@ -26,18 +26,17 @@ def timer(func, label, *args):
     starttime = time.time()
     for x in range(iterations):
         func(*args)
-        if time.time()-starttime > 10:
-            print("%s: breaking at %s iterations, %.6f per iteration" % (
-                label, x+1, (time.time()-starttime)/(x+1.0)))
+        if time.time() - starttime > 10:
+            print("%s: breaking at %s iterations, %.6f per iteration" %
+                  (label, x + 1, (time.time() - starttime) / (x + 1.0)))
             break
-    if x == iterations-1:
+    if x == iterations - 1:
         endtime = time.time()
-        print("%s: %.4f s  %.6f per iteration" % (
-            label, endtime-starttime, (endtime-starttime)/(x+1.0)))
+        print("%s: %.4f s  %.6f per iteration" %
+              (label, endtime - starttime, (endtime - starttime) / (x + 1.0)))
 
 
 class BenchCffiAccess(PillowTestCase):
-
     def test_direct(self):
         im = hopper()
         im.load()

@@ -2,9 +2,7 @@ from helper import unittest, PillowTestCase, hopper
 
 
 class TestImageGetExtrema(PillowTestCase):
-
     def test_extrema(self):
-
         def extrema(mode):
             return hopper(mode).getextrema()
 
@@ -13,8 +11,7 @@ class TestImageGetExtrema(PillowTestCase):
         self.assertEqual(extrema("I"), (0, 255))
         self.assertEqual(extrema("F"), (0, 255))
         self.assertEqual(extrema("P"), (0, 225))  # fixed palette
-        self.assertEqual(
-            extrema("RGB"), ((0, 255), (0, 255), (0, 255)))
+        self.assertEqual(extrema("RGB"), ((0, 255), (0, 255), (0, 255)))
         self.assertEqual(
             extrema("RGBA"), ((0, 255), (0, 255), (0, 255), (255, 255)))
         self.assertEqual(

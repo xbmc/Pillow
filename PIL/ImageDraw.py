@@ -241,9 +241,17 @@ class ImageDraw(object):
 
         return text.split(split_character)
 
-    def text(self, xy, text, fill=None, font=None, anchor=None, *args, **kwargs):
+    def text(self,
+             xy,
+             text,
+             fill=None,
+             font=None,
+             anchor=None,
+             *args,
+             **kwargs):
         if self._multiline_check(text):
-            return self.multiline_text(xy, text, fill, font, anchor, *args, **kwargs)
+            return self.multiline_text(xy, text, fill, font, anchor, *args, **
+                                       kwargs)
 
         ink, fill = self._getink(fill)
         if font is None:
@@ -261,8 +269,14 @@ class ImageDraw(object):
                     mask = font.getmask(text)
             self.draw.draw_bitmap(xy, mask, ink)
 
-    def multiline_text(self, xy, text, fill=None, font=None, anchor=None,
-                       spacing=4, align="left"):
+    def multiline_text(self,
+                       xy,
+                       text,
+                       fill=None,
+                       font=None,
+                       anchor=None,
+                       spacing=4,
+                       align="left"):
         widths = []
         max_width = 0
         lines = self._multiline_split(text)
@@ -303,8 +317,7 @@ class ImageDraw(object):
         for line in lines:
             line_width, line_height = self.textsize(line, font)
             max_width = max(max_width, line_width)
-        return max_width, len(lines)*line_spacing
-
+        return max_width, len(lines) * line_spacing
 
 ##
 # A simple 2D drawing interface for PIL images.
@@ -315,6 +328,7 @@ class ImageDraw(object):
 #    drawing into the image).  For all other modes, this argument
 #    must be the same as the image mode.  If omitted, the mode
 #    defaults to the mode of the image.
+
 
 def Draw(im, mode=None):
     try:
@@ -328,7 +342,6 @@ try:
 except AttributeError:
     Outline = None
 
-
 ##
 # (Experimental) A more advanced 2D drawing interface for PIL images,
 # based on the WCK interface.
@@ -336,6 +349,7 @@ except AttributeError:
 # @param im The image to draw in.
 # @param hints An optional list of hints.
 # @return A (drawing context, drawing resource factory) tuple.
+
 
 def getdraw(im=None, hints=None):
     # FIXME: this needs more work!
@@ -352,7 +366,6 @@ def getdraw(im=None, hints=None):
         im = handler.Draw(im)
     return im, handler
 
-
 ##
 # (experimental) Fills a bounded region with a given color.
 #
@@ -363,6 +376,7 @@ def getdraw(im=None, hints=None):
 #     pixels with a color different from the border color.  If not given,
 #     the region consists of pixels having the same color as the seed
 #     pixel.
+
 
 def floodfill(image, xy, value, border=None):
     "Fill bounded region."
@@ -381,7 +395,7 @@ def floodfill(image, xy, value, border=None):
         while edge:
             newedge = []
             for (x, y) in edge:
-                for (s, t) in ((x+1, y), (x-1, y), (x, y+1), (x, y-1)):
+                for (s, t) in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
                     try:
                         p = pixel[s, t]
                     except IndexError:
@@ -395,7 +409,7 @@ def floodfill(image, xy, value, border=None):
         while edge:
             newedge = []
             for (x, y) in edge:
-                for (s, t) in ((x+1, y), (x-1, y), (x, y+1), (x, y-1)):
+                for (s, t) in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
                     try:
                         p = pixel[s, t]
                     except IndexError:

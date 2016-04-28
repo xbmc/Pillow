@@ -6,7 +6,6 @@ from PIL import Image
 from PIL import ImageFile
 from PIL import EpsImagePlugin
 
-
 codecs = dir(Image.core)
 
 # save original block sizes
@@ -15,9 +14,7 @@ SAFEBLOCK = ImageFile.SAFEBLOCK
 
 
 class TestImageFile(PillowTestCase):
-
     def test_parser(self):
-
         def roundtrip(format):
 
             im = hopper("L").resize((1000, 1000))
@@ -134,6 +131,7 @@ class TestImageFile(PillowTestCase):
             im.load()
         finally:
             ImageFile.LOAD_TRUNCATED_IMAGES = False
+
 
 if __name__ == '__main__':
     unittest.main()

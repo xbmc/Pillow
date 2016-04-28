@@ -4,7 +4,6 @@ from PIL import ImageOps
 
 
 class TestImageOps(PillowTestCase):
-
     class Deformer(object):
         def getmesh(self, im):
             x, y = im.size

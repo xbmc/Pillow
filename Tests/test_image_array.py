@@ -6,7 +6,6 @@ im = hopper().resize((128, 100))
 
 
 class TestImageArray(PillowTestCase):
-
     def test_toarray(self):
         def test(mode):
             ai = im.convert(mode).__array_interface__
@@ -15,9 +14,11 @@ class TestImageArray(PillowTestCase):
         self.assertEqual(test("L"), (3, (100, 128), '|u1', 12800))
 
         # FIXME: wrong?
-        self.assertEqual(test("I"), (3, (100, 128), Image._ENDIAN + 'i4', 51200))
+        self.assertEqual(
+            test("I"), (3, (100, 128), Image._ENDIAN + 'i4', 51200))
         # FIXME: wrong?
-        self.assertEqual(test("F"), (3, (100, 128), Image._ENDIAN + 'f4', 51200))
+        self.assertEqual(
+            test("F"), (3, (100, 128), Image._ENDIAN + 'f4', 51200))
 
         self.assertEqual(test("RGB"), (3, (100, 128, 3), '|u1', 38400))
         self.assertEqual(test("RGBA"), (3, (100, 128, 4), '|u1', 51200))

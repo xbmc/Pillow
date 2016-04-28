@@ -14,12 +14,11 @@ except ImportError:
 from PIL import Image, ImageTk
 import sys
 
-
 # --------------------------------------------------------------------
 # an image animation player
 
-class UI(Label):
 
+class UI(Label):
     def __init__(self, master, im):
         if isinstance(im, list):
             # list of images
@@ -71,7 +70,6 @@ class UI(Label):
         self.after(duration, self.next)
 
         self.update_idletasks()
-
 
 # --------------------------------------------------------------------
 # script interface

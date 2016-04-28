@@ -7,10 +7,9 @@ base = os.path.join('Tests', 'images', 'bmp')
 
 
 class TestBmpReference(PillowTestCase):
-
     def get_files(self, d, ext='.bmp'):
-        return [os.path.join(base, d, f) for f
-                in os.listdir(os.path.join(base, d)) if ext in f]
+        return [os.path.join(base, d, f)
+                for f in os.listdir(os.path.join(base, d)) if ext in f]
 
     def test_bad(self):
         """ These shouldn't crash/dos, but they shouldn't return anything
@@ -54,8 +53,7 @@ class TestBmpReference(PillowTestCase):
                     'rgb16-565pal.bmp': 'rgb16-565.png',
                     'rgb24pal.bmp': 'rgb24.png',
                     'rgb32.bmp': 'rgb24.png',
-                    'rgb32bf.bmp': 'rgb24.png'
-                    }
+                    'rgb32bf.bmp': 'rgb24.png'}
 
         def get_compare(f):
             name = os.path.split(f)[1]
@@ -84,8 +82,8 @@ class TestBmpReference(PillowTestCase):
                                os.path.join(base, 'g', 'pal8rle.bmp'),
                                os.path.join(base, 'g', 'pal4rle.bmp'))
                 if f not in unsupported:
-                    self.assertTrue(
-                        False, "Unsupported Image %s: %s" % (f, msg))
+                    self.assertTrue(False,
+                                    "Unsupported Image %s: %s" % (f, msg))
 
 
 if __name__ == '__main__':

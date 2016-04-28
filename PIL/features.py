@@ -42,6 +42,7 @@ def get_supported_modules():
             supported_modules.append(feature)
     return supported_modules
 
+
 codecs = {
     "jpg": "jpeg",
     "jpg_2000": "jpeg2k",

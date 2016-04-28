@@ -10,7 +10,6 @@ data = open(test_file, "rb").read()
 
 
 class TestFileFli(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(test_file)
         im.load()

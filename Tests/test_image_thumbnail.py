@@ -2,7 +2,6 @@ from helper import unittest, PillowTestCase, hopper
 
 
 class TestImageThumbnail(PillowTestCase):
-
     def test_sanity(self):
 
         im = hopper()

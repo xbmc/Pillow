@@ -17,10 +17,9 @@ class TestModeI16(PillowTestCase):
                 xy = x, y
                 p1 = pix1[xy]
                 p2 = pix2[xy]
-                self.assertEqual(
-                    p1, p2,
-                    ("got %r from mode %s at %s, expected %r" %
-                        (p1, im1.mode, xy, p2)))
+                self.assertEqual(p1, p2,
+                                 ("got %r from mode %s at %s, expected %r" %
+                                  (p1, im1.mode, xy, p2)))
 
     def test_basic(self):
         # PIL 1.1 has limited support for 16-bit image data.  Check that
@@ -51,8 +50,8 @@ class TestModeI16(PillowTestCase):
             self.verify(imOut)
 
             imOut = Image.new(mode, (w, h), None)
-            imOut.paste(imIn.crop((0, 0, w//2, h)), (0, 0))
-            imOut.paste(imIn.crop((w//2, 0, w, h)), (w//2, 0))
+            imOut.paste(imIn.crop((0, 0, w // 2, h)), (0, 0))
+            imOut.paste(imIn.crop((w // 2, 0, w, h)), (w // 2, 0))
 
             self.verify(imIn)
             self.verify(imOut)
@@ -83,7 +82,6 @@ class TestModeI16(PillowTestCase):
         basic("I")
 
     def test_tobytes(self):
-
         def tobytes(mode):
             return Image.new(mode, (1, 1), 1).tobytes()
 
@@ -92,7 +90,7 @@ class TestModeI16(PillowTestCase):
         self.assertEqual(tobytes("L"), b"\x01")
         self.assertEqual(tobytes("I;16"), b"\x01\x00")
         self.assertEqual(tobytes("I;16B"), b"\x00\x01")
-        self.assertEqual(tobytes("I"), b"\x01\x00\x00\x00"[::order])
+        self.assertEqual(tobytes("I"), b"\x01\x00\x00\x00" [::order])
 
     def test_convert(self):
 

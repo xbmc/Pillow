@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 
 
 class LibTiffTestCase(PillowTestCase):
-
     def setUp(self):
         codecs = dir(Image.core)
 
@@ -41,7 +40,6 @@ class LibTiffTestCase(PillowTestCase):
 
 
 class TestFileLibTiff(LibTiffTestCase):
-
     def test_g4_tiff(self):
         """Test the ordinary file path load path"""
 
@@ -119,8 +117,8 @@ class TestFileLibTiff(LibTiffTestCase):
 
         self.assertEqual(im.mode, "RGB")
         self.assertEqual(im.size, (278, 374))
-        self.assertEqual(
-            im.tile[0][:3], ('tiff_adobe_deflate', (0, 0, 278, 374), 0))
+        self.assertEqual(im.tile[0][:3], ('tiff_adobe_deflate',
+                                          (0, 0, 278, 374), 0))
         im.load()
 
     def test_write_metadata(self):
@@ -159,18 +157,20 @@ class TestFileLibTiff(LibTiffTestCase):
                                 msg="%s didn't roundtrip" % tag)
                         else:
                             self.assertEqual(
-                                c_float(val).value, c_float(value).value,
+                                c_float(val).value,
+                                c_float(value).value,
                                 msg="%s didn't roundtrip" % tag)
                     else:
-                        self.assertEqual(
-                            val, value, msg="%s didn't roundtrip" % tag)
+                        self.assertEqual(val,
+                                         value,
+                                         msg="%s didn't roundtrip" % tag)
 
             # https://github.com/python-pillow/Pillow/issues/1561
-            requested_fields = ['StripByteCounts',
-                                'RowsPerStrip',
+            requested_fields = ['StripByteCounts', 'RowsPerStrip',
                                 'StripOffsets']
             for field in requested_fields:
-                self.assertTrue(field in reloaded, "%s not in metadata" % field)
+                self.assertTrue(field in reloaded, "%s not in metadata" %
+                                field)
 
     def test_additional_metadata(self):
         # these should not crash. Seriously dummy data, most of it doesn't make
@@ -179,15 +179,16 @@ class TestFileLibTiff(LibTiffTestCase):
 
         # Get the list of the ones that we should be able to write
 
-        core_items = dict((tag, info) for tag, info in [(s, TiffTags.lookup(s)) for s
-                                                        in TiffTags.LIBTIFF_CORE]
+        core_items = dict((tag, info)
+                          for tag, info in [(s, TiffTags.lookup(s))
+                                            for s in TiffTags.LIBTIFF_CORE]
                           if info.type is not None)
 
         # Exclude ones that have special meaning that we're already testing them
         im = Image.open('Tests/images/hopper_g4.tif')
         for tag in im.tag_v2.keys():
             try:
-                del(core_items[tag])
+                del (core_items[tag])
             except:
                 pass
 
@@ -211,10 +212,11 @@ class TestFileLibTiff(LibTiffTestCase):
             if info.length == 0:
                 new_ifd[tag] = tuple(values[info.type] for _ in range(3))
             else:
-                new_ifd[tag] = tuple(values[info.type] for _ in range(info.length))
+                new_ifd[tag] = tuple(values[info.type]
+                                     for _ in range(info.length))
 
         # Extra samples really doesn't make sense in this application.
-        del(new_ifd[338])
+        del (new_ifd[338])
 
         out = self.tempfile("temp.tif")
         TiffImagePlugin.WRITE_LIBTIFF = True
@@ -421,25 +423,18 @@ class TestFileLibTiff(LibTiffTestCase):
 
     def test_gray_semibyte_per_pixel(self):
         test_files = (
-            (
-                24.8,#epsilon
-                (#group
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2I.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2R.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2IR.tif",
-                )
-            ),
-            (
-                7.3,#epsilon
-                (#group
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4I.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4R.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4IR.tif",
-                )
-            ),
-        )
+            (24.8,  #epsilon
+             (  #group
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2I.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2R.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2IR.tif", )),
+            (7.3,  #epsilon
+             (  #group
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4I.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4R.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4IR.tif", )), )
         original = hopper("L")
         for epsilon, group in test_files:
             im = Image.open(group[0])

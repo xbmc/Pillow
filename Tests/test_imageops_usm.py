@@ -9,7 +9,6 @@ snakes = Image.open("Tests/images/color_snakes.png")
 
 
 class TestImageOpsUsm(PillowTestCase):
-
     def test_ops_api(self):
 
         i = ImageOps.gaussian_blur(im, 2.0)
@@ -78,6 +77,7 @@ class TestImageOpsUsm(PillowTestCase):
 
         def gp(x, y):
             return i.im.getpixel((x, y))
+
         self.assertTrue(236 <= gp(7, 4)[0] <= 239)
         self.assertTrue(236 <= gp(7, 5)[2] <= 239)
         self.assertTrue(236 <= gp(7, 6)[2] <= 239)
@@ -86,6 +86,7 @@ class TestImageOpsUsm(PillowTestCase):
         self.assertTrue(236 <= gp(8, 5)[2] <= 239)
         self.assertTrue(236 <= gp(8, 6)[2] <= 239)
         self.assertTrue(236 <= gp(8, 7)[1] <= 239)
+
 
 if __name__ == '__main__':
     unittest.main()

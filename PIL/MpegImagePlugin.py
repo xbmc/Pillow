@@ -13,18 +13,16 @@
 # See the README file for information on usage and redistribution.
 #
 
-
 from PIL import Image, ImageFile
 from PIL._binary import i8
 
 __version__ = "0.1"
 
-
 #
 # Bitstream parser
 
-class BitStream(object):
 
+class BitStream(object):
     def __init__(self, fp):
         self.fp = fp
         self.bits = 0
@@ -54,10 +52,10 @@ class BitStream(object):
         self.bits = self.bits - bits
         return v
 
-
 ##
 # Image plugin for MPEG streams.  This plugin can identify a stream,
 # but it cannot read it.
+
 
 class MpegImageFile(ImageFile.ImageFile):
 
@@ -73,7 +71,6 @@ class MpegImageFile(ImageFile.ImageFile):
 
         self.mode = "RGB"
         self.size = s.read(12), s.read(12)
-
 
 # --------------------------------------------------------------------
 # Registry stuff

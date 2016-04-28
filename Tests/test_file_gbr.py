@@ -4,7 +4,6 @@ from PIL import Image, GbrImagePlugin
 
 
 class TestFileGbr(PillowTestCase):
-
     def test_invalid_file(self):
         invalid_file = "Tests/images/flower.jpg"
 
@@ -17,6 +16,7 @@ class TestFileGbr(PillowTestCase):
         target = Image.open('Tests/images/gbr.png')
 
         self.assert_image_equal(target, im)
+
 
 if __name__ == '__main__':
     unittest.main()

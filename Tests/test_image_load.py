@@ -6,7 +6,6 @@ import os
 
 
 class TestImageLoad(PillowTestCase):
-
     def test_sanity(self):
 
         im = hopper()
@@ -28,6 +27,7 @@ class TestImageLoad(PillowTestCase):
             os.fstat(fn)
 
         self.assertRaises(OSError, lambda: os.fstat(fn))
+
 
 if __name__ == '__main__':
     unittest.main()

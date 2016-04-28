@@ -4,7 +4,6 @@ from PIL import _util
 
 
 class TestUtil(PillowTestCase):
-
     def test_is_string_type(self):
         # Arrange
         color = "red"
@@ -74,6 +73,7 @@ class TestUtil(PillowTestCase):
 
         # Assert
         self.assertRaises(ValueError, lambda: thing.some_attr)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -12,7 +12,6 @@ test_file = "Tests/images/hopper.webp"
 
 @unittest.skipIf(sys.platform.startswith('win32'), "requires Unix or MacOS")
 class TestWebPLeaks(PillowTestCase):
-
     def setUp(self):
         try:
             from PIL import _webp
@@ -33,6 +32,7 @@ class TestWebPLeaks(PillowTestCase):
                 im.load()
             mem = (self._get_mem_usage() - start_mem)
             self.assertLess(mem, mem_limit, msg='memory usage limit exceeded')
+
 
 if __name__ == '__main__':
     unittest.main()

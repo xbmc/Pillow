@@ -32,9 +32,9 @@ i16 = _binary.i16le
 def _accept(prefix):
     return prefix[:4] == b"\200\350\000\000"
 
-
 ##
 # Image plugin for PIXAR raster images.
+
 
 class PixarImageFile(ImageFile.ImageFile):
 
@@ -61,7 +61,7 @@ class PixarImageFile(ImageFile.ImageFile):
         # FIXME: to be continued...
 
         # create tile descriptor (assuming "dumped")
-        self.tile = [("raw", (0, 0)+self.size, 1024, (self.mode, 0, 1))]
+        self.tile = [("raw", (0, 0) + self.size, 1024, (self.mode, 0, 1))]
 
 #
 # --------------------------------------------------------------------

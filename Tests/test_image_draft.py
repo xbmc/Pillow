@@ -14,7 +14,6 @@ def draft(mode, size):
 
 
 class TestImageDraft(PillowTestCase):
-
     def setUp(self):
         if "jpeg_encoder" not in CODECS or "jpeg_decoder" not in CODECS:
             self.skipTest("jpeg support not available")

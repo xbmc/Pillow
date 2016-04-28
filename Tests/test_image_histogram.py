@@ -2,9 +2,7 @@ from helper import unittest, PillowTestCase, hopper
 
 
 class TestImageHistogram(PillowTestCase):
-
     def test_histogram(self):
-
         def histogram(mode):
             h = hopper(mode).histogram()
             return len(h), min(h), max(h)

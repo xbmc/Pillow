@@ -20,10 +20,12 @@ class TestImageTranspose(PillowTestCase):
             self.assertEqual(out.size, im.size)
 
             x, y = im.size
-            self.assertEqual(im.getpixel((1, 1)), out.getpixel((x-2, 1)))
-            self.assertEqual(im.getpixel((x-2, 1)), out.getpixel((1, 1)))
-            self.assertEqual(im.getpixel((1, y-2)), out.getpixel((x-2, y-2)))
-            self.assertEqual(im.getpixel((x-2, y-2)), out.getpixel((1, y-2)))
+            self.assertEqual(im.getpixel((1, 1)), out.getpixel((x - 2, 1)))
+            self.assertEqual(im.getpixel((x - 2, 1)), out.getpixel((1, 1)))
+            self.assertEqual(
+                im.getpixel((1, y - 2)), out.getpixel((x - 2, y - 2)))
+            self.assertEqual(
+                im.getpixel((x - 2, y - 2)), out.getpixel((1, y - 2)))
 
         for mode in ("L", "RGB"):
             transpose(mode)
@@ -36,10 +38,12 @@ class TestImageTranspose(PillowTestCase):
             self.assertEqual(out.size, im.size)
 
             x, y = im.size
-            self.assertEqual(im.getpixel((1, 1)), out.getpixel((1, y-2)))
-            self.assertEqual(im.getpixel((x-2, 1)), out.getpixel((x-2, y-2)))
-            self.assertEqual(im.getpixel((1, y-2)), out.getpixel((1, 1)))
-            self.assertEqual(im.getpixel((x-2, y-2)), out.getpixel((x-2, 1)))
+            self.assertEqual(im.getpixel((1, 1)), out.getpixel((1, y - 2)))
+            self.assertEqual(
+                im.getpixel((x - 2, 1)), out.getpixel((x - 2, y - 2)))
+            self.assertEqual(im.getpixel((1, y - 2)), out.getpixel((1, 1)))
+            self.assertEqual(
+                im.getpixel((x - 2, y - 2)), out.getpixel((x - 2, 1)))
 
         for mode in ("L", "RGB"):
             transpose(mode)
@@ -52,10 +56,12 @@ class TestImageTranspose(PillowTestCase):
             self.assertEqual(out.size, im.size[::-1])
 
             x, y = im.size
-            self.assertEqual(im.getpixel((1, 1)), out.getpixel((1, x-2)))
-            self.assertEqual(im.getpixel((x-2, 1)), out.getpixel((1, 1)))
-            self.assertEqual(im.getpixel((1, y-2)), out.getpixel((y-2, x-2)))
-            self.assertEqual(im.getpixel((x-2, y-2)), out.getpixel((y-2, 1)))
+            self.assertEqual(im.getpixel((1, 1)), out.getpixel((1, x - 2)))
+            self.assertEqual(im.getpixel((x - 2, 1)), out.getpixel((1, 1)))
+            self.assertEqual(
+                im.getpixel((1, y - 2)), out.getpixel((y - 2, x - 2)))
+            self.assertEqual(
+                im.getpixel((x - 2, y - 2)), out.getpixel((y - 2, 1)))
 
         for mode in ("L", "RGB"):
             transpose(mode)
@@ -68,10 +74,10 @@ class TestImageTranspose(PillowTestCase):
             self.assertEqual(out.size, im.size)
 
             x, y = im.size
-            self.assertEqual(im.getpixel((1, 1)), out.getpixel((x-2, y-2)))
-            self.assertEqual(im.getpixel((x-2, 1)), out.getpixel((1, y-2)))
-            self.assertEqual(im.getpixel((1, y-2)), out.getpixel((x-2, 1)))
-            self.assertEqual(im.getpixel((x-2, y-2)), out.getpixel((1, 1)))
+            self.assertEqual(im.getpixel((1, 1)), out.getpixel((x - 2, y - 2)))
+            self.assertEqual(im.getpixel((x - 2, 1)), out.getpixel((1, y - 2)))
+            self.assertEqual(im.getpixel((1, y - 2)), out.getpixel((x - 2, 1)))
+            self.assertEqual(im.getpixel((x - 2, y - 2)), out.getpixel((1, 1)))
 
         for mode in ("L", "RGB"):
             transpose(mode)
@@ -84,10 +90,12 @@ class TestImageTranspose(PillowTestCase):
             self.assertEqual(out.size, im.size[::-1])
 
             x, y = im.size
-            self.assertEqual(im.getpixel((1, 1)), out.getpixel((y-2, 1)))
-            self.assertEqual(im.getpixel((x-2, 1)), out.getpixel((y-2, x-2)))
-            self.assertEqual(im.getpixel((1, y-2)), out.getpixel((1, 1)))
-            self.assertEqual(im.getpixel((x-2, y-2)), out.getpixel((1, x-2)))
+            self.assertEqual(im.getpixel((1, 1)), out.getpixel((y - 2, 1)))
+            self.assertEqual(
+                im.getpixel((x - 2, 1)), out.getpixel((y - 2, x - 2)))
+            self.assertEqual(im.getpixel((1, y - 2)), out.getpixel((1, 1)))
+            self.assertEqual(
+                im.getpixel((x - 2, y - 2)), out.getpixel((1, x - 2)))
 
         for mode in ("L", "RGB"):
             transpose(mode)
@@ -101,9 +109,10 @@ class TestImageTranspose(PillowTestCase):
 
             x, y = im.size
             self.assertEqual(im.getpixel((1, 1)), out.getpixel((1, 1)))
-            self.assertEqual(im.getpixel((x-2, 1)), out.getpixel((1, x-2)))
-            self.assertEqual(im.getpixel((1, y-2)), out.getpixel((y-2, 1)))
-            self.assertEqual(im.getpixel((x-2, y-2)), out.getpixel((y-2, x-2)))
+            self.assertEqual(im.getpixel((x - 2, 1)), out.getpixel((1, x - 2)))
+            self.assertEqual(im.getpixel((1, y - 2)), out.getpixel((y - 2, 1)))
+            self.assertEqual(
+                im.getpixel((x - 2, y - 2)), out.getpixel((y - 2, x - 2)))
 
         for mode in ("L", "RGB"):
             transpose(mode)
@@ -114,10 +123,10 @@ class TestImageTranspose(PillowTestCase):
         def transpose(first, second):
             return im.transpose(first).transpose(second)
 
-        self.assert_image_equal(
-            im, transpose(FLIP_LEFT_RIGHT, FLIP_LEFT_RIGHT))
-        self.assert_image_equal(
-            im, transpose(FLIP_TOP_BOTTOM, FLIP_TOP_BOTTOM))
+        self.assert_image_equal(im,
+                                transpose(FLIP_LEFT_RIGHT, FLIP_LEFT_RIGHT))
+        self.assert_image_equal(im,
+                                transpose(FLIP_TOP_BOTTOM, FLIP_TOP_BOTTOM))
         self.assert_image_equal(im, transpose(ROTATE_90, ROTATE_270))
         self.assert_image_equal(im, transpose(ROTATE_180, ROTATE_180))
         self.assert_image_equal(

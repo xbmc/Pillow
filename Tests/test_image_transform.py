@@ -4,7 +4,6 @@ from PIL import Image
 
 
 class TestImageTransform(PillowTestCase):
-
     def test_sanity(self):
         from PIL import ImageTransform
 
@@ -24,12 +23,12 @@ class TestImageTransform(PillowTestCase):
     def test_extent(self):
         im = hopper('RGB')
         (w, h) = im.size
-        transformed = im.transform(im.size, Image.EXTENT,
-                                   (0, 0,
-                                    w//2, h//2),  # ul -> lr
+        transformed = im.transform(im.size,
+                                   Image.EXTENT,
+                                   (0, 0, w // 2, h // 2),  # ul -> lr
                                    Image.BILINEAR)
 
-        scaled = im.resize((w*2, h*2), Image.BILINEAR).crop((0, 0, w, h))
+        scaled = im.resize((w * 2, h * 2), Image.BILINEAR).crop((0, 0, w, h))
 
         # undone -- precision?
         self.assert_image_similar(transformed, scaled, 23)
@@ -38,15 +37,21 @@ class TestImageTransform(PillowTestCase):
         # one simple quad transform, equivalent to scale & crop upper left quad
         im = hopper('RGB')
         (w, h) = im.size
-        transformed = im.transform(im.size, Image.QUAD,
-                                   (0, 0, 0, h//2,
+        transformed = im.transform(im.size,
+                                   Image.QUAD,
+                                   (0,
+                                    0,
+                                    0,
+                                    h // 2,
                                     # ul -> ccw around quad:
-                                    w//2, h//2, w//2, 0),
+                                    w // 2,
+                                    h // 2,
+                                    w // 2,
+                                    0),
                                    Image.BILINEAR)
 
-        scaled = im.transform((w, h), Image.AFFINE,
-                              (.5, 0, 0, 0, .5, 0),
-                              Image.BILINEAR)
+        scaled = im.transform(
+            (w, h), Image.AFFINE, (.5, 0, 0, 0, .5, 0), Image.BILINEAR)
 
         self.assert_image_equal(transformed, scaled)
 
@@ -54,30 +59,32 @@ class TestImageTransform(PillowTestCase):
         # this should be a checkerboard of halfsized hoppers in ul, lr
         im = hopper('RGBA')
         (w, h) = im.size
-        transformed = im.transform(im.size, Image.MESH,
-                                   [((0, 0, w//2, h//2),  # box
-                                    (0, 0, 0, h,
-                                     w, h, w, 0)),  # ul -> ccw around quad
-                                    ((w//2, h//2, w, h),  # box
-                                    (0, 0, 0, h,
-                                     w, h, w, 0))],  # ul -> ccw around quad
+        transformed = im.transform(im.size,
+                                   Image.MESH,
+                                   [((0, 0, w // 2, h // 2),  # box
+                                     (0, 0, 0, h, w, h, w,
+                                      0)),  # ul -> ccw around quad
+                                    ((w // 2, h // 2, w, h),  # box
+                                     (0, 0, 0, h, w, h, w,
+                                      0))],  # ul -> ccw around quad
                                    Image.BILINEAR)
 
-        scaled = im.transform((w//2, h//2), Image.AFFINE,
-                              (2, 0, 0, 0, 2, 0),
-                              Image.BILINEAR)
+        scaled = im.transform(
+            (w // 2, h // 2), Image.AFFINE, (2, 0, 0, 0, 2, 0), Image.BILINEAR)
 
         checker = Image.new('RGBA', im.size)
         checker.paste(scaled, (0, 0))
-        checker.paste(scaled, (w//2, h//2))
+        checker.paste(scaled, (w // 2, h // 2))
 
         self.assert_image_equal(transformed, checker)
 
         # now, check to see that the extra area is (0, 0, 0, 0)
-        blank = Image.new('RGBA', (w//2, h//2), (0, 0, 0, 0))
+        blank = Image.new('RGBA', (w // 2, h // 2), (0, 0, 0, 0))
 
-        self.assert_image_equal(blank, transformed.crop((w//2, 0, w, h//2)))
-        self.assert_image_equal(blank, transformed.crop((0, h//2, w//2, h)))
+        self.assert_image_equal(blank,
+                                transformed.crop((w // 2, 0, w, h // 2)))
+        self.assert_image_equal(blank,
+                                transformed.crop((0, h // 2, w // 2, h)))
 
     def _test_alpha_premult(self, op):
         # create image with half white, half black,
@@ -93,23 +100,18 @@ class TestImageTransform(PillowTestCase):
         im_background.paste(im, (0, 0), im)
 
         hist = im_background.histogram()
-        self.assertEqual(40*10, hist[-1])
+        self.assertEqual(40 * 10, hist[-1])
 
     def test_alpha_premult_resize(self):
-
         def op(im, sz):
             return im.resize(sz, Image.LINEAR)
 
         self._test_alpha_premult(op)
 
     def test_alpha_premult_transform(self):
-
         def op(im, sz):
             (w, h) = im.size
-            return im.transform(sz, Image.EXTENT,
-                                (0, 0,
-                                 w, h),
-                                Image.BILINEAR)
+            return im.transform(sz, Image.EXTENT, (0, 0, w, h), Image.BILINEAR)
 
         self._test_alpha_premult(op)
 
@@ -129,8 +131,7 @@ class TestImageTransform(PillowTestCase):
         # the future
 
         pattern = [
-            Image.new('RGBA', (1024, 1024), (a, a, a, a))
-            for a in range(1, 65)
+            Image.new('RGBA', (1024, 1024), (a, a, a, a)) for a in range(1, 65)
         ]
 
         # Yeah. Watch some JIT optimize this out.

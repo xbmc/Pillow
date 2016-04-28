@@ -7,7 +7,6 @@ TEST_FILE = "Tests/images/hopper.dcx"
 
 
 class TestFileDcx(PillowTestCase):
-
     def test_sanity(self):
         # Arrange
 

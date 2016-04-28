@@ -27,7 +27,6 @@ static char basic_bits[] = {
 
 
 class TestFileXbm(PillowTestCase):
-
     def test_pil151(self):
         from io import BytesIO
 

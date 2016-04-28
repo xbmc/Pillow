@@ -45,7 +45,6 @@ from io import BytesIO
 from PIL import Image, ImageFile
 from PIL.DdsImagePlugin import _dxt1
 
-
 MAGIC = b"FTEX"
 FORMAT_DXT1 = 0
 FORMAT_UNCOMPRESSED = 1
@@ -78,7 +77,8 @@ class FtexImageFile(ImageFile.ImageFile):
         elif format == FORMAT_UNCOMPRESSED:
             self.tile = [("raw", (0, 0) + self.size, 0, ('RGB', 0, 1))]
         else:
-            raise ValueError("Invalid texture compression format: %r" % (format))
+            raise ValueError("Invalid texture compression format: %r" %
+                             (format))
 
         self.fp.close()
         self.fp = BytesIO(data)

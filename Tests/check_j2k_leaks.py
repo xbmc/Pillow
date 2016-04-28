@@ -4,9 +4,9 @@ from PIL import Image
 from io import BytesIO
 
 # Limits for testing the leak
-mem_limit = 1024*1048576
-stack_size = 8*1048576
-iterations = int((mem_limit/stack_size)*2)
+mem_limit = 1024 * 1048576
+stack_size = 8 * 1048576
+iterations = int((mem_limit / stack_size) * 2)
 codecs = dir(Image.core)
 test_file = "Tests/images/rgb_trns_ycbc.jp2"
 

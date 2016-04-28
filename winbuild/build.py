@@ -35,8 +35,7 @@ def run_script(params):
         proc = subprocess.Popen(command,
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                                )
+                                stderr=subprocess.PIPE, )
         (trace, stderr) = proc.communicate()
         status = proc.returncode
         print(stderr)
@@ -106,19 +105,12 @@ def main(op):
     scripts = []
 
     for py_version, compiler_version in pythons.items():
-        scripts.append((py_version,
-                        "\n".join([header(op),
-                                   build_one(py_version,
-                                             compilers[(compiler_version,
-                                                        32)]),
-                                   footer()])))
+        scripts.append((py_version, "\n".join([header(op), build_one(
+            py_version, compilers[(compiler_version, 32)]), footer()])))
 
-        scripts.append(("%s%s" % (py_version, X64_EXT),
-                        "\n".join([header(op),
-                                   build_one("%sx64" % py_version,
-                                             compilers[(compiler_version,
-                                                        64)]),
-                                   footer()])))
+        scripts.append(("%s%s" % (py_version, X64_EXT), "\n".join([header(
+            op), build_one("%sx64" % py_version, compilers[(compiler_version,
+                                                            64)]), footer()])))
 
     results = map(run_script, scripts)
 
@@ -131,11 +123,8 @@ def run_one(op):
     compiler = compiler_fromEnv()
     py_version = pyversion_fromEnv()
 
-    run_script((py_version,
-                "\n".join([header(op),
-                           build_one(py_version, compiler),
-                           footer()])
-                ))
+    run_script((py_version, "\n".join([header(op), build_one(
+        py_version, compiler), footer()])))
 
 
 if __name__ == '__main__':

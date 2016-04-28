@@ -16,12 +16,10 @@
 # See the README file for information on usage and redistribution.
 #
 
-
 from PIL import Image, TiffImagePlugin
 from PIL.OleFileIO import MAGIC, OleFileIO
 
 __version__ = "0.1"
-
 
 #
 # --------------------------------------------------------------------
@@ -30,9 +28,9 @@ __version__ = "0.1"
 def _accept(prefix):
     return prefix[:8] == MAGIC
 
-
 ##
 # Image plugin for Microsoft's Image Composer file format.
+
 
 class MicImageFile(TiffImagePlugin.TiffImageFile):
 

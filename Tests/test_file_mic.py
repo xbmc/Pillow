@@ -4,7 +4,6 @@ from PIL import MicImagePlugin
 
 
 class TestFileMic(PillowTestCase):
-
     def test_invalid_file(self):
         # Test an invalid OLE file
         invalid_file = "Tests/images/flower.jpg"

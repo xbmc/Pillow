@@ -16,11 +16,9 @@
 # See the README file for information on usage and redistribution.
 #
 
-
 from PIL import Image, ImageFile, _binary
 
 __version__ = "0.1"
-
 
 #
 # read MSP files
@@ -31,10 +29,10 @@ i16 = _binary.i16le
 def _accept(prefix):
     return prefix[:4] in [b"DanM", b"LinS"]
 
-
 ##
 # Image plugin for Windows MSP images.  This plugin supports both
 # uncompressed (Windows 1.0).
+
 
 class MspImageFile(ImageFile.ImageFile):
 
@@ -51,7 +49,7 @@ class MspImageFile(ImageFile.ImageFile):
         # Header checksum
         checksum = 0
         for i in range(0, 32, 2):
-            checksum = checksum ^ i16(s[i:i+2])
+            checksum = checksum ^ i16(s[i:i + 2])
         if checksum != 0:
             raise SyntaxError("bad MSP checksum")
 
@@ -59,9 +57,10 @@ class MspImageFile(ImageFile.ImageFile):
         self.size = i16(s[4:]), i16(s[6:])
 
         if s[:4] == b"DanM":
-            self.tile = [("raw", (0, 0)+self.size, 32, ("1", 0, 1))]
+            self.tile = [("raw", (0, 0) + self.size, 32, ("1", 0, 1))]
         else:
-            self.tile = [("msp", (0, 0)+self.size, 32+2*self.size[1], None)]
+            self.tile = [("msp",
+                          (0, 0) + self.size, 32 + 2 * self.size[1], None)]
 
 #
 # write MSP files (uncompressed only)
@@ -93,7 +92,7 @@ def _save(im, fp, filename):
         fp.write(o16(h))
 
     # image body
-    ImageFile._save(im, fp, [("raw", (0, 0)+im.size, 32, ("1", 0, 1))])
+    ImageFile._save(im, fp, [("raw", (0, 0) + im.size, 32, ("1", 0, 1))])
 
 #
 # registry

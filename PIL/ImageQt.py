@@ -46,9 +46,9 @@ def rgb(r, g, b, a=255):
     # into a negative integer with the same bitpattern.
     return (qRgba(r, g, b, a) & 0xffffffff)
 
-
 # :param im A PIL Image object, or a file name
 # (given either as Python string or a PyQt string object)
+
 
 def fromqimage(im):
     buffer = QBuffer()
@@ -91,16 +91,13 @@ def align8to32(bytes, width, mode):
     converts each scanline of data from 8 bit to 32 bit aligned
     """
 
-    bits_per_pixel = {
-        '1': 1,
-        'L': 8,
-        'P': 8,
-    }[mode]
+    bits_per_pixel = {'1': 1, 'L': 8, 'P': 8, }[mode]
 
     # calculate bytes per line and the extra padding if needed
     bits_per_line = bits_per_pixel * width
     full_bytes_per_line, remaining_bits_per_line = divmod(bits_per_line, 8)
-    bytes_per_line = full_bytes_per_line + (1 if remaining_bits_per_line else 0)
+    bytes_per_line = full_bytes_per_line + (1
+                                            if remaining_bits_per_line else 0)
 
     extra_padding = -bytes_per_line % 4
 
@@ -110,7 +107,8 @@ def align8to32(bytes, width, mode):
 
     new_data = []
     for i in range(len(bytes) // bytes_per_line):
-        new_data.append(bytes[i*bytes_per_line:(i+1)*bytes_per_line] + b'\x00' * extra_padding)
+        new_data.append(bytes[i * bytes_per_line:(i + 1) * bytes_per_line] +
+                        b'\x00' * extra_padding)
 
     return b''.join(new_data)
 
@@ -141,7 +139,7 @@ def _toqclass_helper(im):
         colortable = []
         palette = im.getpalette()
         for i in range(0, len(palette), 3):
-            colortable.append(rgb(*palette[i:i+3]))
+            colortable.append(rgb(*palette[i:i + 3]))
     elif im.mode == "RGB":
         data = im.tobytes("raw", "BGRX")
         format = QImage.Format_RGB32
@@ -159,7 +157,10 @@ def _toqclass_helper(im):
     # must keep a reference, or Qt will crash!
     __data = data or align8to32(im.tobytes(), im.size[0], im.mode)
     return {
-        'data': __data, 'im': im, 'format': format, 'colortable': colortable
+        'data': __data,
+        'im': im,
+        'format': format,
+        'colortable': colortable
     }
 
 ##
@@ -170,12 +171,11 @@ def _toqclass_helper(im):
 #     string or a PyQt string object).
 
 if qt_is_installed:
-    class ImageQt(QImage):
 
+    class ImageQt(QImage):
         def __init__(self, im):
             im_data = _toqclass_helper(im)
-            QImage.__init__(self,
-                            im_data['data'], im_data['im'].size[0],
+            QImage.__init__(self, im_data['data'], im_data['im'].size[0],
                             im_data['im'].size[1], im_data['format'])
             if im_data['colortable']:
                 self.setColorTable(im_data['colortable'])

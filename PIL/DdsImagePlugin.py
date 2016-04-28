@@ -14,7 +14,6 @@ import struct
 from io import BytesIO
 from PIL import Image, ImageFile
 
-
 # Magic ("DDS ")
 DDS_MAGIC = 0x20534444
 
@@ -50,7 +49,6 @@ DDPF_PALETTEINDEXED8 = 0x20
 DDPF_RGB = 0x40
 DDPF_LUMINANCE = 0x20000
 
-
 # dds.h
 
 DDS_FOURCC = DDPF_FOURCC
@@ -61,8 +59,8 @@ DDS_LUMINANCEA = DDPF_LUMINANCE | DDPF_ALPHAPIXELS
 DDS_ALPHA = DDPF_ALPHA
 DDS_PAL8 = DDPF_PALETTEINDEXED8
 
-DDS_HEADER_FLAGS_TEXTURE = (DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH |
-                            DDSD_PIXELFORMAT)
+DDS_HEADER_FLAGS_TEXTURE = (DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH
+                            | DDSD_PIXELFORMAT)
 DDS_HEADER_FLAGS_MIPMAP = DDSD_MIPMAPCOUNT
 DDS_HEADER_FLAGS_VOLUME = DDSD_DEPTH
 DDS_HEADER_FLAGS_PITCH = DDSD_PITCH
@@ -81,7 +79,6 @@ DDS_CUBEMAP_POSITIVEY = DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEY
 DDS_CUBEMAP_NEGATIVEY = DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEY
 DDS_CUBEMAP_POSITIVEZ = DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEZ
 DDS_CUBEMAP_NEGATIVEZ = DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEZ
-
 
 # DXT1
 DXT1_FOURCC = 0x31545844
@@ -145,7 +142,7 @@ def _dxt1(data, width, height):
                             r, g, b = 0, 0, 0
 
                     idx = 4 * ((y + j) * width + (x + i))
-                    ret[idx:idx+4] = struct.pack('4B', r, g, b, 255)
+                    ret[idx:idx + 4] = struct.pack('4B', r, g, b, 255)
 
     return bytes(ret)
 
@@ -202,7 +199,7 @@ def _dxt5(data, width, height):
                         r, g, b = _c3(r0, r1), _c3(g0, g1), _c3(b0, b1)
 
                     idx = 4 * ((y + j) * width + (x + i))
-                    ret[idx:idx+4] = struct.pack('4B', r, g, b, alpha)
+                    ret[idx:idx + 4] = struct.pack('4B', r, g, b, alpha)
 
     return bytes(ret)
 
@@ -233,9 +230,7 @@ class DdsImageFile(ImageFile.ImageFile):
         bitcount, rmask, gmask, bmask, amask = struct.unpack("<5I",
                                                              header.read(20))
 
-        self.tile = [
-            ("raw", (0, 0) + self.size, 0, (self.mode, 0, 1))
-        ]
+        self.tile = [("raw", (0, 0) + self.size, 0, (self.mode, 0, 1))]
 
         if fourcc == b"DXT1":
             self.pixel_format = "DXT1"

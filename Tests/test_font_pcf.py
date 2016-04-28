@@ -11,7 +11,6 @@ message = "hello, world"
 
 
 class TestFontPcf(PillowTestCase):
-
     def setUp(self):
         if "zip_encoder" not in codecs or "zip_decoder" not in codecs:
             self.skipTest("zlib support not available")
@@ -23,7 +22,7 @@ class TestFontPcf(PillowTestCase):
         self.assertEqual(len([_f for _f in font.glyph if _f]), 192)
 
         tempname = self.tempfile("temp.pil")
-        self.addCleanup(self.delete_tempfile, tempname[:-4]+'.pbm')
+        self.addCleanup(self.delete_tempfile, tempname[:-4] + '.pbm')
         font.save(tempname)
         return tempname
 
@@ -55,7 +54,7 @@ class TestFontPcf(PillowTestCase):
         self.assert_image_equal(image, compare)
 
     def test_high_characters(self):
-        message = "".join([chr(i+1) for i in range(140, 232)])
+        message = "".join([chr(i + 1) for i in range(140, 232)])
         self._test_high_characters(message)
         # accept bytes instances in Py3.
         if bytes is not str:

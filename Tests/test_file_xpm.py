@@ -7,7 +7,6 @@ TEST_FILE = "Tests/images/hopper.xpm"
 
 
 class TestFileXpm(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(TEST_FILE)
         im.load()

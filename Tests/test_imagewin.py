@@ -5,7 +5,6 @@ import sys
 
 
 class TestImageWin(PillowTestCase):
-
     def test_sanity(self):
         dir(ImageWin)
 
@@ -34,7 +33,6 @@ class TestImageWin(PillowTestCase):
 
 @unittest.skipUnless(sys.platform.startswith('win32'), "Windows only")
 class TestImageWinDib(PillowTestCase):
-
     def test_dib_image(self):
         # Arrange
         im = hopper()

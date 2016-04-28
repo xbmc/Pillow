@@ -9,7 +9,6 @@ from fractions import Fraction
 
 
 class Test_IFDRational(PillowTestCase):
-
     def _test_equal(self, num, denom, target):
 
         t = IFDRational(num, denom)
@@ -54,5 +53,5 @@ class Test_IFDRational(PillowTestCase):
             im.save(out, dpi=(res, res), compression='raw')
 
             reloaded = Image.open(out)
-            self.assertEqual(float(IFDRational(301, 1)),
-                             float(reloaded.tag_v2[282]))
+            self.assertEqual(
+                float(IFDRational(301, 1)), float(reloaded.tag_v2[282]))

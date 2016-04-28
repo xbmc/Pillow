@@ -8,20 +8,19 @@ import itertools
 
 
 class TestFormatHSV(PillowTestCase):
-
     def int_to_float(self, i):
-        return float(i)/255.0
+        return float(i) / 255.0
 
     def str_to_float(self, i):
 
-        return float(ord(i))/255.0
+        return float(ord(i)) / 255.0
 
     def to_int(self, f):
-        return int(f*255.0)
+        return int(f * 255.0)
 
     def tuple_to_ints(self, tp):
         x, y, z = tp
-        return (int(x*255.0), int(y*255.0), int(z*255.0))
+        return (int(x * 255.0), int(y * 255.0), int(z * 255.0))
 
     def test_sanity(self):
         Image.new('HSV', (100, 100))
@@ -32,7 +31,7 @@ class TestFormatHSV(PillowTestCase):
 
         (px, h) = w.size
 
-        r = Image.new('L', (px*3, h))
+        r = Image.new('L', (px * 3, h))
         g = r.copy()
         b = r.copy()
 
@@ -40,10 +39,10 @@ class TestFormatHSV(PillowTestCase):
         r.paste(w90, (px, 0))
 
         g.paste(w90, (0, 0))
-        g.paste(w,  (2*px, 0))
+        g.paste(w, (2 * px, 0))
 
         b.paste(w, (px, 0))
-        b.paste(w90, (2*px, 0))
+        b.paste(w90, (2 * px, 0))
 
         img = Image.merge('RGB', (r, g, b))
 
@@ -68,17 +67,18 @@ class TestFormatHSV(PillowTestCase):
         else:
             iter_helper = itertools.zip_longest
 
-        converted = [self.tuple_to_ints(func(conv_func(_r), conv_func(_g),
-                                             conv_func(_b)))
+        converted = [self.tuple_to_ints(func(
+            conv_func(_r), conv_func(_g), conv_func(_b)))
                      for (_r, _g, _b) in iter_helper(r.tobytes(), g.tobytes(),
                                                      b.tobytes())]
 
         if str is bytes:
-            new_bytes = b''.join(chr(h)+chr(s)+chr(v) for (
-                h, s, v) in converted)
+            new_bytes = b''.join(chr(h) + chr(s) + chr(v)
+                                 for (h, s, v) in converted)
         else:
-            new_bytes = b''.join(bytes(chr(h)+chr(s)+chr(v), 'latin-1') for (
-                h, s, v) in converted)
+            new_bytes = b''.join(bytes(
+                chr(h) + chr(s) + chr(v), 'latin-1')
+                                 for (h, s, v) in converted)
 
         hsv = Image.frombytes(mode, r.size, new_bytes)
 
@@ -91,7 +91,7 @@ class TestFormatHSV(PillowTestCase):
         return self.to_xxx_colorsys(im, colorsys.hsv_to_rgb, 'RGB')
 
     def test_wedge(self):
-        src = self.wedge().resize((3*32, 32), Image.BILINEAR)
+        src = self.wedge().resize((3 * 32, 32), Image.BILINEAR)
         im = src.convert('HSV')
         comparable = self.to_hsv_colorsys(src)
 
@@ -104,12 +104,12 @@ class TestFormatHSV(PillowTestCase):
         # im.split()[0].show()
         # comparable.split()[0].show()
 
-        self.assert_image_similar(im.split()[0], comparable.split()[0],
-                                  1, "Hue conversion is wrong")
-        self.assert_image_similar(im.split()[1], comparable.split()[1],
-                                  1, "Saturation conversion is wrong")
-        self.assert_image_similar(im.split()[2], comparable.split()[2],
-                                  1, "Value conversion is wrong")
+        self.assert_image_similar(im.split()[0], comparable.split()[0], 1,
+                                  "Hue conversion is wrong")
+        self.assert_image_similar(im.split()[1], comparable.split()[1], 1,
+                                  "Saturation conversion is wrong")
+        self.assert_image_similar(im.split()[2], comparable.split()[2], 1,
+                                  "Value conversion is wrong")
 
         # print (im.getpixel((192, 64)))
 
@@ -121,29 +121,29 @@ class TestFormatHSV(PillowTestCase):
         # print (im.getpixel((192, 64)))
         # print (comparable.getpixel((192, 64)))
 
-        self.assert_image_similar(im.split()[0], comparable.split()[0],
-                                  3, "R conversion is wrong")
-        self.assert_image_similar(im.split()[1], comparable.split()[1],
-                                  3, "G conversion is wrong")
-        self.assert_image_similar(im.split()[2], comparable.split()[2],
-                                  3, "B conversion is wrong")
+        self.assert_image_similar(im.split()[0], comparable.split()[0], 3,
+                                  "R conversion is wrong")
+        self.assert_image_similar(im.split()[1], comparable.split()[1], 3,
+                                  "G conversion is wrong")
+        self.assert_image_similar(im.split()[2], comparable.split()[2], 3,
+                                  "B conversion is wrong")
 
     def test_convert(self):
         im = hopper('RGB').convert('HSV')
         comparable = self.to_hsv_colorsys(hopper('RGB'))
 
-#        print ([ord(x) for x  in im.split()[0].tobytes()[:80]])
-#        print ([ord(x) for x  in comparable.split()[0].tobytes()[:80]])
+        #        print ([ord(x) for x  in im.split()[0].tobytes()[:80]])
+        #        print ([ord(x) for x  in comparable.split()[0].tobytes()[:80]])
 
-#        print(im.split()[0].histogram())
-#        print(comparable.split()[0].histogram())
+        #        print(im.split()[0].histogram())
+        #        print(comparable.split()[0].histogram())
 
-        self.assert_image_similar(im.split()[0], comparable.split()[0],
-                                  1, "Hue conversion is wrong")
-        self.assert_image_similar(im.split()[1], comparable.split()[1],
-                                  1, "Saturation conversion is wrong")
-        self.assert_image_similar(im.split()[2], comparable.split()[2],
-                                  1, "Value conversion is wrong")
+        self.assert_image_similar(im.split()[0], comparable.split()[0], 1,
+                                  "Hue conversion is wrong")
+        self.assert_image_similar(im.split()[1], comparable.split()[1], 1,
+                                  "Saturation conversion is wrong")
+        self.assert_image_similar(im.split()[2], comparable.split()[2], 1,
+                                  "Value conversion is wrong")
 
     def test_hsv_to_rgb(self):
         comparable = self.to_hsv_colorsys(hopper('RGB'))

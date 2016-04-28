@@ -12,7 +12,6 @@ except ImportError:
 
 
 class TestNumpy(PillowTestCase):
-
     def setUp(self):
         try:
             import site
@@ -21,7 +20,6 @@ class TestNumpy(PillowTestCase):
             self.skipTest("ImportError")
 
     def test_numpy_to_image(self):
-
         def to_image(dtype, bands=1, boolean=0):
             if bands == 1:
                 if boolean:
@@ -35,7 +33,7 @@ class TestNumpy(PillowTestCase):
                     print("data mismatch for", dtype)
             else:
                 data = list(range(100))
-                a = numpy.array([[x]*bands for x in data], dtype=dtype)
+                a = numpy.array([[x] * bands for x in data], dtype=dtype)
                 a.shape = 10, 10, bands
                 i = Image.fromarray(a)
                 if list(i.split()[0].getdata()) != list(range(100)):
@@ -79,8 +77,8 @@ class TestNumpy(PillowTestCase):
         np_size = np.shape[1], np.shape[0]
         self.assertEqual(img.size, np_size)
         px = img.load()
-        for x in range(0, img.size[0], int(img.size[0]/10)):
-            for y in range(0, img.size[1], int(img.size[1]/10)):
+        for x in range(0, img.size[0], int(img.size[0] / 10)):
+            for y in range(0, img.size[1], int(img.size[1] / 10)):
                 self.assert_deep_equal(px[x, y], np[y, x])
 
     def test_16bit(self):
@@ -90,7 +88,6 @@ class TestNumpy(PillowTestCase):
         self.assertEqual(np_img.dtype, numpy.dtype('<u2'))
 
     def test_to_array(self):
-
         def _to_array(mode, dtype):
             img = hopper(mode)
 
@@ -113,8 +110,7 @@ class TestNumpy(PillowTestCase):
                  ("I;16", '<u2'),
                  ("I;16B", '>u2'),
                  ("I;16L", '<u2'),
-                 ("HSV", 'uint8'),
-                 ]
+                 ("HSV", 'uint8'), ]
 
         for mode in modes:
             _to_array(*mode)
@@ -122,7 +118,7 @@ class TestNumpy(PillowTestCase):
     def test_point_lut(self):
         # see https://github.com/python-pillow/Pillow/issues/439
 
-        data = list(range(256))*3
+        data = list(range(256)) * 3
         lut = numpy.array(data, dtype='uint8')
 
         im = hopper()
@@ -134,7 +130,7 @@ class TestNumpy(PillowTestCase):
         # see https://github.com/python-pillow/Pillow/issues/1008
 
         im = Image.new('F', (150, 100))
-        arr = numpy.zeros((15000,), numpy.float32)
+        arr = numpy.zeros((15000, ), numpy.float32)
         im.putdata(arr)
 
         self.assertEqual(len(im.getdata()), len(arr))

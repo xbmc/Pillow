@@ -19,7 +19,6 @@ file3 = "Tests/images/binary_preview_map.eps"
 
 
 class TestFileEps(PillowTestCase):
-
     def setUp(self):
         if not EpsImagePlugin.has_ghostscript():
             self.skipTest("Ghostscript not available")
@@ -158,9 +157,8 @@ class TestFileEps(PillowTestCase):
         Image.open(file3)
 
     def _test_readline(self, t, ending):
-        ending = "Failure with line ending: %s" % ("".join(
-                                                   "%s" % ord(s)
-                                                   for s in ending))
+        ending = "Failure with line ending: %s" % ("".join("%s" % ord(s)
+                                                           for s in ending))
         self.assertEqual(t.readline().strip('\r\n'), 'something', ending)
         self.assertEqual(t.readline().strip('\r\n'), 'else', ending)
         self.assertEqual(t.readline().strip('\r\n'), 'baz', ending)

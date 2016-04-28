@@ -48,12 +48,12 @@ i32 = _binary.i32be
 
 __version__ = "0.6"
 
-
 #
 # Parser
 
+
 def Skip(self, marker):
-    n = i16(self.fp.read(2))-2
+    n = i16(self.fp.read(2)) - 2
     ImageFile._safe_read(self.fp, n)
 
 
@@ -62,7 +62,7 @@ def APP(self, marker):
     # Application marker.  Store these in the APP dictionary.
     # Also look for well-known application markers.
 
-    n = i16(self.fp.read(2))-2
+    n = i16(self.fp.read(2)) - 2
     s = ImageFile._safe_read(self.fp, n)
 
     app = "APP%d" % (marker & 15)
@@ -124,7 +124,7 @@ def APP(self, marker):
 def COM(self, marker):
     #
     # Comment marker.  Store these in the APP dictionary.
-    n = i16(self.fp.read(2))-2
+    n = i16(self.fp.read(2)) - 2
     s = ImageFile._safe_read(self.fp, n)
 
     self.app["COM"] = s  # compatibility
@@ -139,7 +139,7 @@ def SOF(self, marker):
     # mode.  Note that this could be made a bit brighter, by
     # looking for JFIF and Adobe APP markers.
 
-    n = i16(self.fp.read(2))-2
+    n = i16(self.fp.read(2)) - 2
     s = ImageFile._safe_read(self.fp, n)
     self.size = i16(s[3:]), i16(s[1:])
 
@@ -174,9 +174,9 @@ def SOF(self, marker):
         self.icclist = None
 
     for i in range(6, len(s), 3):
-        t = s[i:i+3]
+        t = s[i:i + 3]
         # 4-tuples: id, vsamp, hsamp, qtable
-        self.layer.append((t[0], i8(t[1])//16, i8(t[1]) & 15, i8(t[2])))
+        self.layer.append((t[0], i8(t[1]) // 16, i8(t[1]) & 15, i8(t[2])))
 
 
 def DQT(self, marker):
@@ -188,22 +188,22 @@ def DQT(self, marker):
     # FIXME: The quantization tables can be used to estimate the
     # compression quality.
 
-    n = i16(self.fp.read(2))-2
+    n = i16(self.fp.read(2)) - 2
     s = ImageFile._safe_read(self.fp, n)
     while len(s):
         if len(s) < 65:
             raise SyntaxError("bad quantization table marker")
         v = i8(s[0])
-        if v//16 == 0:
+        if v // 16 == 0:
             self.quantization[v & 15] = array.array("b", s[1:65])
             s = s[65:]
         else:
             return  # FIXME: add code to read 16-bit tables!
             # raise SyntaxError, "bad quantization table element size"
 
+            #
+            # JPEG marker table
 
-#
-# JPEG marker table
 
 MARKER = {
     0xFFC0: ("SOF0", "Baseline DCT", SOF),
@@ -275,9 +275,9 @@ MARKER = {
 def _accept(prefix):
     return prefix[0:1] == b"\377"
 
-
 ##
 # Image plugin for JPEG and JFIF images.
+
 
 class JpegImageFile(ImageFile.ImageFile):
 
@@ -324,7 +324,7 @@ class JpegImageFile(ImageFile.ImageFile):
                     if self.mode == "CMYK":
                         rawmode = "CMYK;I"  # assume adobe conventions
                     self.tile = [("jpeg", (0, 0) + self.size, 0,
-                                 (rawmode, ""))]
+                                  (rawmode, ""))]
                     # self.__offset = self.fp.tell()
                     break
                 s = self.fp.read(1)
@@ -351,8 +351,10 @@ class JpegImageFile(ImageFile.ImageFile):
             for s in [8, 4, 2, 1]:
                 if scale >= s:
                     break
-            e = e[0], e[1], (e[2]-e[0]+s-1)//s+e[0], (e[3]-e[1]+s-1)//s+e[1]
-            self.size = ((self.size[0]+s-1)//s, (self.size[1]+s-1)//s)
+            e = e[0], e[1], (e[2] - e[0] + s - 1) // s + e[0], (
+                e[3] - e[1] + s - 1) // s + e[1]
+            self.size = ((self.size[0] + s - 1) // s,
+                         (self.size[1] + s - 1) // s)
             scale = s
 
         self.tile = [(d, e, o, a)]
@@ -401,7 +403,8 @@ def _fixup_dict(src_dict):
         try:
             if len(value) == 1 and type(value) != type({}):
                 return value[0]
-        except: pass
+        except:
+            pass
         return value
 
     return dict([(k, _fixup(v)) for k, v in src_dict.items()])
@@ -483,18 +486,18 @@ def _getmp(self):
     try:
         rawmpentries = mp[0xB002]
         for entrynum in range(0, quant):
-            unpackedentry = unpack_from(
-                '{0}LLLHH'.format(endianness), rawmpentries, entrynum * 16)
+            unpackedentry = unpack_from('{0}LLLHH'.format(endianness),
+                                        rawmpentries, entrynum * 16)
             labels = ('Attribute', 'Size', 'DataOffset', 'EntryNo1',
                       'EntryNo2')
             mpentry = dict(zip(labels, unpackedentry))
             mpentryattr = {
-                'DependentParentImageFlag': bool(mpentry['Attribute'] &
-                                                 (1 << 31)),
-                'DependentChildImageFlag': bool(mpentry['Attribute'] &
-                                                (1 << 30)),
-                'RepresentativeImageFlag': bool(mpentry['Attribute'] &
-                                                (1 << 29)),
+                'DependentParentImageFlag':
+                bool(mpentry['Attribute'] & (1 << 31)),
+                'DependentChildImageFlag':
+                bool(mpentry['Attribute'] & (1 << 30)),
+                'RepresentativeImageFlag':
+                bool(mpentry['Attribute'] & (1 << 29)),
                 'Reserved': (mpentry['Attribute'] & (3 << 27)) >> 27,
                 'ImageDataFormat': (mpentry['Attribute'] & (7 << 24)) >> 24,
                 'MPType': mpentry['Attribute'] & 0x00FFFFFF
@@ -524,7 +527,6 @@ def _getmp(self):
     # file and so can't test it.
     return mp
 
-
 # --------------------------------------------------------------------
 # stuff to save JPEG files
 
@@ -538,19 +540,14 @@ RAWMODE = {
     "YCbCr": "YCbCr",
 }
 
-zigzag_index = (0,  1,  5,  6, 14, 15, 27, 28,
-                2,  4,  7, 13, 16, 26, 29, 42,
-                3,  8, 12, 17, 25, 30, 41, 43,
-                9, 11, 18, 24, 31, 40, 44, 53,
-               10, 19, 23, 32, 39, 45, 52, 54,
-               20, 22, 33, 38, 46, 51, 55, 60,
-               21, 34, 37, 47, 50, 56, 59, 61,
-               35, 36, 48, 49, 57, 58, 62, 63)
+zigzag_index = (0, 1, 5, 6, 14, 15, 27, 28, 2, 4, 7, 13, 16, 26, 29, 42, 3, 8,
+                12, 17, 25, 30, 41, 43, 9, 11, 18, 24, 31, 40, 44, 53, 10, 19,
+                23, 32, 39, 45, 52, 54, 20, 22, 33, 38, 46, 51, 55, 60, 21, 34,
+                37, 47, 50, 56, 59, 61, 35, 36, 48, 49, 57, 58, 62, 63)
 
 samplings = {(1, 1, 1, 1, 1, 1): 0,
              (2, 1, 1, 1, 1, 1): 1,
-             (2, 2, 1, 1, 1, 1): 2,
-             }
+             (2, 2, 1, 1, 1, 1): 2, }
 
 
 def convert_dict_qtables(qtables):
@@ -623,12 +620,13 @@ def _save(im, fp, filename):
             return qtables
         if isStringType(qtables):
             try:
-                lines = [int(num) for line in qtables.splitlines()
+                lines = [int(num)
+                         for line in qtables.splitlines()
                          for num in line.split('#', 1)[0].split()]
             except ValueError:
                 raise ValueError("Invalid quantization table")
             else:
-                qtables = [lines[s:s+64] for s in range(0, len(lines), 64)]
+                qtables = [lines[s:s + 64] for s in range(0, len(lines), 64)]
         if isinstance(qtables, (tuple, list, dict)):
             if isinstance(qtables, dict):
                 qtables = convert_dict_qtables(qtables)
@@ -682,12 +680,12 @@ def _save(im, fp, filename):
         info.get("smooth", 0),
         "optimize" in info,
         info.get("streamtype", 0),
-        dpi[0], dpi[1],
+        dpi[0],
+        dpi[1],
         subsampling,
         qtables,
         extra,
-        info.get("exif", b"")
-        )
+        info.get("exif", b""))
 
     # if we optimize, libjpeg needs a buffer big enough to hold the whole image
     # in a shot. Guessing on the size, at im.size bytes. (raw pizel size is
@@ -705,7 +703,7 @@ def _save(im, fp, filename):
     # Ensure that our buffer is big enough
     bufsize = max(ImageFile.MAXBLOCK, bufsize, len(info.get("exif", b"")) + 5)
 
-    ImageFile._save(im, fp, [("jpeg", (0, 0)+im.size, 0, rawmode)], bufsize)
+    ImageFile._save(im, fp, [("jpeg", (0, 0) + im.size, 0, rawmode)], bufsize)
 
 
 def _save_cjpeg(im, fp, filename):
@@ -737,7 +735,6 @@ def jpeg_factory(fp=None, filename=None):
         warnings.warn("Image appears to be a malformed MPO file, it will be "
                       "interpreted as a base JPEG file")
     return im
-
 
 # -------------------------------------------------------------------q-
 # Registry stuff

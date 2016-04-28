@@ -4,7 +4,6 @@ from PIL import Image
 
 
 class TestFormatLab(PillowTestCase):
-
     def test_white(self):
         i = Image.open('Tests/images/lab.tif')
 
@@ -21,9 +20,9 @@ class TestFormatLab(PillowTestCase):
         a = i.getdata(1)
         b = i.getdata(2)
 
-        self.assertEqual(list(L), [255]*100)
-        self.assertEqual(list(a), [128]*100)
-        self.assertEqual(list(b), [128]*100)
+        self.assertEqual(list(L), [255] * 100)
+        self.assertEqual(list(a), [128] * 100)
+        self.assertEqual(list(b), [128] * 100)
 
     def test_green(self):
         # l= 50 (/100), a = -100 (-128 .. 128) b=0 in PS

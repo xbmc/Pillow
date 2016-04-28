@@ -5,7 +5,6 @@ from PIL import ImageColor
 
 
 class TestImageColor(PillowTestCase):
-
     def test_sanity(self):
         self.assertEqual((255, 0, 0), ImageColor.getrgb("#f00"))
         self.assertEqual((255, 0, 0), ImageColor.getrgb("#ff0000"))
@@ -25,8 +24,8 @@ class TestImageColor(PillowTestCase):
     def test_rounding_errors(self):
 
         for color in list(ImageColor.colormap.keys()):
-            expected = Image.new(
-                "RGB", (1, 1), color).convert("L").getpixel((0, 0))
+            expected = Image.new("RGB", (1, 1),
+                                 color).convert("L").getpixel((0, 0))
             actual = Image.new("L", (1, 1), color).getpixel((0, 0))
             self.assertEqual(expected, actual)
 
@@ -54,8 +53,8 @@ class TestImageColor(PillowTestCase):
         self.assertEqual(255, ImageColor.getcolor("white", "1"))
         # The following test is wrong, but is current behavior
         # The correct result should be 255 due to the mode 1
-        self.assertEqual(
-            162, ImageColor.getcolor("rgba(0, 255, 115, 33)", "1"))
+        self.assertEqual(162,
+                         ImageColor.getcolor("rgba(0, 255, 115, 33)", "1"))
         # Correct behavior
         # self.assertEqual(
         #     255, ImageColor.getcolor("rgba(0, 255, 115, 33)", "1"))

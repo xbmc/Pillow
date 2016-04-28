@@ -81,8 +81,8 @@ def Ghostscript(tile, size, fp, scale=1):
     # orig_bbox = bbox
     size = (size[0] * scale, size[1] * scale)
     # resolution is dependent on bbox and size
-    res = (float((72.0 * size[0]) / (bbox[2]-bbox[0])),
-           float((72.0 * size[1]) / (bbox[3]-bbox[1])))
+    res = (float((72.0 * size[0]) / (bbox[2] - bbox[0])),
+           float((72.0 * size[1]) / (bbox[3] - bbox[1])))
     # print("Ghostscript", scale, size, orig_size, bbox, orig_bbox, res)
 
     import os
@@ -112,7 +112,7 @@ def Ghostscript(tile, size, fp, scale=1):
             fp.seek(0)
             lengthfile = fsize
             while lengthfile > 0:
-                s = fp.read(min(lengthfile, 100*1024))
+                s = fp.read(min(lengthfile, 100 * 1024))
                 if not s:
                     break
                 lengthfile -= len(s)
@@ -120,16 +120,18 @@ def Ghostscript(tile, size, fp, scale=1):
 
     # Build ghostscript command
     command = ["gs",
-               "-q",                         # quiet mode
-               "-g%dx%d" % size,             # set output geometry (pixels)
-               "-r%fx%f" % res,              # set input DPI (dots per inch)
-               "-dNOPAUSE",                  # don't pause between pages,
-               "-dSAFER",                    # safe mode
-               "-sDEVICE=ppmraw",            # ppm driver
+               "-q",  # quiet mode
+               "-g%dx%d" % size,  # set output geometry (pixels)
+               "-r%fx%f" % res,  # set input DPI (dots per inch)
+               "-dNOPAUSE",  # don't pause between pages,
+               "-dSAFER",  # safe mode
+               "-sDEVICE=ppmraw",  # ppm driver
                "-sOutputFile=%s" % outfile,  # output file
-               "-c", "%d %d translate" % (-bbox[0], -bbox[1]),
-                                             # adjust for image origin
-               "-f", infile,                 # input file
+               "-c",
+               "%d %d translate" % (-bbox[0], -bbox[1]),
+               # adjust for image origin
+               "-f",
+               infile,  # input file
                ]
 
     if gs_windows_binary is not None:
@@ -139,7 +141,8 @@ def Ghostscript(tile, size, fp, scale=1):
 
     # push data through ghostscript
     try:
-        gs = subprocess.Popen(command, stdin=subprocess.PIPE,
+        gs = subprocess.Popen(command,
+                              stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE)
         gs.stdin.close()
         status = gs.wait()
@@ -161,6 +164,7 @@ class PSFile(object):
     """
     Wrapper for bytesio object that treats either CR or LF as end of line.
     """
+
     def __init__(self, fp):
         self.fp = fp
         self.char = None
@@ -344,9 +348,9 @@ class EpsImageFile(ImageFile.ImageFile):
         # use our custom load method by defining this method.
         pass
 
-
 #
 # --------------------------------------------------------------------
+
 
 def _save(im, fp, filename, eps=1):
     """EPS Writer for the Python Imaging Library."""
@@ -408,7 +412,7 @@ def _save(im, fp, filename, eps=1):
     if hasattr(fp, "flush"):
         fp.flush()
 
-    ImageFile._save(im, base_fp, [("eps", (0, 0)+im.size, 0, None)])
+    ImageFile._save(im, base_fp, [("eps", (0, 0) + im.size, 0, None)])
 
     fp.write("\n%%%%EndBinary\n")
     fp.write("grestore end\n")

@@ -82,12 +82,10 @@ def read_32(fobj, start_length, size):
                 if bytesleft <= 0:
                     break
             if bytesleft != 0:
-                raise SyntaxError(
-                    "Error reading channel [%r left]" % bytesleft
-                    )
-            band = Image.frombuffer(
-                "L", pixel_size, b"".join(data), "raw", "L", 0, 1
-                )
+                raise SyntaxError("Error reading channel [%r left]" %
+                                  bytesleft)
+            band = Image.frombuffer("L", pixel_size, b"".join(data), "raw",
+                                    "L", 0, 1)
             im.im.putband(band.im, band_ix)
     return {"RGB": im}
 
@@ -98,9 +96,8 @@ def read_mk(fobj, start_length, size):
     fobj.seek(start)
     pixel_size = (size[0] * size[2], size[1] * size[2])
     sizesq = pixel_size[0] * pixel_size[1]
-    band = Image.frombuffer(
-        "L", pixel_size, fobj.read(sizesq), "raw", "L", 0, 1
-        )
+    band = Image.frombuffer("L", pixel_size, fobj.read(sizesq), "raw", "L", 0,
+                            1)
     return {"A": band}
 
 
@@ -245,9 +242,9 @@ class IcnsFile(object):
             pass
         return im
 
-
 ##
 # Image plugin for Mac OS icons.
+
 
 class IcnsImageFile(ImageFile.ImageFile):
     """
@@ -271,7 +268,7 @@ class IcnsImageFile(ImageFile.ImageFile):
                      self.best_size[1] * self.best_size[2])
         self.info['sizes'] = self.icns.itersizes()
         # Just use this to see if it's loaded or not yet.
-        self.tile = ('',)
+        self.tile = ('', )
 
     def load(self):
         if len(self.size) == 3:
@@ -320,10 +317,10 @@ def _save(im, fp, filename):
             im_scaled = last_im
         else:
             im_scaled = im.resize((w, w), Image.LANCZOS)
-        im_scaled.save(os.path.join(iconset, prefix+'.png'))
+        im_scaled.save(os.path.join(iconset, prefix + '.png'))
 
-        im_scaled = im.resize((w*2, w*2), Image.LANCZOS)
-        im_scaled.save(os.path.join(iconset, prefix+'@2x.png'))
+        im_scaled = im.resize((w * 2, w * 2), Image.LANCZOS)
+        im_scaled.save(os.path.join(iconset, prefix + '@2x.png'))
         last_im = im_scaled
 
     # iconutil -c icns -o {} {}
@@ -343,6 +340,7 @@ def _save(im, fp, filename):
     if retcode:
         raise CalledProcessError(retcode, convert_cmd)
 
+
 Image.register_open(IcnsImageFile.format, IcnsImageFile,
                     lambda x: x[:4] == b'icns')
 Image.register_extension(IcnsImageFile.format, '.icns')
@@ -351,7 +349,6 @@ if sys.platform == 'darwin':
     Image.register_save(IcnsImageFile.format, _save)
 
     Image.register_mime(IcnsImageFile.format, "image/icns")
-
 
 if __name__ == '__main__':
     imf = IcnsImageFile(open(sys.argv[1], 'rb'))

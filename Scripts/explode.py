@@ -14,7 +14,6 @@ import sys
 
 
 class Interval(object):
-
     def __init__(self, interval="0"):
 
         self.setinterval(interval)
@@ -34,7 +33,7 @@ class Interval(object):
                     lo = hi = v
             except ValueError:
                 i = s.find("-")
-                lo, hi = int(s[:i]), int(s[i+1:])
+                lo, hi = int(s[:i]), int(s[i + 1:])
 
             self.hilo.append((hi, lo))
 
@@ -89,7 +88,7 @@ im = Image.open(infile)
 
 if html:
     file, ext = os.path.splitext(outfile)
-    html = open(file+".html", "w")
+    html = open(file + ".html", "w")
     html.write("<html>\n<body>\n")
 
 while True:

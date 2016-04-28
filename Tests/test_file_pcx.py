@@ -4,7 +4,6 @@ from PIL import Image, PcxImagePlugin
 
 
 class TestFilePcx(PillowTestCase):
-
     def _roundtrip(self, im):
         f = self.tempfile("temp.pcx")
         im.save(f)
@@ -44,7 +43,7 @@ class TestFilePcx(PillowTestCase):
         self.assertEqual(im.tile[0][1], (0, 0, 447, 144))
 
         # Make sure all pixels are either 0 or 255.
-        self.assertEqual(im.histogram()[0] + im.histogram()[255], 447*144)
+        self.assertEqual(im.histogram()[0] + im.histogram()[255], 447 * 144)
 
 
 if __name__ == '__main__':

@@ -12,7 +12,6 @@ FONT_SIZE = 20
 
 TEST_TEXT = "hey you\nyou are awesome\nthis looks awkward"
 
-
 try:
     from PIL import ImageFont
     ImageFont.core.getfont  # check if freetype is available
@@ -43,10 +42,9 @@ try:
                 delattr(self._parent_obj, self._attr_name)
 
     class TestImageFont(PillowTestCase):
-
         def test_sanity(self):
-            self.assertRegexpMatches(
-                ImageFont.core.freetype2_version, "\d+\.\d+\.\d+$")
+            self.assertRegexpMatches(ImageFont.core.freetype2_version,
+                                     "\d+\.\d+\.\d+$")
 
         def test_font_properties(self):
             ttf = ImageFont.truetype(FONT_PATH, FONT_SIZE)
@@ -57,8 +55,8 @@ try:
             self.assertEqual(ttf_copy.path, FONT_PATH)
             self.assertEqual(ttf_copy.size, FONT_SIZE)
 
-            ttf_copy = ttf.font_variant(size=FONT_SIZE+1)
-            self.assertEqual(ttf_copy.size, FONT_SIZE+1)
+            ttf_copy = ttf.font_variant(size=FONT_SIZE + 1)
+            self.assertEqual(ttf_copy.size, FONT_SIZE + 1)
 
             second_font_path = "Tests/fonts/DejaVuSans.ttf"
             ttf_copy = ttf.font_variant(font=second_font_path)
@@ -162,20 +160,25 @@ try:
 
             # Test that text() can pass on additional arguments
             # to multiline_text()
-            draw.text((0, 0), TEST_TEXT, fill=None, font=ttf, anchor=None,
-                      spacing=4, align="left")
+            draw.text(
+                (0, 0),
+                TEST_TEXT,
+                fill=None,
+                font=ttf,
+                anchor=None,
+                spacing=4,
+                align="left")
             draw.text((0, 0), TEST_TEXT, None, ttf, None, 4, "left")
             del draw
 
             # Test align center and right
-            for align, ext in {"center": "_center",
-                               "right": "_right"}.items():
+            for align, ext in {"center": "_center", "right": "_right"}.items():
                 im = Image.new(mode='RGB', size=(300, 100))
                 draw = ImageDraw.Draw(im)
                 draw.multiline_text((0, 0), TEST_TEXT, font=ttf, align=align)
                 del draw
 
-                target = 'Tests/images/multiline_text'+ext+'.png'
+                target = 'Tests/images/multiline_text' + ext + '.png'
                 target_img = Image.open(target)
 
                 self.assert_image_similar(im, target_img, .5)
@@ -197,8 +200,11 @@ try:
             draw = ImageDraw.Draw(im)
 
             # Test that textsize() correctly connects to multiline_textsize()
-            self.assertEqual(draw.textsize(TEST_TEXT, font=ttf),
-                             draw.multiline_textsize(TEST_TEXT, font=ttf))
+            self.assertEqual(
+                draw.textsize(TEST_TEXT,
+                              font=ttf),
+                draw.multiline_textsize(TEST_TEXT,
+                                        font=ttf))
 
             # Test that textsize() can pass on additional arguments
             # to multiline_textsize()
@@ -211,9 +217,11 @@ try:
             im = Image.new(mode='RGB', size=(300, 100))
             draw = ImageDraw.Draw(im)
 
-            self.assertEqual(draw.textsize("longest line", font=ttf)[0],
-                             draw.multiline_textsize("longest line\nline",
-                                                     font=ttf)[0])
+            self.assertEqual(
+                draw.textsize("longest line",
+                              font=ttf)[0],
+                draw.multiline_textsize("longest line\nline",
+                                        font=ttf)[0])
             del draw
 
         def test_multiline_spacing(self):
@@ -236,8 +244,8 @@ try:
             font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
 
             orientation = Image.ROTATE_90
-            transposed_font = ImageFont.TransposedFont(
-                font, orientation=orientation)
+            transposed_font = ImageFont.TransposedFont(font,
+                                                       orientation=orientation)
 
             # Original font
             draw.font = font
@@ -259,8 +267,8 @@ try:
             font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
 
             orientation = None
-            transposed_font = ImageFont.TransposedFont(
-                font, orientation=orientation)
+            transposed_font = ImageFont.TransposedFont(font,
+                                                       orientation=orientation)
 
             # Original font
             draw.font = font
@@ -279,8 +287,8 @@ try:
             text = "mask this"
             font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
             orientation = Image.ROTATE_90
-            transposed_font = ImageFont.TransposedFont(
-                font, orientation=orientation)
+            transposed_font = ImageFont.TransposedFont(font,
+                                                       orientation=orientation)
 
             # Act
             mask = transposed_font.getmask(text)
@@ -293,8 +301,8 @@ try:
             text = "mask this"
             font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
             orientation = None
-            transposed_font = ImageFont.TransposedFont(
-                font, orientation=orientation)
+            transposed_font = ImageFont.TransposedFont(font,
+                                                       orientation=orientation)
 
             # Act
             mask = transposed_font.getmask(text)
@@ -374,6 +382,7 @@ try:
             # Make a copy of FreeTypeFont so we can patch the original
             free_type_font = copy.deepcopy(ImageFont.FreeTypeFont)
             with SimplePatcher(ImageFont, '_FreeTypeFont', free_type_font):
+
                 def loadable_font(filepath, size, index, encoding):
                     if filepath == path_to_fake:
                         return ImageFont._FreeTypeFont(FONT_PATH, size, index,
@@ -386,8 +395,8 @@ try:
                     name = font.getname()
                     self.assertEqual(('FreeMono', 'Regular'), name)
 
-        @unittest.skipIf(sys.platform.startswith('win32'),
-                         "requires Unix or MacOS")
+        @unittest.skipIf(
+            sys.platform.startswith('win32'), "requires Unix or MacOS")
         def test_find_linux_font(self):
             # A lot of mocking here - this is more for hitting code and
             # catching syntax like errors
@@ -396,52 +405,58 @@ try:
                 patched_env = copy.deepcopy(os.environ)
                 patched_env['XDG_DATA_DIRS'] = '/usr/share/:/usr/local/share/'
                 with SimplePatcher(os, 'environ', patched_env):
+
                     def fake_walker(path):
                         if path == font_directory:
-                            return [(path, [], [
-                                'Arial.ttf', 'Single.otf', 'Duplicate.otf',
-                                'Duplicate.ttf'], )]
+                            return [(path,
+                                     [],
+                                     [
+                                         'Arial.ttf', 'Single.otf',
+                                         'Duplicate.otf', 'Duplicate.ttf'
+                                     ], )]
                         return [(path, [], ['some_random_font.ttf'], )]
                     with SimplePatcher(os, 'walk', fake_walker):
                         # Test that the font loads both with and without the
                         # extension
                         self._test_fake_loading_font(
-                            font_directory+'/Arial.ttf', 'Arial.ttf')
+                            font_directory + '/Arial.ttf', 'Arial.ttf')
                         self._test_fake_loading_font(
-                            font_directory+'/Arial.ttf', 'Arial')
+                            font_directory + '/Arial.ttf', 'Arial')
 
                         # Test that non-ttf fonts can be found without the
                         # extension
                         self._test_fake_loading_font(
-                            font_directory+'/Single.otf', 'Single')
+                            font_directory + '/Single.otf', 'Single')
 
                         # Test that ttf fonts are preferred if the extension is
                         # not specified
                         self._test_fake_loading_font(
-                            font_directory+'/Duplicate.ttf', 'Duplicate')
+                            font_directory + '/Duplicate.ttf', 'Duplicate')
 
-        @unittest.skipIf(sys.platform.startswith('win32'),
-                         "requires Unix or MacOS")
+        @unittest.skipIf(
+            sys.platform.startswith('win32'), "requires Unix or MacOS")
         def test_find_osx_font(self):
             # Like the linux test, more cover hitting code rather than testing
             # correctness.
             font_directory = '/System/Library/Fonts'
             with SimplePatcher(sys, 'platform', 'darwin'):
+
                 def fake_walker(path):
                     if path == font_directory:
-                        return [(path, [],
-                                ['Arial.ttf', 'Single.otf',
-                                 'Duplicate.otf', 'Duplicate.ttf'], )]
+                        return [(path,
+                                 [],
+                                 ['Arial.ttf', 'Single.otf', 'Duplicate.otf',
+                                  'Duplicate.ttf'], )]
                     return [(path, [], ['some_random_font.ttf'], )]
                 with SimplePatcher(os, 'walk', fake_walker):
+                    self._test_fake_loading_font(font_directory + '/Arial.ttf',
+                                                 'Arial.ttf')
+                    self._test_fake_loading_font(font_directory + '/Arial.ttf',
+                                                 'Arial')
                     self._test_fake_loading_font(
-                        font_directory+'/Arial.ttf', 'Arial.ttf')
+                        font_directory + '/Single.otf', 'Single')
                     self._test_fake_loading_font(
-                        font_directory+'/Arial.ttf', 'Arial')
-                    self._test_fake_loading_font(
-                        font_directory+'/Single.otf', 'Single')
-                    self._test_fake_loading_font(
-                        font_directory+'/Duplicate.ttf', 'Duplicate')
+                        font_directory + '/Duplicate.ttf', 'Duplicate')
 
         def test_imagefont_getters(self):
             # Arrange
@@ -461,8 +476,8 @@ try:
             self.assertEqual(t.getsize('y'), (12, 20))
             self.assertEqual(t.getsize('a'), (12, 16))
 
-
 except ImportError:
+
     class TestImageFont(PillowTestCase):
         def test_skip(self):
             self.skipTest("ImportError")

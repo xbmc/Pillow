@@ -56,40 +56,38 @@
 
 struct ImagingIncrementalCodecStruct {
 #ifdef _WIN32
-  HANDLE            hCodecEvent;
-  HANDLE            hDataEvent;
-  HANDLE            hThread;
+  HANDLE hCodecEvent;
+  HANDLE hDataEvent;
+  HANDLE hThread;
 #else
-  pthread_mutex_t   start_mutex;
-  pthread_cond_t    start_cond;
-  pthread_mutex_t   codec_mutex;
-  pthread_cond_t    codec_cond;
-  pthread_mutex_t   data_mutex;
-  pthread_cond_t    data_cond;
-  pthread_t         thread;
+  pthread_mutex_t start_mutex;
+  pthread_cond_t start_cond;
+  pthread_mutex_t codec_mutex;
+  pthread_cond_t codec_cond;
+  pthread_mutex_t data_mutex;
+  pthread_cond_t data_cond;
+  pthread_t thread;
 #endif
-  ImagingIncrementalCodecEntry  entry;
-  Imaging                       im;
-  ImagingCodecState             state;
+  ImagingIncrementalCodecEntry entry;
+  Imaging im;
+  ImagingCodecState state;
   struct {
-    int    fd;
-    UINT8 *buffer;      /* Base of buffer */
-    UINT8 *ptr;         /* Current pointer in buffer */
-    UINT8 *top;         /* Highest point in buffer we've used */
-    UINT8 *end;         /* End of buffer */
+    int fd;
+    UINT8 *buffer; /* Base of buffer */
+    UINT8 *ptr;    /* Current pointer in buffer */
+    UINT8 *top;    /* Highest point in buffer we've used */
+    UINT8 *end;    /* End of buffer */
   } stream;
-  int                           read_or_write;
-  int                           seekable;
-  int                           started;
-  int                           result;
+  int read_or_write;
+  int seekable;
+  int started;
+  int result;
 };
 
 static void flush_stream(ImagingIncrementalCodec codec);
 
 #if _WIN32
-static unsigned int __stdcall
-codec_thread(void *ptr)
-{
+static unsigned int __stdcall codec_thread(void *ptr) {
   ImagingIncrementalCodec codec = (ImagingIncrementalCodec)ptr;
 
   DEBUG("Entering thread\n");
@@ -105,9 +103,7 @@ codec_thread(void *ptr)
   return 0;
 }
 #else
-static void *
-codec_thread(void *ptr)
-{
+static void *codec_thread(void *ptr) {
   ImagingIncrementalCodec codec = (ImagingIncrementalCodec)ptr;
 
   DEBUG("Entering thread\n");
@@ -126,18 +122,15 @@ codec_thread(void *ptr)
 }
 #endif
 
-static void
-flush_stream(ImagingIncrementalCodec codec)
-{
+static void flush_stream(ImagingIncrementalCodec codec) {
   UINT8 *buffer;
   size_t bytes;
 
   /* This is to flush data from the write buffer for a seekable write
      codec. */
-  if (codec->read_or_write != INCREMENTAL_CODEC_WRITE
-      || codec->state->errcode != IMAGING_CODEC_END
-      || !codec->seekable
-      || codec->stream.fd >= 0)
+  if (codec->read_or_write != INCREMENTAL_CODEC_WRITE ||
+      codec->state->errcode != IMAGING_CODEC_END || !codec->seekable ||
+      codec->stream.fd >= 0)
     return;
 
   DEBUG("flushing data\n");
@@ -147,8 +140,8 @@ flush_stream(ImagingIncrementalCodec codec)
 
   codec->state->errcode = 0;
   codec->seekable = INCREMENTAL_CODEC_NOT_SEEKABLE;
-  codec->stream.buffer = codec->stream.ptr = codec->stream.end
-    = codec->stream.top = NULL;
+  codec->stream.buffer = codec->stream.ptr = codec->stream.end =
+      codec->stream.top = NULL;
 
   ImagingIncrementalCodecWrite(codec, buffer, bytes);
 
@@ -162,21 +155,18 @@ flush_stream(ImagingIncrementalCodec codec)
  * Create a new incremental codec */
 ImagingIncrementalCodec
 ImagingIncrementalCodecCreate(ImagingIncrementalCodecEntry codec_entry,
-                              Imaging im,
-                              ImagingCodecState state,
-                              int read_or_write,
-                              int seekable,
-                              int fd)
-{
-  ImagingIncrementalCodec codec = (ImagingIncrementalCodec)malloc(sizeof(struct ImagingIncrementalCodecStruct));
+                              Imaging im, ImagingCodecState state,
+                              int read_or_write, int seekable, int fd) {
+  ImagingIncrementalCodec codec = (ImagingIncrementalCodec)malloc(
+      sizeof(struct ImagingIncrementalCodecStruct));
 
   codec->entry = codec_entry;
   codec->im = im;
   codec->state = state;
   codec->result = 0;
   codec->stream.fd = fd;
-  codec->stream.buffer = codec->stream.ptr = codec->stream.end
-    = codec->stream.top = NULL;
+  codec->stream.buffer = codec->stream.ptr = codec->stream.end =
+      codec->stream.top = NULL;
   codec->started = 0;
   codec->seekable = seekable;
   codec->read_or_write = read_or_write;
@@ -184,7 +174,7 @@ ImagingIncrementalCodecCreate(ImagingIncrementalCodecEntry codec_entry,
   if (fd >= 0)
     lseek(fd, 0, SEEK_SET);
 
-  /* System specific set-up */
+/* System specific set-up */
 #if _WIN32
   codec->hCodecEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 
@@ -201,8 +191,8 @@ ImagingIncrementalCodecCreate(ImagingIncrementalCodecEntry codec_entry,
     return NULL;
   }
 
-  codec->hThread = _beginthreadex(NULL, 0, codec_thread, codec,
-                                    CREATE_SUSPENDED, NULL);
+  codec->hThread =
+      _beginthreadex(NULL, 0, codec_thread, codec, CREATE_SUSPENDED, NULL);
 
   if (!codec->hThread) {
     CloseHandle(codec->hCodecEvent);
@@ -212,7 +202,7 @@ ImagingIncrementalCodecCreate(ImagingIncrementalCodecEntry codec_entry,
   }
 #else
   if (pthread_mutex_init(&codec->start_mutex, NULL)) {
-    free (codec);
+    free(codec);
     return NULL;
   }
 
@@ -273,9 +263,7 @@ ImagingIncrementalCodecCreate(ImagingIncrementalCodecEntry codec_entry,
 
 /**
  * Destroy an incremental codec */
-void
-ImagingIncrementalCodecDestroy(ImagingIncrementalCodec codec)
-{
+void ImagingIncrementalCodecDestroy(ImagingIncrementalCodec codec) {
   DEBUG("destroying\n");
 
   if (!codec->started) {
@@ -292,10 +280,10 @@ ImagingIncrementalCodecDestroy(ImagingIncrementalCodec codec)
 #endif
 
   if (codec->seekable && codec->stream.fd < 0)
-    free (codec->stream.buffer);
+    free(codec->stream.buffer);
 
-  codec->stream.buffer = codec->stream.ptr = codec->stream.end
-    = codec->stream.top = NULL;
+  codec->stream.buffer = codec->stream.ptr = codec->stream.end =
+      codec->stream.top = NULL;
 
 #ifdef _WIN32
   SetEvent(codec->hDataEvent);
@@ -318,15 +306,13 @@ ImagingIncrementalCodecDestroy(ImagingIncrementalCodec codec)
   pthread_cond_destroy(&codec->codec_cond);
   pthread_cond_destroy(&codec->data_cond);
 #endif
-  free (codec);
+  free(codec);
 }
 
 /**
  * Push a data buffer for an incremental codec */
-int
-ImagingIncrementalCodecPushBuffer(ImagingIncrementalCodec codec,
-                                  UINT8 *buf, int bytes)
-{
+int ImagingIncrementalCodecPushBuffer(ImagingIncrementalCodec codec, UINT8 *buf,
+                                      int bytes) {
   if (!codec->started) {
     DEBUG("starting\n");
 
@@ -337,7 +323,7 @@ ImagingIncrementalCodecPushBuffer(ImagingIncrementalCodec codec,
 #endif
     codec->started = 1;
 
-    /* Wait for the thread to ask for data */
+/* Wait for the thread to ask for data */
 #ifdef _WIN32
     WaitForSingleObject(codec->hCodecEvent, INFINITE);
 #else
@@ -365,12 +351,12 @@ ImagingIncrementalCodecPushBuffer(ImagingIncrementalCodec codec,
   pthread_mutex_lock(&codec->data_mutex);
 #endif
 
-  if (codec->read_or_write == INCREMENTAL_CODEC_READ
-      && codec->seekable && codec->stream.fd < 0) {
+  if (codec->read_or_write == INCREMENTAL_CODEC_READ && codec->seekable &&
+      codec->stream.fd < 0) {
     /* In this specific case, we append to a buffer we allocate ourselves */
     size_t old_size = codec->stream.end - codec->stream.buffer;
     size_t new_size = codec->stream.end - codec->stream.buffer + bytes;
-    UINT8 *new = (UINT8 *)realloc (codec->stream.buffer, new_size);
+    UINT8 *new = (UINT8 *)realloc(codec->stream.buffer, new_size);
 
     if (!new) {
       codec->state->errcode = IMAGING_CODEC_MEMORY;
@@ -407,16 +393,12 @@ ImagingIncrementalCodecPushBuffer(ImagingIncrementalCodec codec,
   return codec->result;
 }
 
-size_t
-ImagingIncrementalCodecBytesInBuffer(ImagingIncrementalCodec codec)
-{
+size_t ImagingIncrementalCodecBytesInBuffer(ImagingIncrementalCodec codec) {
   return codec->stream.ptr - codec->stream.buffer;
 }
 
-Py_ssize_t
-ImagingIncrementalCodecRead(ImagingIncrementalCodec codec,
-                             void *buffer, size_t bytes)
-{
+Py_ssize_t ImagingIncrementalCodecRead(ImagingIncrementalCodec codec,
+                                       void *buffer, size_t bytes) {
   UINT8 *ptr = (UINT8 *)buffer;
   size_t done = 0;
 
@@ -468,7 +450,7 @@ ImagingIncrementalCodecRead(ImagingIncrementalCodec codec,
     if (!todo)
       break;
 
-    memcpy (ptr, codec->stream.ptr, todo);
+    memcpy(ptr, codec->stream.ptr, todo);
     codec->stream.ptr += todo;
     bytes -= todo;
     done += todo;
@@ -483,17 +465,14 @@ ImagingIncrementalCodecRead(ImagingIncrementalCodec codec,
   return done;
 }
 
-off_t
-ImagingIncrementalCodecSkip(ImagingIncrementalCodec codec,
-                            off_t bytes)
-{
+off_t ImagingIncrementalCodecSkip(ImagingIncrementalCodec codec, off_t bytes) {
   off_t done = 0;
 
   DEBUG("skipping (want %llu bytes)\n", (unsigned long long)bytes);
 
   /* In write mode, explicitly fill with zeroes */
   if (codec->read_or_write == INCREMENTAL_CODEC_WRITE) {
-    static const UINT8 zeroes[256] = { 0 };
+    static const UINT8 zeroes[256] = {0};
     off_t done = 0;
     while (bytes) {
       size_t todo = (size_t)(bytes > 256 ? 256 : bytes);
@@ -554,10 +533,8 @@ ImagingIncrementalCodecSkip(ImagingIncrementalCodec codec,
   return done;
 }
 
-Py_ssize_t
-ImagingIncrementalCodecWrite(ImagingIncrementalCodec codec,
-                             const void *buffer, size_t bytes)
-{
+Py_ssize_t ImagingIncrementalCodecWrite(ImagingIncrementalCodec codec,
+                                        const void *buffer, size_t bytes) {
   const UINT8 *ptr = (const UINT8 *)buffer;
   size_t done = 0;
 
@@ -624,7 +601,7 @@ ImagingIncrementalCodecWrite(ImagingIncrementalCodec codec,
     if (!todo)
       break;
 
-    memcpy (codec->stream.ptr, ptr, todo);
+    memcpy(codec->stream.ptr, ptr, todo);
     codec->stream.ptr += todo;
     bytes -= todo;
     done += todo;
@@ -643,10 +620,7 @@ ImagingIncrementalCodecWrite(ImagingIncrementalCodec codec,
   return done;
 }
 
-off_t
-ImagingIncrementalCodecSeek(ImagingIncrementalCodec codec,
-                            off_t bytes)
-{
+off_t ImagingIncrementalCodecSeek(ImagingIncrementalCodec codec, off_t bytes) {
   off_t buffered;
 
   DEBUG("seeking (going to %llu bytes)\n", (unsigned long long)bytes);
@@ -663,7 +637,7 @@ ImagingIncrementalCodecSeek(ImagingIncrementalCodec codec,
     DEBUG("attempt to seek before stream start\n");
     return -1;
   }
-    
+
   buffered = codec->stream.top - codec->stream.buffer;
 
   if (bytes <= buffered) {

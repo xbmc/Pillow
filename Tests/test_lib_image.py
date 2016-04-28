@@ -4,7 +4,6 @@ from PIL import Image
 
 
 class TestLibImage(PillowTestCase):
-
     def test_setmode(self):
 
         im = Image.new("L", (1, 1), 255)

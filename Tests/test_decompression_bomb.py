@@ -8,7 +8,6 @@ ORIGINAL_LIMIT = Image.MAX_IMAGE_PIXELS
 
 
 class TestDecompressionBomb(PillowTestCase):
-
     def tearDown(self):
         Image.MAX_IMAGE_PIXELS = ORIGINAL_LIMIT
 
@@ -35,9 +34,9 @@ class TestDecompressionBomb(PillowTestCase):
         self.assertEqual(Image.MAX_IMAGE_PIXELS, 10)
 
         # Act / Assert
-        self.assert_warning(
-            Image.DecompressionBombWarning,
-            lambda: Image.open(TEST_FILE))
+        self.assert_warning(Image.DecompressionBombWarning,
+                            lambda: Image.open(TEST_FILE))
+
 
 if __name__ == '__main__':
     unittest.main()

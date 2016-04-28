@@ -15,47 +15,43 @@
  * See the README file for information on usage and redistribution.
  */
 
-
 #include "Imaging.h"
 
+Imaging ImagingCrop(Imaging imIn, int sx0, int sy0, int sx1, int sy1) {
+  Imaging imOut;
+  int xsize, ysize;
+  int dx0, dy0, dx1, dy1;
+  INT32 zero = 0;
 
-Imaging
-ImagingCrop(Imaging imIn, int sx0, int sy0, int sx1, int sy1)
-{
-    Imaging imOut;
-    int xsize, ysize;
-    int dx0, dy0, dx1, dy1;
-    INT32 zero = 0;
+  if (!imIn)
+    return (Imaging)ImagingError_ModeError();
 
-    if (!imIn)
-	return (Imaging) ImagingError_ModeError();
+  xsize = sx1 - sx0;
+  if (xsize < 0)
+    xsize = 0;
+  ysize = sy1 - sy0;
+  if (ysize < 0)
+    ysize = 0;
 
-    xsize = sx1 - sx0;
-    if (xsize < 0)
-        xsize = 0;
-    ysize = sy1 - sy0;
-    if (ysize < 0)
-        ysize = 0;
+  imOut = ImagingNew(imIn->mode, xsize, ysize);
+  if (!imOut)
+    return NULL;
 
-    imOut = ImagingNew(imIn->mode, xsize, ysize);
-    if (!imOut)
-	return NULL;
+  ImagingCopyInfo(imOut, imIn);
 
-    ImagingCopyInfo(imOut, imIn);
+  if (sx0 < 0 || sy0 < 0 || sx1 > imIn->xsize || sy1 > imIn->ysize)
+    (void)ImagingFill(imOut, &zero);
 
-    if (sx0 < 0 || sy0 < 0 || sx1 > imIn->xsize || sy1 > imIn->ysize)
-	(void) ImagingFill(imOut, &zero);
+  dx0 = -sx0;
+  dy0 = -sy0;
+  dx1 = imIn->xsize - sx0;
+  dy1 = imIn->ysize - sy0;
 
-    dx0 = -sx0;
-    dy0 = -sy0;
-    dx1 = imIn->xsize - sx0;
-    dy1 = imIn->ysize - sy0;
+  /* paste the source image on top of the output image!!! */
+  if (ImagingPaste(imOut, imIn, NULL, dx0, dy0, dx1, dy1) < 0) {
+    ImagingDelete(imOut);
+    return NULL;
+  }
 
-    /* paste the source image on top of the output image!!! */
-    if (ImagingPaste(imOut, imIn, NULL, dx0, dy0, dx1, dy1) < 0) {
-        ImagingDelete(imOut);
-        return NULL;
-    }
-
-    return imOut;
+  return imOut;
 }

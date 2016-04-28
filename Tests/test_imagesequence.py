@@ -4,7 +4,6 @@ from PIL import Image, ImageSequence, TiffImagePlugin
 
 
 class TestImageSequence(PillowTestCase):
-
     def test_sanity(self):
 
         test_file = self.tempfile("temp.im")
@@ -29,7 +28,7 @@ class TestImageSequence(PillowTestCase):
         i = ImageSequence.Iterator(im)
         for index in range(0, im.n_frames):
             self.assertEqual(i[index], next(i))
-        self.assertRaises(IndexError, lambda: i[index+1])
+        self.assertRaises(IndexError, lambda: i[index + 1])
         self.assertRaises(StopIteration, lambda: next(i))
 
     def _test_multipage_tiff(self):
@@ -62,6 +61,7 @@ class TestImageSequence(PillowTestCase):
         for frame in ImageSequence.Iterator(im):
             self.assert_image_equal(frame, firstFrame)
             break
+
 
 if __name__ == '__main__':
     unittest.main()

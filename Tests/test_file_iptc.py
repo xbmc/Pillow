@@ -6,7 +6,6 @@ TEST_FILE = "Tests/images/iptc.jpg"
 
 
 class TestFileIptc(PillowTestCase):
-
     def test_getiptcinfo_jpg_none(self):
         # Arrange
         im = hopper()

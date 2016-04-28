@@ -5,7 +5,6 @@ from PIL import ImageChops
 
 
 class TestImageChops(PillowTestCase):
-
     def test_sanity(self):
 
         im = hopper("L")
@@ -36,7 +35,6 @@ class TestImageChops(PillowTestCase):
         ImageChops.offset(im, 10, 20)
 
     def test_logical(self):
-
         def table(op, a, b):
             out = []
             for x in (a, b):
@@ -46,22 +44,18 @@ class TestImageChops(PillowTestCase):
                     out.append(op(imx, imy).getpixel((0, 0)))
             return tuple(out)
 
-        self.assertEqual(
-            table(ImageChops.logical_and, 0, 1), (0, 0, 0, 255))
+        self.assertEqual(table(ImageChops.logical_and, 0, 1), (0, 0, 0, 255))
         self.assertEqual(
             table(ImageChops.logical_or, 0, 1), (0, 255, 255, 255))
-        self.assertEqual(
-            table(ImageChops.logical_xor, 0, 1), (0, 255, 255, 0))
+        self.assertEqual(table(ImageChops.logical_xor, 0, 1), (0, 255, 255, 0))
 
-        self.assertEqual(
-            table(ImageChops.logical_and, 0, 128), (0, 0, 0, 255))
+        self.assertEqual(table(ImageChops.logical_and, 0, 128), (0, 0, 0, 255))
         self.assertEqual(
             table(ImageChops.logical_or, 0, 128), (0, 255, 255, 255))
         self.assertEqual(
             table(ImageChops.logical_xor, 0, 128), (0, 255, 255, 0))
 
-        self.assertEqual(
-            table(ImageChops.logical_and, 0, 255), (0, 0, 0, 255))
+        self.assertEqual(table(ImageChops.logical_and, 0, 255), (0, 0, 0, 255))
         self.assertEqual(
             table(ImageChops.logical_or, 0, 255), (0, 255, 255, 255))
         self.assertEqual(

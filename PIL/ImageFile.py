@@ -36,7 +36,7 @@ import struct
 
 MAXBLOCK = 65536
 
-SAFEBLOCK = 1024*1024
+SAFEBLOCK = 1024 * 1024
 
 LOAD_TRUNCATED_IMAGES = False
 
@@ -58,19 +58,19 @@ def raise_ioerror(error):
         message = "decoder error %d" % error
     raise IOError(message + " when reading image file")
 
-
 #
 # --------------------------------------------------------------------
 # Helpers
+
 
 def _tilesort(t):
     # sort on offset
     return t[2]
 
-
 #
 # --------------------------------------------------------------------
 # ImageFile base class
+
 
 class ImageFile(Image.Image):
     "Base class for image file format handlers."
@@ -157,9 +157,8 @@ class ImageFile(Image.Image):
                         # use built-in mapper
                         self.map = Image.core.map(self.filename)
                         self.map.seek(o)
-                        self.im = self.map.readimage(
-                            self.mode, self.size, a[1], a[2]
-                            )
+                        self.im = self.map.readimage(self.mode, self.size,
+                                                     a[1], a[2])
                     else:
                         # use mmap, if possible
                         import mmap
@@ -167,9 +166,8 @@ class ImageFile(Image.Image):
                         size = os.path.getsize(self.filename)
                         # FIXME: on Unix, use PROT_READ etc
                         self.map = mmap.mmap(fp.fileno(), size)
-                        self.im = Image.core.map_buffer(
-                            self.map, self.size, d, e, o, a
-                            )
+                        self.im = Image.core.map_buffer(self.map, self.size, d,
+                                                        e, o, a)
                     readonly = 1
                 except (AttributeError, EnvironmentError, ImportError):
                     self.map = None
@@ -276,8 +274,7 @@ class StubImageFile(ImageFile):
 
     def _open(self):
         raise NotImplementedError(
-            "StubImageFile subclass must implement _open"
-            )
+            "StubImageFile subclass must implement _open")
 
     def load(self):
         loader = self._load()
@@ -292,8 +289,7 @@ class StubImageFile(ImageFile):
     def _load(self):
         "(Hook) Find actual image loader."
         raise NotImplementedError(
-            "StubImageFile subclass must implement _load"
-            )
+            "StubImageFile subclass must implement _load")
 
 
 class Parser(object):
@@ -390,9 +386,8 @@ class Parser(object):
                     im.load_prepare()
                     d, e, o, a = im.tile[0]
                     im.tile = []
-                    self.decoder = Image._getdecoder(
-                        im.mode, d, a, im.decoderconfig
-                        )
+                    self.decoder = Image._getdecoder(im.mode, d, a,
+                                                     im.decoderconfig)
                     self.decoder.setimage(im.im, e)
 
                     # calculate decoder offset
@@ -432,8 +427,8 @@ class Parser(object):
                 fp.close()  # explicitly close the virtual file
         return self.image
 
-
 # --------------------------------------------------------------------
+
 
 def _save(im, fp, tile, bufsize=0):
     """Helper to save image based on tile list

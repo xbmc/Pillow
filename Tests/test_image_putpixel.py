@@ -6,7 +6,6 @@ Image.USE_CFFI_ACCESS = False
 
 
 class TestImagePutPixel(PillowTestCase):
-
     def test_sanity(self):
 
         im1 = hopper()

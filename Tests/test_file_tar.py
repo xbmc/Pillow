@@ -9,7 +9,6 @@ TEST_TAR_FILE = "Tests/images/hopper.tar"
 
 
 class TestFileTar(PillowTestCase):
-
     def setUp(self):
         if "zip_decoder" not in codecs and "jpeg_decoder" not in codecs:
             self.skipTest("neither jpeg nor zip support not available")

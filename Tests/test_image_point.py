@@ -2,28 +2,27 @@ from helper import unittest, PillowTestCase, hopper
 
 
 class TestImagePoint(PillowTestCase):
-
     def test_sanity(self):
         im = hopper()
 
         self.assertRaises(ValueError, lambda: im.point(list(range(256))))
-        im.point(list(range(256))*3)
+        im.point(list(range(256)) * 3)
         im.point(lambda x: x)
 
         im = im.convert("I")
         self.assertRaises(ValueError, lambda: im.point(list(range(256))))
-        im.point(lambda x: x*1)
-        im.point(lambda x: x+1)
-        im.point(lambda x: x*1+1)
-        self.assertRaises(TypeError, lambda: im.point(lambda x: x-1))
-        self.assertRaises(TypeError, lambda: im.point(lambda x: x/1))
+        im.point(lambda x: x * 1)
+        im.point(lambda x: x + 1)
+        im.point(lambda x: x * 1 + 1)
+        self.assertRaises(TypeError, lambda: im.point(lambda x: x - 1))
+        self.assertRaises(TypeError, lambda: im.point(lambda x: x / 1))
 
     def test_16bit_lut(self):
         """ Tests for 16 bit -> 8 bit lut for converting I->L images
             see https://github.com/python-pillow/Pillow/issues/440
             """
         im = hopper("I")
-        im.point(list(range(256))*256, 'L')
+        im.point(list(range(256)) * 256, 'L')
 
     def test_f_lut(self):
         """ Tests for floating point lut of 8bit gray image """
@@ -32,7 +31,7 @@ class TestImagePoint(PillowTestCase):
 
         out = im.point(lut, 'F')
 
-        int_lut = [x//2 for x in range(256)]
+        int_lut = [x // 2 for x in range(256)]
         self.assert_image_equal(out.convert('L'), im.point(int_lut, 'L'))
 
 

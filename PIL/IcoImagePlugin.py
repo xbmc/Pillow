@@ -21,7 +21,6 @@
 #   * https://en.wikipedia.org/wiki/ICO_(file_format)
 #   * https://msdn.microsoft.com/en-us/library/ms997538.aspx
 
-
 import struct
 from io import BytesIO
 
@@ -46,10 +45,11 @@ def _save(im, fp, filename):
                                [(16, 16), (24, 24), (32, 32), (48, 48),
                                 (64, 64), (128, 128), (255, 255)])
     width, height = im.size
-    filter(lambda x: False if (x[0] > width or x[1] > height or
-                               x[0] > 255 or x[1] > 255) else True, sizes)
+    filter(
+        lambda x: False if (x[0] > width or x[1] > height or x[0] > 255 or x[1] > 255) else True,
+        sizes)
     fp.write(struct.pack("<H", len(sizes)))  # idCount(2)
-    offset = fp.tell() + len(sizes)*16
+    offset = fp.tell() + len(sizes) * 16
     for size in sizes:
         width, height = size
         fp.write(struct.pack("B", width))  # bWidth(1)
@@ -118,10 +118,9 @@ class IcoFile(object):
 
             # See Wikipedia notes about color depth.
             # We need this just to differ images with equal sizes
-            icon_header['color_depth'] = (icon_header['bpp'] or
-                                          (icon_header['nb_color'] != 0 and
-                                           ceil(log(icon_header['nb_color'],
-                                                    2))) or 256)
+            icon_header['color_depth'] = (icon_header['bpp'] or (
+                icon_header['nb_color'] != 0 and
+                ceil(log(icon_header['nb_color'], 2))) or 256)
 
             icon_header['dim'] = (icon_header['width'], icon_header['height'])
             icon_header['square'] = (icon_header['width'] *
@@ -194,11 +193,11 @@ class IcoFile(object):
 
                 # convert to an 8bpp grayscale image
                 mask = Image.frombuffer(
-                    'L',            # 8bpp
-                    im.size,        # (w, h)
-                    alpha_bytes,    # source chars
-                    'raw',          # raw decoder
-                    ('L', 0, -1)    # 8bpp inverted, unpadded, reversed
+                    'L',  # 8bpp
+                    im.size,  # (w, h)
+                    alpha_bytes,  # source chars
+                    'raw',  # raw decoder
+                    ('L', 0, -1)  # 8bpp inverted, unpadded, reversed
                 )
             else:
                 # get AND image from end of bitmap
@@ -219,24 +218,24 @@ class IcoFile(object):
 
                 # convert raw data to image
                 mask = Image.frombuffer(
-                    '1',            # 1 bpp
-                    im.size,        # (w, h)
-                    maskData,       # source chars
-                    'raw',          # raw decoder
-                    ('1;I', int(w/8), -1)  # 1bpp inverted, padded, reversed
+                    '1',  # 1 bpp
+                    im.size,  # (w, h)
+                    maskData,  # source chars
+                    'raw',  # raw decoder
+                    ('1;I', int(w / 8), -1)  # 1bpp inverted, padded, reversed
                 )
 
                 # now we have two images, im is XOR image and mask is AND image
 
-            # apply mask image as alpha channel
+                # apply mask image as alpha channel
             im = im.convert('RGBA')
             im.putalpha(mask)
 
         return im
 
-
 ##
 # Image plugin for Windows Icon files.
+
 
 class IcoImageFile(ImageFile.ImageFile):
     """

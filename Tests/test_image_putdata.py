@@ -7,7 +7,6 @@ from PIL import Image
 
 
 class TestImagePutData(PillowTestCase):
-
     def test_sanity(self):
 
         im1 = hopper()
@@ -33,6 +32,7 @@ class TestImagePutData(PillowTestCase):
             im = Image.new("RGBA", (1, 1))
             im.putdata([value])
             return im.getpixel((0, 0))
+
         self.assertEqual(put(0xFFFFFFFF), (255, 255, 255, 255))
         self.assertEqual(put(0xFFFFFFFF), (255, 255, 255, 255))
         self.assertEqual(put(-1), (255, 255, 255, 255))
@@ -44,7 +44,7 @@ class TestImagePutData(PillowTestCase):
 
     def test_pypy_performance(self):
         im = Image.new('L', (256, 256))
-        im.putdata(list(range(256))*256)
+        im.putdata(list(range(256)) * 256)
 
     def test_mode_i(self):
         src = hopper('L')
@@ -68,7 +68,7 @@ class TestImagePutData(PillowTestCase):
         # shouldn't segfault
         # see https://github.com/python-pillow/Pillow/issues/1008
 
-        arr = array('B', [0])*15000
+        arr = array('B', [0]) * 15000
         im = Image.new('L', (150, 100))
         im.putdata(arr)
 
@@ -79,10 +79,11 @@ class TestImagePutData(PillowTestCase):
         # see https://github.com/python-pillow/Pillow/issues/1008
 
         im = Image.new('F', (150, 100))
-        arr = array('f', [0.0])*15000
+        arr = array('f', [0.0]) * 15000
         im.putdata(arr)
 
         self.assertEqual(len(im.getdata()), len(arr))
+
 
 if __name__ == '__main__':
     unittest.main()

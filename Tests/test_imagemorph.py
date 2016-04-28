@@ -6,10 +6,8 @@ from PIL import ImageMorph
 
 
 class MorphTests(PillowTestCase):
-
     def setUp(self):
-        self.A = self.string_to_img(
-            """
+        self.A = self.string_to_img("""
             .......
             .......
             ..111..
@@ -17,21 +15,18 @@ class MorphTests(PillowTestCase):
             ..111..
             .......
             .......
-            """
-            )
+            """)
 
     def img_to_string(self, im):
         """Turn a (small) binary image into a string representation"""
         chars = '.1'
         width, height = im.size
-        return '\n'.join(
-            [''.join([chars[im.getpixel((c, r)) > 0] for c in range(width)])
-             for r in range(height)])
+        return '\n'.join([''.join([chars[im.getpixel((
+            c, r)) > 0] for c in range(width)]) for r in range(height)])
 
     def string_to_img(self, image_string):
         """Turn a string image representation into a binary image"""
-        rows = [s for s in image_string.replace(' ', '').split('\n')
-                if len(s)]
+        rows = [s for s in image_string.replace(' ', '').split('\n') if len(s)]
         height = len(rows)
         width = len(rows[0])
         im = Image.new('L', (width, height))
@@ -51,17 +46,15 @@ class MorphTests(PillowTestCase):
 
     def assert_img_equal_img_string(self, A, Bstring):
         self.assertEqual(
-            self.img_to_string(A),
-            self.img_string_normalize(Bstring))
+            self.img_to_string(A), self.img_string_normalize(Bstring))
 
     def test_str_to_img(self):
         im = Image.open('Tests/images/morph_a.png')
         self.assert_image_equal(self.A, im)
 
     def create_lut(self):
-        for op in (
-                'corner', 'dilation4', 'dilation8',
-                'erosion4', 'erosion8', 'edge'):
+        for op in ('corner', 'dilation4', 'dilation8', 'erosion4', 'erosion8',
+                   'edge'):
             lb = ImageMorph.LutBuilder(op_name=op)
             lut = lb.build_lut()
             with open('Tests/images/%s.lut' % op, 'wb') as f:
@@ -69,9 +62,8 @@ class MorphTests(PillowTestCase):
 
     # create_lut()
     def test_lut(self):
-        for op in (
-                'corner', 'dilation4', 'dilation8',
-                'erosion4', 'erosion8', 'edge'):
+        for op in ('corner', 'dilation4', 'dilation8', 'erosion4', 'erosion8',
+                   'edge'):
             lb = ImageMorph.LutBuilder(op_name=op)
             lut = lb.build_lut()
             with open('Tests/images/%s.lut' % op, 'rb') as f:
@@ -83,8 +75,7 @@ class MorphTests(PillowTestCase):
         mop = ImageMorph.MorphOp(op_name='erosion8')
         count, Aout = mop.apply(self.A)
         self.assertEqual(count, 8)
-        self.assert_img_equal_img_string(Aout,
-                                         """
+        self.assert_img_equal_img_string(Aout, """
                                          .......
                                          .......
                                          .......
@@ -99,8 +90,7 @@ class MorphTests(PillowTestCase):
         mop = ImageMorph.MorphOp(op_name='dilation8')
         count, Aout = mop.apply(self.A)
         self.assertEqual(count, 16)
-        self.assert_img_equal_img_string(Aout,
-                                         """
+        self.assert_img_equal_img_string(Aout, """
                                          .......
                                          .11111.
                                          .11111.
@@ -115,8 +105,7 @@ class MorphTests(PillowTestCase):
         mop = ImageMorph.MorphOp(op_name='dilation4')
         count, Aout = mop.apply(self.A)
         self.assertEqual(count, 12)
-        self.assert_img_equal_img_string(Aout,
-                                         """
+        self.assert_img_equal_img_string(Aout, """
                                          .......
                                          ..111..
                                          .11111.
@@ -131,8 +120,7 @@ class MorphTests(PillowTestCase):
         mop = ImageMorph.MorphOp(op_name='edge')
         count, Aout = mop.apply(self.A)
         self.assertEqual(count, 1)
-        self.assert_img_equal_img_string(Aout,
-                                         """
+        self.assert_img_equal_img_string(Aout, """
                                          .......
                                          .......
                                          ..111..
@@ -144,12 +132,11 @@ class MorphTests(PillowTestCase):
 
     def test_corner(self):
         # Create a corner detector pattern
-        mop = ImageMorph.MorphOp(patterns=['1:(... ... ...)->0',
-                                           '4:(00. 01. ...)->1'])
+        mop = ImageMorph.MorphOp(
+            patterns=['1:(... ... ...)->0', '4:(00. 01. ...)->1'])
         count, Aout = mop.apply(self.A)
         self.assertEqual(count, 5)
-        self.assert_img_equal_img_string(Aout,
-                                         """
+        self.assert_img_equal_img_string(Aout, """
                                          .......
                                          .......
                                          ..1.1..

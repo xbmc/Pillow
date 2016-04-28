@@ -4,9 +4,7 @@ from PIL import Image
 
 
 class TestImageConvert(PillowTestCase):
-
     def test_sanity(self):
-
         def convert(im, mode):
             out = im.convert(mode)
             self.assertEqual(out.mode, mode)

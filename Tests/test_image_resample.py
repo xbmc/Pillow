@@ -33,5 +33,6 @@ class TestImagingCoreResize(PillowTestCase):
         except ValueError:
             self.assertTrue(True, "Should raise ValueError")
 
+
 if __name__ == '__main__':
     unittest.main()

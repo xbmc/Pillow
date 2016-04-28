@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 class TestFileTiff(PillowTestCase):
-
     def test_sanity(self):
 
         filename = self.tempfile("temp.tif")
@@ -61,13 +60,12 @@ class TestFileTiff(PillowTestCase):
 
         self.assertEqual(im.mode, "RGB")
         self.assertEqual(im.size, (256, 256))
-        self.assertEqual(
-            im.tile, [
-                ('jpeg', (0, 0, 256, 64), 8, ('RGB', '')),
-                ('jpeg', (0, 64, 256, 128), 1215, ('RGB', '')),
-                ('jpeg', (0, 128, 256, 192), 2550, ('RGB', '')),
-                ('jpeg', (0, 192, 256, 256), 3890, ('RGB', '')),
-                ])
+        self.assertEqual(im.tile, [
+            ('jpeg', (0, 0, 256, 64), 8, ('RGB', '')),
+            ('jpeg', (0, 64, 256, 128), 1215, ('RGB', '')),
+            ('jpeg', (0, 128, 256, 192), 2550, ('RGB', '')),
+            ('jpeg', (0, 192, 256, 256), 3890, ('RGB', '')),
+        ])
         im.load()
 
     def test_sampleformat(self):
@@ -85,8 +83,10 @@ class TestFileTiff(PillowTestCase):
         self.assertIsInstance(im.tag[Y_RESOLUTION][0], tuple)
 
         # v2 api
-        self.assertIsInstance(im.tag_v2[X_RESOLUTION], TiffImagePlugin.IFDRational)
-        self.assertIsInstance(im.tag_v2[Y_RESOLUTION], TiffImagePlugin.IFDRational)
+        self.assertIsInstance(im.tag_v2[X_RESOLUTION],
+                              TiffImagePlugin.IFDRational)
+        self.assertIsInstance(im.tag_v2[Y_RESOLUTION],
+                              TiffImagePlugin.IFDRational)
 
         self.assertEqual(im.info['dpi'], (72., 72.))
 
@@ -185,8 +185,8 @@ class TestFileTiff(PillowTestCase):
         im.load()
 
         self.assertEqual(im.getpixel((0, 0)), -0.4526388943195343)
-        self.assertEqual(
-            im.getextrema(), (-3.140936851501465, 3.140684127807617))
+        self.assertEqual(im.getextrema(),
+                         (-3.140936851501465, 3.140684127807617))
 
     def test_n_frames(self):
         im = Image.open('Tests/images/multipage-lastframe.tif')
@@ -258,17 +258,36 @@ class TestFileTiff(PillowTestCase):
         im = Image.open(filename)
 
         # v2 interface
-        v2_tags = {256: 55, 257: 43, 258: (8, 8, 8, 8), 259: 1,
-                   262: 2, 296: 2, 273: (8,), 338: (1,), 277: 4,
-                   279: (9460,), 282: 72.0, 283: 72.0, 284: 1}
+        v2_tags = {256: 55,
+                   257: 43,
+                   258: (8, 8, 8, 8),
+                   259: 1,
+                   262: 2,
+                   296: 2,
+                   273: (8, ),
+                   338: (1, ),
+                   277: 4,
+                   279: (9460, ),
+                   282: 72.0,
+                   283: 72.0,
+                   284: 1}
         self.assertEqual(dict(im.tag_v2), v2_tags)
         self.assertEqual(im.tag_v2.as_dict(), v2_tags)
 
         # legacy interface
-        legacy_tags = {256: (55,), 257: (43,), 258: (8, 8, 8, 8), 259: (1,),
-                       262: (2,), 296: (2,), 273: (8,), 338: (1,), 277: (4,),
-                       279: (9460,), 282: ((720000, 10000),),
-                       283: ((720000, 10000),), 284: (1,)}
+        legacy_tags = {256: (55, ),
+                       257: (43, ),
+                       258: (8, 8, 8, 8),
+                       259: (1, ),
+                       262: (2, ),
+                       296: (2, ),
+                       273: (8, ),
+                       338: (1, ),
+                       277: (4, ),
+                       279: (9460, ),
+                       282: ((720000, 10000), ),
+                       283: ((720000, 10000), ),
+                       284: (1, )}
         self.assertEqual(dict(im.tag), legacy_tags)
         self.assertEqual(im.tag.as_dict(), legacy_tags)
 
@@ -339,25 +358,18 @@ class TestFileTiff(PillowTestCase):
 
     def test_gray_semibyte_per_pixel(self):
         test_files = (
-            (
-                24.8,#epsilon
-                (#group
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2I.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2R.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper2IR.tif",
-                )
-            ),
-            (
-                7.3,#epsilon
-                (#group
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4I.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4R.tif",
-                    "Tests/images/tiff_gray_2_4_bpp/hopper4IR.tif",
-                )
-            ),
-        )
+            (24.8,  #epsilon
+             (  #group
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2I.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2R.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper2IR.tif", )),
+            (7.3,  #epsilon
+             (  #group
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4I.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4R.tif",
+                 "Tests/images/tiff_gray_2_4_bpp/hopper4IR.tif", )), )
         original = hopper("L")
         for epsilon, group in test_files:
             im = Image.open(group[0])
@@ -424,16 +436,16 @@ class TestFileTiff(PillowTestCase):
         im = Image.open('Tests/images/compression.tif')
 
         im.seek(0)
-        self.assertEqual(im._compression,'tiff_ccitt')
+        self.assertEqual(im._compression, 'tiff_ccitt')
         self.assertEqual(im.size, (10, 10))
 
         im.seek(1)
-        self.assertEqual(im._compression,'packbits')
+        self.assertEqual(im._compression, 'packbits')
         self.assertEqual(im.size, (10, 10))
         im.load()
 
         im.seek(0)
-        self.assertEqual(im._compression,'tiff_ccitt')
+        self.assertEqual(im._compression, 'tiff_ccitt')
         self.assertEqual(im.size, (10, 10))
         im.load()
 
@@ -449,6 +461,7 @@ class TestFileTiff(PillowTestCase):
         # Act / Assert
         # Should not raise UnicodeDecodeError or anything else
         im.save(outfile)
+
 
 if __name__ == '__main__':
     unittest.main()

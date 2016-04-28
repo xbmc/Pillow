@@ -36,6 +36,7 @@ class _imagingft_not_installed(object):
     def __getattr__(self, id):
         raise ImportError("The _imagingft C module is not installed")
 
+
 try:
     from PIL import _imagingft as core
 except ImportError:
@@ -94,7 +95,7 @@ class ImageFont(object):
             self.info.append(s)
 
         # read PILfont metrics
-        data = file.read(256*20)
+        data = file.read(256 * 20)
 
         # check image
         if image.mode not in ("1", "L"):
@@ -108,10 +109,10 @@ class ImageFont(object):
         self.getsize = self.font.getsize
         self.getmask = self.font.getmask
 
-
 ##
 # Wrapper for FreeType fonts.  Application code should use the
 # <b>truetype</b> factory function to create font objects.
+
 
 class FreeTypeFont(object):
     "FreeType font wrapper (requires _imagingft service)"
@@ -128,8 +129,8 @@ class FreeTypeFont(object):
             self.font = core.getfont(font, size, index, encoding)
         else:
             self.font_bytes = font.read()
-            self.font = core.getfont(
-                "", size, index, encoding, self.font_bytes)
+            self.font = core.getfont("", size, index, encoding,
+                                     self.font_bytes)
 
     def getname(self):
         return self.font.family, self.font.style
@@ -163,11 +164,11 @@ class FreeTypeFont(object):
 
         :return: A FreeTypeFont object.
         """
-        return FreeTypeFont(font=self.path if font is None else font,
-                            size=self.size if size is None else size,
-                            index=self.index if index is None else index,
-                            encoding=self.encoding if encoding is None else
-                            encoding)
+        return FreeTypeFont(
+            font=self.path if font is None else font,
+            size=self.size if size is None else size,
+            index=self.index if index is None else index,
+            encoding=self.encoding if encoding is None else encoding)
 
 ##
 # Wrapper that creates a transposed font from any existing font
@@ -268,10 +269,12 @@ def truetype(font=None, size=10, index=0, encoding=""):
                     if ext and walkfilename == ttf_filename:
                         fontpath = os.path.join(walkroot, walkfilename)
                         return FreeTypeFont(fontpath, size, index, encoding)
-                    elif not ext and os.path.splitext(walkfilename)[0] == ttf_filename:
+                    elif not ext and os.path.splitext(walkfilename)[
+                            0] == ttf_filename:
                         fontpath = os.path.join(walkroot, walkfilename)
                         if os.path.splitext(fontpath)[1] == '.ttf':
-                            return FreeTypeFont(fontpath, size, index, encoding)
+                            return FreeTypeFont(fontpath, size, index,
+                                                encoding)
                         if not ext and first_font_with_a_different_extension is None:
                             first_font_with_a_different_extension = fontpath
         if first_font_with_a_different_extension:
@@ -407,7 +410,8 @@ AJsAEQAGAAAAAP/6AAX//wCbAAoAoAAPAAYAAAAA//oABQABAKAACgClABEABgAA////+AAGAAAA
 pQAKAKwAEgAGAAD////4AAYAAACsAAoAswASAAYAAP////gABgAAALMACgC6ABIABgAA////+QAG
 AAAAugAKAMEAEQAGAAD////4AAYAAgDBAAoAyAAUAAYAAP////kABQACAMgACgDOABMABgAA////
 +QAGAAIAzgAKANUAEw==
-''')), Image.open(BytesIO(base64.decodestring(b'''
+''')),
+        Image.open(BytesIO(base64.decodestring(b'''
 iVBORw0KGgoAAAANSUhEUgAAAx4AAAAUAQAAAAArMtZoAAAEwElEQVR4nABlAJr/AHVE4czCI/4u
 Mc4b7vuds/xzjz5/3/7u/n9vMe7vnfH/9++vPn/xyf5zhxzjt8GHw8+2d83u8x27199/nxuQ6Od9
 M43/5z2I+9n9ZtmDBwMQECDRQw/eQIQohJXxpBCNVE6QCCAAAAD//wBlAJr/AgALyj1t/wINwq0g

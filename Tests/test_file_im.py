@@ -7,7 +7,6 @@ TEST_IM = "Tests/images/hopper.im"
 
 
 class TestFileIm(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(TEST_IM)
         im.load()

@@ -2,19 +2,18 @@ from helper import unittest, PillowTestCase, hopper
 
 from PIL import ImageQt
 
-
 if ImageQt.qt_is_installed:
     from PIL.ImageQt import qRgba
 
     def skip_if_qt_is_not_installed(_):
         pass
 else:
+
     def skip_if_qt_is_not_installed(test_case):
         test_case.skipTest('Qt bindings are not installed')
 
 
 class PillowQtTestCase(object):
-
     def setUp(self):
         skip_if_qt_is_not_installed(self)
 
@@ -23,7 +22,6 @@ class PillowQtTestCase(object):
 
 
 class PillowQPixmapTestCase(PillowQtTestCase):
-
     def setUp(self):
         PillowQtTestCase.setUp(self)
         try:
@@ -44,7 +42,6 @@ class PillowQPixmapTestCase(PillowQtTestCase):
 
 
 class TestImageQt(PillowQtTestCase, PillowTestCase):
-
     def test_rgb(self):
         # from https://doc.qt.io/qt-4.8/qcolor.html
         # typedef QRgb

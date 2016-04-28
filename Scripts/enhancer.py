@@ -32,8 +32,12 @@ class Enhance(Frame):
         Label(self, image=self.tkim).pack()
 
         # scale
-        s = Scale(self, label=name, orient=HORIZONTAL,
-                  from_=lo, to=hi, resolution=0.01,
+        s = Scale(self,
+                  label=name,
+                  orient=HORIZONTAL,
+                  from_=lo,
+                  to=hi,
+                  resolution=0.01,
                   command=self.update)
         s.set(self.value)
         s.pack()
@@ -53,7 +57,8 @@ im.thumbnail((200, 200))
 
 Enhance(root, im, "Color", ImageEnhance.Color, 0.0, 4.0).pack()
 Enhance(Toplevel(), im, "Sharpness", ImageEnhance.Sharpness, -2.0, 2.0).pack()
-Enhance(Toplevel(), im, "Brightness", ImageEnhance.Brightness, -1.0, 3.0).pack()
+Enhance(Toplevel(), im, "Brightness", ImageEnhance.Brightness, -1.0,
+        3.0).pack()
 Enhance(Toplevel(), im, "Contrast", ImageEnhance.Contrast, -1.0, 3.0).pack()
 
 root.mainloop()

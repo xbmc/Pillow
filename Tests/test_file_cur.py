@@ -6,7 +6,6 @@ TEST_FILE = "Tests/images/deerstalker.cur"
 
 
 class TestFileCur(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(TEST_FILE)
 

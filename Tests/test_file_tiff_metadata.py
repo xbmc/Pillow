@@ -12,7 +12,6 @@ tag_ids = dict((info.name, info.value) for info in TiffTags.TAGS_V2.values())
 
 
 class TestFileTiffMetadata(PillowTestCase):
-
     def test_rt_metadata(self):
         """ Test writing arbitrary metadata into the tiff image directory
             Use case is ImageJ private tags, one numeric, one arbitrary
@@ -57,13 +56,14 @@ class TestFileTiffMetadata(PillowTestCase):
 
         loaded = Image.open(f)
 
-        self.assertEqual(loaded.tag[ImageJMetaDataByteCounts], (len(bindata),))
+        self.assertEqual(loaded.tag[ImageJMetaDataByteCounts],
+                         (len(bindata), ))
         self.assertEqual(loaded.tag_v2[ImageJMetaDataByteCounts], len(bindata))
 
         self.assertEqual(loaded.tag[ImageJMetaData], bindata)
         self.assertEqual(loaded.tag_v2[ImageJMetaData], bindata)
 
-        self.assertEqual(loaded.tag[ImageDescription], (reloaded_textdata,))
+        self.assertEqual(loaded.tag[ImageDescription], (reloaded_textdata, ))
         self.assertEqual(loaded.tag_v2[ImageDescription], reloaded_textdata)
 
         loaded_float = loaded.tag[tag_ids['RollAngle']][0]
@@ -74,41 +74,41 @@ class TestFileTiffMetadata(PillowTestCase):
     def test_read_metadata(self):
         img = Image.open('Tests/images/hopper_g4.tif')
 
-        self.assertEqual({'YResolution': IFDRational(4294967295, 113653537),
-                          'PlanarConfiguration': 1,
-                          'BitsPerSample': (1,),
-                          'ImageLength': 128,
-                          'Compression': 4,
-                          'FillOrder': 1,
-                          'RowsPerStrip': 128,
-                          'ResolutionUnit': 3,
-                          'PhotometricInterpretation': 0,
-                          'PageNumber': (0, 1),
-                          'XResolution': IFDRational(4294967295, 113653537),
-                          'ImageWidth': 128,
-                          'Orientation': 1,
-                          'StripByteCounts': (1968,),
-                          'SamplesPerPixel': 1,
-                          'StripOffsets': (8,)
-                          }, img.tag_v2.named())
+        self.assertEqual(
+            {'YResolution': IFDRational(4294967295, 113653537),
+             'PlanarConfiguration': 1,
+             'BitsPerSample': (1, ),
+             'ImageLength': 128,
+             'Compression': 4,
+             'FillOrder': 1,
+             'RowsPerStrip': 128,
+             'ResolutionUnit': 3,
+             'PhotometricInterpretation': 0,
+             'PageNumber': (0, 1),
+             'XResolution': IFDRational(4294967295, 113653537),
+             'ImageWidth': 128,
+             'Orientation': 1,
+             'StripByteCounts': (1968, ),
+             'SamplesPerPixel': 1,
+             'StripOffsets': (8, )}, img.tag_v2.named())
 
-        self.assertEqual({'YResolution': ((4294967295, 113653537),),
-                          'PlanarConfiguration': (1,),
-                          'BitsPerSample': (1,),
-                          'ImageLength': (128,),
-                          'Compression': (4,),
-                          'FillOrder': (1,),
-                          'RowsPerStrip': (128,),
-                          'ResolutionUnit': (3,),
-                          'PhotometricInterpretation': (0,),
-                          'PageNumber': (0, 1),
-                          'XResolution': ((4294967295, 113653537),),
-                          'ImageWidth': (128,),
-                          'Orientation': (1,),
-                          'StripByteCounts': (1968,),
-                          'SamplesPerPixel': (1,),
-                          'StripOffsets': (8,)
-                          }, img.tag.named())
+        self.assertEqual(
+            {'YResolution': ((4294967295, 113653537), ),
+             'PlanarConfiguration': (1, ),
+             'BitsPerSample': (1, ),
+             'ImageLength': (128, ),
+             'Compression': (4, ),
+             'FillOrder': (1, ),
+             'RowsPerStrip': (128, ),
+             'ResolutionUnit': (3, ),
+             'PhotometricInterpretation': (0, ),
+             'PageNumber': (0, 1),
+             'XResolution': ((4294967295, 113653537), ),
+             'ImageWidth': (128, ),
+             'Orientation': (1, ),
+             'StripByteCounts': (1968, ),
+             'SamplesPerPixel': (1, ),
+             'StripOffsets': (8, )}, img.tag.named())
 
     def test_write_metadata(self):
         """ Test metadata writing through the python code """
@@ -127,33 +127,31 @@ class TestFileTiffMetadata(PillowTestCase):
                 original[k] = IFDRational(*_limit_rational(v, 2**31))
             if type(v) == tuple and \
                type(v[0]) == IFDRational:
-                original[k] = tuple([IFDRational(
-                                     *_limit_rational(elt, 2**31)) for elt in v])
+                original[k] = tuple([IFDRational(*_limit_rational(elt, 2**31))
+                                     for elt in v])
 
-        ignored = ['StripByteCounts', 'RowsPerStrip',
-                   'PageNumber', 'StripOffsets']
+        ignored = ['StripByteCounts', 'RowsPerStrip', 'PageNumber',
+                   'StripOffsets']
 
         for tag, value in reloaded.items():
             if tag in ignored:
                 continue
-            if (type(original[tag]) == tuple
-               and type(original[tag][0]) == IFDRational):
+            if (type(original[tag]) == tuple and
+                    type(original[tag][0]) == IFDRational):
                 # Need to compare element by element in the tuple,
                 # not comparing tuples of object references
-                self.assert_deep_equal(original[tag],
-                                       value,
+                self.assert_deep_equal(original[tag], value,
                                        "%s didn't roundtrip, %s, %s" %
                                        (tag, original[tag], value))
             else:
-                self.assertEqual(original[tag],
-                                 value,
+                self.assertEqual(original[tag], value,
                                  "%s didn't roundtrip, %s, %s" %
                                  (tag, original[tag], value))
 
         for tag, value in original.items():
             if tag not in ignored:
-                self.assertEqual(
-                    value, reloaded[tag], "%s didn't roundtrip" % tag)
+                self.assertEqual(value, reloaded[tag],
+                                 "%s didn't roundtrip" % tag)
 
     def test_no_duplicate_50741_tag(self):
         self.assertEqual(tag_ids['MakerNoteSafety'], 50741)

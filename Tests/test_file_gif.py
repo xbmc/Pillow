@@ -13,7 +13,6 @@ with open(TEST_GIF, "rb") as f:
 
 
 class TestFileGif(PillowTestCase):
-
     def setUp(self):
         if "gif_encoder" not in codecs or "gif_decoder" not in codecs:
             self.skipTest("gif support not available")  # can this happen?
@@ -106,10 +105,7 @@ class TestFileGif(PillowTestCase):
         reread = Image.open(out)
 
         for header in important_headers:
-            self.assertEqual(
-                im.info[header],
-                reread.info[header]
-            )
+            self.assertEqual(im.info[header], reread.info[header])
 
     def test_palette_handling(self):
         # see https://github.com/python-pillow/Pillow/issues/513
@@ -236,7 +232,9 @@ class TestFileGif(PillowTestCase):
         out = self.tempfile('temp.gif')
         fp = open(out, "wb")
         im = Image.new('L', (100, 100), '#000')
-        for s in GifImagePlugin.getheader(im)[0] + GifImagePlugin.getdata(im, duration=duration):
+        for s in GifImagePlugin.getheader(im)[0] + GifImagePlugin.getdata(
+                im,
+                duration=duration):
             fp.write(s)
         fp.write(b";")
         fp.close()
@@ -250,7 +248,9 @@ class TestFileGif(PillowTestCase):
         out = self.tempfile('temp.gif')
         fp = open(out, "wb")
         im = Image.new('L', (100, 100), '#000')
-        for s in GifImagePlugin.getheader(im)[0] + GifImagePlugin.getdata(im, loop=number_of_loops):
+        for s in GifImagePlugin.getheader(im)[0] + GifImagePlugin.getdata(
+                im,
+                loop=number_of_loops):
             fp.write(s)
         fp.write(b";")
         fp.close()

@@ -6,12 +6,11 @@ ImagePalette = ImagePalette.ImagePalette
 
 
 class TestImagePalette(PillowTestCase):
-
     def test_sanity(self):
 
-        ImagePalette("RGB", list(range(256))*3)
-        self.assertRaises(
-            ValueError, lambda: ImagePalette("RGB", list(range(256))*2))
+        ImagePalette("RGB", list(range(256)) * 3)
+        self.assertRaises(ValueError,
+                          lambda: ImagePalette("RGB", list(range(256)) * 2))
 
     def test_getcolor(self):
 
@@ -26,7 +25,7 @@ class TestImagePalette(PillowTestCase):
 
     def test_file(self):
 
-        palette = ImagePalette("RGB", list(range(256))*3)
+        palette = ImagePalette("RGB", list(range(256)) * 3)
 
         f = self.tempfile("temp.lut")
 
@@ -68,9 +67,8 @@ class TestImagePalette(PillowTestCase):
         white = 255
 
         # Act
-        self.assertRaises(
-            NotImplementedError,
-            lambda: make_linear_lut(black, white))
+        self.assertRaises(NotImplementedError,
+                          lambda: make_linear_lut(black, white))
 
     def test_make_gamma_lut(self):
         # Arrange
@@ -93,7 +91,7 @@ class TestImagePalette(PillowTestCase):
     def test_rawmode_valueerrors(self):
         # Arrange
         from PIL.ImagePalette import raw
-        palette = raw("RGB", list(range(256))*3)
+        palette = raw("RGB", list(range(256)) * 3)
 
         # Act / Assert
         self.assertRaises(ValueError, palette.tobytes)
@@ -103,7 +101,7 @@ class TestImagePalette(PillowTestCase):
 
     def test_getdata(self):
         # Arrange
-        data_in = list(range(256))*3
+        data_in = list(range(256)) * 3
         palette = ImagePalette("RGB", data_in)
 
         # Act
@@ -115,7 +113,7 @@ class TestImagePalette(PillowTestCase):
     def test_rawmode_getdata(self):
         # Arrange
         from PIL.ImagePalette import raw
-        data_in = list(range(256))*3
+        data_in = list(range(256)) * 3
         palette = raw("RGB", data_in)
 
         # Act

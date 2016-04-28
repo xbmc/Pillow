@@ -4,7 +4,6 @@ from PIL import Image, SunImagePlugin
 
 
 class TestFileSun(PillowTestCase):
-
     def test_sanity(self):
         # Arrange
         # Created with ImageMagick: convert hopper.jpg hopper.ras

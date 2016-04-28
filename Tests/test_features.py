@@ -4,11 +4,10 @@ from PIL import features
 
 
 class TestFeatures(PillowTestCase):
-
     def test_check_features(self):
         for feature in features.modules:
-            self.assertTrue(
-                features.check_module(feature) in [True, False, None])
+            self.assertTrue(features.check_module(feature) in [True, False,
+                                                               None])
         for feature in features.codecs:
             self.assertTrue(features.check_codec(feature) in [True, False])
 

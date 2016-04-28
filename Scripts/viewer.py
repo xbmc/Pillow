@@ -18,7 +18,6 @@ from PIL import Image, ImageTk
 
 
 class UI(Label):
-
     def __init__(self, master, im):
 
         if im.mode == "1":

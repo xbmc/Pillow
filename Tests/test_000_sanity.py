@@ -5,7 +5,6 @@ import PIL.Image
 
 
 class TestSanity(PillowTestCase):
-
     def test_sanity(self):
 
         # Make sure we have the binary extension

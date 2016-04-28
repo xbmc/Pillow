@@ -23,7 +23,6 @@ path = "Tests/images/hopper.jpg"
 
 
 class TestLocale(PillowTestCase):
-
     def test_sanity(self):
         Image.open(path)
         try:

@@ -3,13 +3,11 @@ from test_imageqt import PillowQtTestCase
 
 from PIL import ImageQt
 
-
 if ImageQt.qt_is_installed:
     from PIL.ImageQt import QImage
 
 
 class TestToQImage(PillowQtTestCase, PillowTestCase):
-
     def test_sanity(self):
         PillowQtTestCase.setUp(self)
         for mode in ('1', 'RGB', 'RGBA', 'L', 'P'):

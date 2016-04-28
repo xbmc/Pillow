@@ -14,7 +14,6 @@
 # See the README file for information on usage and redistribution.
 #
 
-
 import string
 
 from PIL import Image, ImageFile
@@ -52,9 +51,9 @@ MODES = {
 def _accept(prefix):
     return prefix[0:1] == b"P" and prefix[1] in b"0456y"
 
-
 ##
 # Image plugin for PBM, PGM, and PPM images.
+
 
 class PpmImageFile(ImageFile.ImageFile):
 
@@ -94,7 +93,8 @@ class PpmImageFile(ImageFile.ImageFile):
                     if s not in b_whitespace:
                         break
                     if s == b"":
-                        raise ValueError("File does not extend beyond magic number")
+                        raise ValueError(
+                            "File does not extend beyond magic number")
                 if s != b"#":
                     break
                 s = self.fp.readline()
@@ -118,19 +118,17 @@ class PpmImageFile(ImageFile.ImageFile):
                         rawmode = 'I;32B'
 
         self.size = xsize, ysize
-        self.tile = [("raw",
-                     (0, 0, xsize, ysize),
-                     self.fp.tell(),
-                     (rawmode, 0, 1))]
+        self.tile = [("raw", (0, 0, xsize, ysize), self.fp.tell(),
+                      (rawmode, 0, 1))]
 
         # ALTERNATIVE: load via builtin debug function
         # self.im = Image.core.open_ppm(self.filename)
         # self.mode = self.im.mode
         # self.size = self.im.size
 
+        #
+        # --------------------------------------------------------------------
 
-#
-# --------------------------------------------------------------------
 
 def _save(im, fp, filename):
     if im.mode == "1":
@@ -158,13 +156,14 @@ def _save(im, fp, filename):
             fp.write(b"65535\n")
         elif rawmode == "I;32B":
             fp.write(b"2147483648\n")
-    ImageFile._save(im, fp, [("raw", (0, 0)+im.size, 0, (rawmode, 0, 1))])
+    ImageFile._save(im, fp, [("raw", (0, 0) + im.size, 0, (rawmode, 0, 1))])
 
     # ALTERNATIVE: save via builtin debug function
     # im._dump(filename)
 
-#
-# --------------------------------------------------------------------
+    #
+    # --------------------------------------------------------------------
+
 
 Image.register_open(PpmImageFile.format, PpmImageFile, _accept)
 Image.register_save(PpmImageFile.format, _save)

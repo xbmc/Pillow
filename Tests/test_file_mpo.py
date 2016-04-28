@@ -2,12 +2,10 @@ from helper import unittest, PillowTestCase
 from io import BytesIO
 from PIL import Image
 
-
 test_files = ["Tests/images/sugarshack.mpo", "Tests/images/frozenpond.mpo"]
 
 
 class TestFileMpo(PillowTestCase):
-
     def setUp(self):
         codecs = dir(Image.core)
         if "jpeg_encoder" not in codecs or "jpeg_decoder" not in codecs:

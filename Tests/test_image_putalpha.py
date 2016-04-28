@@ -4,7 +4,6 @@ from PIL import Image
 
 
 class TestImagePutAlpha(PillowTestCase):
-
     def test_interface(self):
 
         im = Image.new("RGBA", (1, 1), (1, 2, 3, 0))

@@ -5,7 +5,6 @@ import io
 
 
 class TestFileBmp(PillowTestCase):
-
     def roundtrip(self, im):
         outfile = self.tempfile("temp.bmp")
 

@@ -5,7 +5,6 @@ from PIL import ImageStat
 
 
 class TestImageStat(PillowTestCase):
-
     def test_sanity(self):
 
         im = hopper()

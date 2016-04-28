@@ -9,7 +9,6 @@ from PIL import Image
 
 
 class TestImagingCoreResize(PillowTestCase):
-
     def resize(self, im, size, f):
         # Image class independent version of resize.
         im.load()
@@ -25,12 +24,12 @@ class TestImagingCoreResize(PillowTestCase):
             self.assertEqual(r.im.bands, im.im.bands)
 
     def test_convolution_modes(self):
-        self.assertRaises(ValueError, self.resize, hopper("1"),
-                          (15, 12), Image.BILINEAR)
-        self.assertRaises(ValueError, self.resize, hopper("P"),
-                          (15, 12), Image.BILINEAR)
-        self.assertRaises(ValueError, self.resize, hopper("I;16"),
-                          (15, 12), Image.BILINEAR)
+        self.assertRaises(ValueError, self.resize, hopper("1"), (15, 12),
+                          Image.BILINEAR)
+        self.assertRaises(ValueError, self.resize, hopper("P"), (15, 12),
+                          Image.BILINEAR)
+        self.assertRaises(ValueError, self.resize, hopper("I;16"), (15, 12),
+                          Image.BILINEAR)
         for mode in ["L", "I", "F", "RGB", "RGBA", "CMYK", "YCbCr"]:
             im = hopper(mode)
             r = self.resize(im, (15, 12), Image.BILINEAR)
@@ -66,10 +65,8 @@ class TestImagingCoreResize(PillowTestCase):
 
         for f in [Image.LINEAR, Image.BILINEAR, Image.BICUBIC, Image.LANCZOS]:
             # samples resized with current filter
-            references = dict(
-                (name, self.resize(ch, (4, 4), f))
-                for name, ch in samples.items()
-            )
+            references = dict((name, self.resize(ch, (4, 4), f))
+                              for name, ch in samples.items())
 
             for mode, channels_set in [
                 ('RGB', ('blank', 'filled', 'dirty')),
@@ -88,12 +85,12 @@ class TestImagingCoreResize(PillowTestCase):
 
 
 class TestImageResize(PillowTestCase):
-
     def test_resize(self):
         def resize(mode, size):
             out = hopper(mode).resize(size)
             self.assertEqual(out.mode, mode)
             self.assertEqual(out.size, size)
+
         for mode in "1", "P", "L", "RGB", "I", "F":
             resize(mode, (112, 103))
             resize(mode, (188, 214))

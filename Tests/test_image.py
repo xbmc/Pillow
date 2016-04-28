@@ -6,7 +6,6 @@ import sys
 
 
 class TestImage(PillowTestCase):
-
     def test_sanity(self):
 
         im = Image.new("L", (100, 100))
@@ -109,8 +108,8 @@ class TestImage(PillowTestCase):
         im = im._expand(xmargin)
 
         # Assert
-        self.assertEqual(im.size[0], orig_size[0] + 2*xmargin)
-        self.assertEqual(im.size[1], orig_size[1] + 2*xmargin)
+        self.assertEqual(im.size[0], orig_size[0] + 2 * xmargin)
+        self.assertEqual(im.size[1], orig_size[1] + 2 * xmargin)
 
     def test_expand_xy(self):
         # Arrange
@@ -123,8 +122,8 @@ class TestImage(PillowTestCase):
         im = im._expand(xmargin, ymargin)
 
         # Assert
-        self.assertEqual(im.size[0], orig_size[0] + 2*xmargin)
-        self.assertEqual(im.size[1], orig_size[1] + 2*ymargin)
+        self.assertEqual(im.size[0], orig_size[0] + 2 * xmargin)
+        self.assertEqual(im.size[1], orig_size[1] + 2 * ymargin)
 
     def test_getbands(self):
         # Arrange
@@ -160,13 +159,11 @@ class TestImage(PillowTestCase):
         from PIL import ImageDraw
 
         expected_colors = sorted([
-            (1122, (128, 127, 0, 255)),
-            (1089, (0, 255, 0, 255)),
-            (3300, (255, 0, 0, 255)),
-            (1156, (170, 85, 0, 192)),
-            (1122, (0, 255, 0, 128)),
-            (1122, (255, 0, 0, 128)),
-            (1089, (0, 255, 0, 0))])
+            (1122, (128, 127, 0, 255)), (1089, (0, 255, 0, 255)), (3300, (
+                255, 0, 0, 255)), (1156, (170, 85, 0, 192)), (1122, (
+                    0, 255, 0, 128)), (1122, (255, 0, 0, 128)), (1089, (0, 255,
+                                                                        0, 0))
+        ])
 
         dst = Image.new('RGBA', size=(100, 100), color=(0, 255, 0, 255))
         draw = ImageDraw.Draw(dst)
@@ -208,8 +205,7 @@ class TestImage(PillowTestCase):
 
         # Act/Assert
         self.assertRaises(
-            ValueError,
-            lambda: Image.effect_mandelbrot(size, extent, quality))
+            ValueError, lambda: Image.effect_mandelbrot(size, extent, quality))
 
     def test_effect_noise(self):
         # Arrange
@@ -236,6 +232,7 @@ class TestImage(PillowTestCase):
         self.assertEqual(im.size, (128, 128))
         im3 = Image.open('Tests/images/effect_spread.png')
         self.assert_image_similar(im2, im3, 110)
+
 
 if __name__ == '__main__':
     unittest.main()

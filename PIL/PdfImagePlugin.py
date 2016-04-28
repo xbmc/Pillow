@@ -26,7 +26,6 @@ import io
 
 __version__ = "0.4"
 
-
 #
 # --------------------------------------------------------------------
 
@@ -36,6 +35,7 @@ __version__ = "0.4"
 #  3. image
 #  4. page
 #  5. page contents
+
 
 def _obj(fp, obj, **dict):
     fp.write("%d 0 obj\n" % obj)
@@ -54,9 +54,9 @@ def _endobj(fp):
 def _save_all(im, fp, filename):
     _save(im, fp, filename, save_all=True)
 
-
 ##
 # (Internal) Image save plugin for the PDF format.
+
 
 def _save(im, fp, filename, save_all=False):
     resolution = im.encoderinfo.get("resolution", 72.0)
@@ -104,9 +104,9 @@ def _save(im, fp, filename, save_all=False):
         colorspace = "[ /Indexed /DeviceRGB 255 <"
         palette = im.im.getpalette("RGB")
         for i in range(256):
-            r = i8(palette[i*3])
-            g = i8(palette[i*3+1])
-            b = i8(palette[i*3+2])
+            r = i8(palette[i * 3])
+            g = i8(palette[i * 3 + 1])
+            b = i8(palette[i * 3 + 2])
             colorspace += "%02x%02x%02x " % (r, g, b)
         colorspace += "> ]"
         procset = "/ImageI"  # indexed color
@@ -125,10 +125,7 @@ def _save(im, fp, filename, save_all=False):
     # catalogue
 
     xref.append(fp.tell())
-    _obj(
-        fp, 1,
-        Type="/Catalog",
-        Pages="2 0 R")
+    _obj(fp, 1, Type="/Catalog", Pages="2 0 R")
     _endobj(fp)
 
     #
@@ -140,15 +137,15 @@ def _save(im, fp, filename, save_all=False):
         except AttributeError:
             # Image format does not have n_frames. It is a single frame image
             pass
-    pages = [str(pageNumber*3+4)+" 0 R"
+    pages = [str(pageNumber * 3 + 4) + " 0 R"
              for pageNumber in range(0, numberOfPages)]
 
     xref.append(fp.tell())
-    _obj(
-        fp, 2,
-        Type="/Pages",
-        Count=len(pages),
-        Kids="["+"\n".join(pages)+"]")
+    _obj(fp,
+         2,
+         Type="/Pages",
+         Count=len(pages),
+         Kids="[" + "\n".join(pages) + "]")
     _endobj(fp)
 
     for pageNumber in range(0, numberOfPages):
@@ -166,13 +163,14 @@ def _save(im, fp, filename, save_all=False):
                 data = im.tobytes("raw", "1")
                 im = Image.new("L", (len(data), 1), None)
                 im.putdata(data)
-            ImageFile._save(im, op, [("hex", (0, 0)+im.size, 0, im.mode)])
+            ImageFile._save(im, op, [("hex", (0, 0) + im.size, 0, im.mode)])
         elif filter == "/DCTDecode":
             Image.SAVE["JPEG"](im, op, filename)
         elif filter == "/FlateDecode":
-            ImageFile._save(im, op, [("zip", (0, 0)+im.size, 0, im.mode)])
+            ImageFile._save(im, op, [("zip", (0, 0) + im.size, 0, im.mode)])
         elif filter == "/RunLengthDecode":
-            ImageFile._save(im, op, [("packbits", (0, 0)+im.size, 0, im.mode)])
+            ImageFile._save(im, op, [("packbits",
+                                      (0, 0) + im.size, 0, im.mode)])
         else:
             raise ValueError("unsupported PDF filter (%s)" % filter)
 
@@ -204,17 +202,13 @@ def _save(im, fp, filename, save_all=False):
         # page
 
         xref.append(fp.tell())
-        _obj(fp, pageNumber*3+4)
-        fp.write(
-            "<<\n/Type /Page\n/Parent 2 0 R\n"
-            "/Resources <<\n/ProcSet [ /PDF %s ]\n"
-            "/XObject << /image %d 0 R >>\n>>\n"
-            "/MediaBox [ 0 0 %d %d ]\n/Contents %d 0 R\n>>\n" % (
-                procset,
-                pageNumber*3+3,
-                int(width * 72.0 / resolution),
-                int(height * 72.0 / resolution),
-                pageNumber*3+5))
+        _obj(fp, pageNumber * 3 + 4)
+        fp.write("<<\n/Type /Page\n/Parent 2 0 R\n"
+                 "/Resources <<\n/ProcSet [ /PDF %s ]\n"
+                 "/XObject << /image %d 0 R >>\n>>\n"
+                 "/MediaBox [ 0 0 %d %d ]\n/Contents %d 0 R\n>>\n" %
+                 (procset, pageNumber * 3 + 3, int(width * 72.0 / resolution),
+                  int(height * 72.0 / resolution), pageNumber * 3 + 5))
         _endobj(fp)
 
         #
@@ -222,13 +216,12 @@ def _save(im, fp, filename, save_all=False):
 
         op = TextWriter(io.BytesIO())
 
-        op.write(
-            "q %d 0 0 %d 0 0 cm /image Do Q\n" % (
-                int(width * 72.0 / resolution),
-                int(height * 72.0 / resolution)))
+        op.write("q %d 0 0 %d 0 0 cm /image Do Q\n" %
+                 (int(width * 72.0 / resolution),
+                  int(height * 72.0 / resolution)))
 
         xref.append(fp.tell())
-        _obj(fp, pageNumber*3+5, Length=len(op.fp.getvalue()))
+        _obj(fp, pageNumber * 3 + 5, Length=len(op.fp.getvalue()))
 
         fp.write("stream\n")
         fp.fp.write(op.fp.getvalue())

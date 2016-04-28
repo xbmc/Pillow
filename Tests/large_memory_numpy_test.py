@@ -22,7 +22,6 @@ XDIM = 48000
 
 @unittest.skipIf(sys.maxsize <= 2**32, "requires 64-bit system")
 class LargeMemoryNumpyTest(PillowTestCase):
-
     def _write_png(self, xdim, ydim):
         dtype = np.uint8
         a = np.zeros((xdim, ydim), dtype=dtype)

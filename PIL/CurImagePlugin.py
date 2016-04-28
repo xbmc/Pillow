@@ -16,7 +16,6 @@
 # See the README file for information on usage and redistribution.
 #
 
-
 from PIL import Image, BmpImagePlugin, _binary
 
 __version__ = "0.1"
@@ -32,9 +31,9 @@ i32 = _binary.i32le
 def _accept(prefix):
     return prefix[:4] == b"\0\0\2\0"
 
-
 ##
 # Image plugin for Windows Cursor files.
+
 
 class CurImageFile(BmpImagePlugin.BmpImageFile):
 
@@ -73,12 +72,11 @@ class CurImageFile(BmpImagePlugin.BmpImageFile):
         self._bitmap(i32(m[12:]) + offset)
 
         # patch up the bitmap height
-        self.size = self.size[0], self.size[1]//2
+        self.size = self.size[0], self.size[1] // 2
         d, e, o, a = self.tile[0]
-        self.tile[0] = d, (0, 0)+self.size, o, a
+        self.tile[0] = d, (0, 0) + self.size, o, a
 
         return
-
 
 #
 # --------------------------------------------------------------------

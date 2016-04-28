@@ -8,7 +8,6 @@ data = open(test_file, "rb").read()
 
 
 class TestImagePsd(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(test_file)
         im.load()
@@ -39,7 +38,7 @@ class TestImagePsd(PillowTestCase):
             n_frames -= 1
             try:
                 # PSD seek index starts at 1 rather than 0
-                im.seek(n_frames+1)
+                im.seek(n_frames + 1)
                 break
             except EOFError:
                 self.assertTrue(im.tell() < n_frames)

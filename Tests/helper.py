@@ -13,7 +13,6 @@ else:
 
 
 class PillowTestCase(unittest.TestCase):
-
     def __init__(self, *args, **kwargs):
         unittest.TestCase.__init__(self, *args, **kwargs)
         # holds last result object passed to run method:
@@ -46,58 +45,51 @@ class PillowTestCase(unittest.TestCase):
     def assert_deep_equal(self, a, b, msg=None):
         try:
             self.assertEqual(
-                len(a), len(b),
-                msg or "got length %s, expected %s" % (len(a), len(b)))
+                len(a), len(b), msg or
+                "got length %s, expected %s" % (len(a), len(b)))
             self.assertTrue(
-                all([x == y for x, y in zip(a, b)]),
-                msg or "got %s, expected %s" % (a, b))
+                all([x == y for x, y in zip(a, b)]), msg or
+                "got %s, expected %s" % (a, b))
         except:
             self.assertEqual(a, b, msg)
 
     def assert_image(self, im, mode, size, msg=None):
         if mode is not None:
-            self.assertEqual(
-                im.mode, mode,
-                msg or "got mode %r, expected %r" % (im.mode, mode))
+            self.assertEqual(im.mode, mode, msg or
+                             "got mode %r, expected %r" % (im.mode, mode))
 
         if size is not None:
-            self.assertEqual(
-                im.size, size,
-                msg or "got size %r, expected %r" % (im.size, size))
+            self.assertEqual(im.size, size, msg or
+                             "got size %r, expected %r" % (im.size, size))
 
     def assert_image_equal(self, a, b, msg=None):
-        self.assertEqual(
-            a.mode, b.mode,
-            msg or "got mode %r, expected %r" % (a.mode, b.mode))
-        self.assertEqual(
-            a.size, b.size,
-            msg or "got size %r, expected %r" % (a.size, b.size))
+        self.assertEqual(a.mode, b.mode, msg or
+                         "got mode %r, expected %r" % (a.mode, b.mode))
+        self.assertEqual(a.size, b.size, msg or
+                         "got size %r, expected %r" % (a.size, b.size))
         if a.tobytes() != b.tobytes():
             self.fail(msg or "got different content")
 
     def assert_image_similar(self, a, b, epsilon, msg=None):
         epsilon = float(epsilon)
-        self.assertEqual(
-            a.mode, b.mode,
-            msg or "got mode %r, expected %r" % (a.mode, b.mode))
-        self.assertEqual(
-            a.size, b.size,
-            msg or "got size %r, expected %r" % (a.size, b.size))
+        self.assertEqual(a.mode, b.mode, msg or
+                         "got mode %r, expected %r" % (a.mode, b.mode))
+        self.assertEqual(a.size, b.size, msg or
+                         "got size %r, expected %r" % (a.size, b.size))
 
         diff = 0
         try:
             ord(b'0')
             for abyte, bbyte in zip(a.tobytes(), b.tobytes()):
-                diff += abs(ord(abyte)-ord(bbyte))
+                diff += abs(ord(abyte) - ord(bbyte))
         except:
             for abyte, bbyte in zip(a.tobytes(), b.tobytes()):
-                diff += abs(abyte-bbyte)
-        ave_diff = float(diff)/(a.size[0]*a.size[1])
+                diff += abs(abyte - bbyte)
+        ave_diff = float(diff) / (a.size[0] * a.size[1])
         self.assertGreaterEqual(
             epsilon, ave_diff,
-            (msg or '') +
-            " average pixel value difference %.4f > epsilon %.4f" % (
-                ave_diff, epsilon))
+            (msg or '') + " average pixel value difference %.4f > epsilon %.4f"
+            % (ave_diff, epsilon))
 
     def assert_warning(self, warn_class, func):
         import warnings
@@ -120,8 +112,11 @@ class PillowTestCase(unittest.TestCase):
             self.assertTrue(found)
         return result
 
-    def skipKnownBadTest(self, msg=None, platform=None,
-                         travis=None, interpreter=None):
+    def skipKnownBadTest(self,
+                         msg=None,
+                         platform=None,
+                         travis=None,
+                         interpreter=None):
         # Skip if platform/travis matches, and
         # PILLOW_RUN_KNOWN_BAD is not true in the environment.
         if bool(os.environ.get('PILLOW_RUN_KNOWN_BAD', False)):
@@ -156,7 +151,6 @@ class PillowTestCase(unittest.TestCase):
             from PIL import Image
             return Image.open(outfile)
         raise IOError()
-
 
 # helpers
 
@@ -231,6 +225,7 @@ def imagemagick_available():
 
 def on_appveyor():
     return 'APPVEYOR' in os.environ
+
 
 if sys.platform == 'win32':
     IMCONVERT = os.environ.get('MAGICK_HOME', '')

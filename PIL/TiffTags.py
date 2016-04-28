@@ -23,9 +23,14 @@ from collections import namedtuple
 class TagInfo(namedtuple("_TagInfo", "value name type length enum")):
     __slots__ = []
 
-    def __new__(cls, value=None, name="unknown", type=None, length=0, enum=None):
-        return super(TagInfo, cls).__new__(
-            cls, value, name, type, length, enum or {})
+    def __new__(cls,
+                value=None,
+                name="unknown",
+                type=None,
+                length=0,
+                enum=None):
+        return super(TagInfo, cls).__new__(cls, value, name, type, length,
+                                           enum or {})
 
     def cvt_enum(self, value):
         return self.enum.get(value, value)
@@ -42,7 +47,6 @@ def lookup(tag):
 
     return TAGS_V2.get(tag, TagInfo(tag, TAGS.get(tag, 'unknown')))
 
-
 ##
 # Map tag numbers to tag info.
 #
@@ -55,19 +59,29 @@ LONG = 4
 RATIONAL = 5
 
 TAGS_V2 = {
-
     254: ("NewSubfileType", LONG, 1),
     255: ("SubfileType", SHORT, 1),
     256: ("ImageWidth", LONG, 1),
     257: ("ImageLength", LONG, 1),
     258: ("BitsPerSample", SHORT, 0),
-    259: ("Compression", SHORT, 1,
-          {"Uncompressed": 1, "CCITT 1d": 2, "Group 3 Fax": 3, "Group 4 Fax": 4,
-           "LZW": 5, "JPEG": 6, "PackBits": 32773}),
-
-    262: ("PhotometricInterpretation", SHORT, 1,
-          {"WhiteIsZero": 0, "BlackIsZero": 1, "RGB": 2, "RBG Palette": 3,
-           "Transparency Mask": 4, "CMYK": 5, "YCbCr": 6, "CieLAB": 8,
+    259: ("Compression", SHORT, 1, {"Uncompressed": 1,
+                                    "CCITT 1d": 2,
+                                    "Group 3 Fax": 3,
+                                    "Group 4 Fax": 4,
+                                    "LZW": 5,
+                                    "JPEG": 6,
+                                    "PackBits": 32773}),
+    262: ("PhotometricInterpretation",
+          SHORT,
+          1,
+          {"WhiteIsZero": 0,
+           "BlackIsZero": 1,
+           "RGB": 2,
+           "RBG Palette": 3,
+           "Transparency Mask": 4,
+           "CMYK": 5,
+           "YCbCr": 6,
+           "CieLAB": 8,
            "CFA": 32803,  # TIFF/EP, Adobe DNG
            "LinearRaw": 32892}),  # Adobe DNG
     263: ("Threshholding", SHORT, 1),
@@ -75,7 +89,6 @@ TAGS_V2 = {
     265: ("CellLength", SHORT, 1),
     266: ("FillOrder", SHORT, 1),
     269: ("DocumentName", ASCII, 1),
-
     270: ("ImageDescription", ASCII, 1),
     271: ("Make", ASCII, 1),
     272: ("Model", ASCII, 1),
@@ -84,42 +97,38 @@ TAGS_V2 = {
     277: ("SamplesPerPixel", SHORT, 1),
     278: ("RowsPerStrip", LONG, 1),
     279: ("StripByteCounts", LONG, 0),
-
     280: ("MinSampleValue", LONG, 0),
     281: ("MaxSampleValue", SHORT, 0),
     282: ("XResolution", RATIONAL, 1),
     283: ("YResolution", RATIONAL, 1),
-    284: ("PlanarConfiguration", SHORT, 1, {"Contigous": 1, "Separate": 2}),
+    284: ("PlanarConfiguration", SHORT, 1, {"Contigous": 1,
+                                            "Separate": 2}),
     285: ("PageName", ASCII, 1),
     286: ("XPosition", RATIONAL, 1),
     287: ("YPosition", RATIONAL, 1),
     288: ("FreeOffsets", LONG, 1),
     289: ("FreeByteCounts", LONG, 1),
-
     290: ("GrayResponseUnit", SHORT, 1),
     291: ("GrayResponseCurve", SHORT, 0),
     292: ("T4Options", LONG, 1),
     293: ("T6Options", LONG, 1),
-    296: ("ResolutionUnit", SHORT, 1, {"inch": 1, "cm": 2}),
+    296: ("ResolutionUnit", SHORT, 1, {"inch": 1,
+                                       "cm": 2}),
     297: ("PageNumber", SHORT, 2),
-
     301: ("TransferFunction", SHORT, 0),
     305: ("Software", ASCII, 1),
     306: ("DateTime", ASCII, 1),
-
     315: ("Artist", ASCII, 1),
     316: ("HostComputer", ASCII, 1),
     317: ("Predictor", SHORT, 1),
     318: ("WhitePoint", RATIONAL, 2),
     319: ("PrimaryChromaticities", SHORT, 6),
-
     320: ("ColorMap", SHORT, 0),
     321: ("HalftoneHints", SHORT, 2),
     322: ("TileWidth", LONG, 1),
     323: ("TileLength", LONG, 1),
     324: ("TileOffsets", LONG, 0),
     325: ("TileByteCounts", LONG, 0),
-
     332: ("InkSet", SHORT, 1),
     333: ("InkNames", ASCII, 1),
     334: ("NumberOfInks", SHORT, 1),
@@ -127,7 +136,6 @@ TAGS_V2 = {
     337: ("TargetPrinter", ASCII, 1),
     338: ("ExtraSamples", SHORT, 0),
     339: ("SampleFormat", SHORT, 0),
-
     340: ("SMinSampleValue", 12, 0),
     341: ("SMaxSampleValue", 12, 0),
     342: ("TransferRange", SHORT, 6),
@@ -142,12 +150,10 @@ TAGS_V2 = {
     519: ("JPEGQTables", LONG, 0),
     520: ("JPEGDCTables", LONG, 0),
     521: ("JPEGACTables", LONG, 0),
-
     529: ("YCbCrCoefficients", RATIONAL, 3),
     530: ("YCbCrSubSampling", SHORT, 2),
     531: ("YCbCrPositioning", SHORT, 1),
     532: ("ReferenceBlackWhite", LONG, 0),
-
     33432: ("Copyright", ASCII, 1),
 
     # FIXME add more tags here
@@ -175,8 +181,8 @@ TAGS_V2 = {
     45579: ("YawAngle", 10, 1),
     45580: ("PitchAngle", 10, 1),
     45581: ("RollAngle", 10, 1),
-
-    50741: ("MakerNoteSafety", SHORT, 1, {"Unsafe": 0, "Safe": 1}),
+    50741: ("MakerNoteSafety", SHORT, 1, {"Unsafe": 0,
+                                          "Safe": 1}),
     50780: ("BestQualityScale", RATIONAL, 1),
     50838: ("ImageJMetaDataByteCounts", LONG, 1),
     50839: ("ImageJMetaData", 7, 1)
@@ -326,8 +332,7 @@ TAGS = {347: 'JPEGTables',
         50740: 'DNGPrivateData',
         50778: 'CalibrationIlluminant1',
         50779: 'CalibrationIlluminant2',
-        50784: 'Alias Layer Metadata'
-        }
+        50784: 'Alias Layer Metadata'}
 
 
 def _populate():
@@ -339,6 +344,7 @@ def _populate():
                 TAGS[(k, sv)] = sk
 
         TAGS_V2[k] = TagInfo(k, *v)
+
 
 _populate()
 ##
@@ -408,10 +414,44 @@ TYPES = {}
 
 # some of these are not in our TAGS_V2 dict and were included from tiff.h
 
-LIBTIFF_CORE = set([255, 256, 257, 258, 259, 262, 263, 266, 274, 277,
-                    278, 280, 281, 340, 341, 282, 283, 284, 286, 287,
-                    296, 297, 321, 320, 338, 32995, 322, 323, 32998,
-                    32996, 339, 32997, 330, 531, 530, 301, 532, 333,
+LIBTIFF_CORE = set([255,
+                    256,
+                    257,
+                    258,
+                    259,
+                    262,
+                    263,
+                    266,
+                    274,
+                    277,
+                    278,
+                    280,
+                    281,
+                    340,
+                    341,
+                    282,
+                    283,
+                    284,
+                    286,
+                    287,
+                    296,
+                    297,
+                    321,
+                    320,
+                    338,
+                    32995,
+                    322,
+                    323,
+                    32998,
+                    32996,
+                    339,
+                    32997,
+                    330,
+                    531,
+                    530,
+                    301,
+                    532,
+                    333,
                     # as above
                     269  # this has been in our tests forever, and works
                     ])

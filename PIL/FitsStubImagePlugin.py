@@ -65,7 +65,6 @@ def _save(im, fp, filename):
         raise IOError("FITS save handler not installed")
     _handler.save(im, fp, filename)
 
-
 # --------------------------------------------------------------------
 # Registry
 

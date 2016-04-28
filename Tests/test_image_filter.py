@@ -5,9 +5,7 @@ from PIL import ImageFilter
 
 
 class TestImageFilter(PillowTestCase):
-
     def test_sanity(self):
-
         def filter(filter):
             im = hopper("L")
             out = im.filter(filter)
@@ -49,7 +47,6 @@ class TestImageFilter(PillowTestCase):
         im.filter(ImageFilter.SMOOTH)
 
     def test_modefilter(self):
-
         def modefilter(mode):
             im = Image.new(mode, (3, 3), None)
             im.putdata(list(range(9)))
@@ -68,7 +65,6 @@ class TestImageFilter(PillowTestCase):
         self.assertEqual(modefilter("RGB"), ((4, 0, 0), (0, 0, 0)))
 
     def test_rankfilter(self):
-
         def rankfilter(mode):
             im = Image.new(mode, (3, 3), None)
             im.putdata(list(range(9)))

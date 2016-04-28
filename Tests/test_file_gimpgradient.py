@@ -4,7 +4,6 @@ from PIL import GimpGradientFile
 
 
 class TestImage(PillowTestCase):
-
     def test_linear_pos_le_middle(self):
         # Arrange
         middle = 0.5

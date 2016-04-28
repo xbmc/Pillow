@@ -14,6 +14,7 @@ def _relpath(*args):
 def _relbuild(*args):
     return _relpath('build', *args)
 
+
 build_dir = _relpath('build')
 inc_dir = _relpath('depends')
 
@@ -26,7 +27,7 @@ def check_hash(filename, checksum):
     h = hashlib.new(algo)
     with open(filename, 'rb') as f:
         h.update(f.read())
-        if not(h.hexdigest().lower() == value):
+        if not (h.hexdigest().lower() == value):
             raise ValueError('Checksum Mismatch for %s' % filename)
     return filename
 
@@ -64,12 +65,12 @@ def fetch_libs():
         if name == 'openjpeg':
             filename = check_hash(fetch(lib['url']), lib['hash'])
             for compiler in compilers.values():
-                if not os.path.exists(os.path.join(
-                        build_dir, lib['dir']+compiler['inc_dir'])):
+                if not os.path.exists(os.path.join(build_dir, lib['dir'] +
+                                                   compiler['inc_dir'])):
                     extract(filename, build_dir)
-                    os.rename(os.path.join(build_dir, lib['dir']),
-                              os.path.join(
-                                  build_dir, lib['dir']+compiler['inc_dir']))
+                    os.rename(
+                        os.path.join(build_dir, lib['dir']), os.path.join(
+                            build_dir, lib['dir'] + compiler['inc_dir']))
         else:
             extract(check_hash(fetch(lib['url']), lib['hash']), build_dir)
 
@@ -264,7 +265,6 @@ def build_lcms_70(compiler):
     """Link error here on x64"""
     if compiler['platform'] == 'x64':
         return ''
-
     """Build LCMS on VC2008. This version is only 32bit/Win32"""
     return r"""
 rem Build lcms2
@@ -308,14 +308,14 @@ def add_compiler(compiler):
 mkdirs()
 fetch_libs()
 # extract_binlib()
-script = [header(), cp_tk(libs['tk-8.5']['version'], libs['tk-8.6']['version'])]
-
+script = [header(), cp_tk(libs['tk-8.5']['version'], libs['tk-8.6']['version'])
+          ]
 
 if 'PYTHON' in os.environ:
     add_compiler(compiler_fromEnv())
 else:
     # for compiler in compilers.values():
-        # add_compiler(compiler)
+    # add_compiler(compiler)
     add_compiler(compilers[(7.0, 32)])
     # add_compiler(compilers[(7.1, 64)])
 

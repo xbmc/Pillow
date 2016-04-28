@@ -23,6 +23,7 @@ def chunk(cid, *data):
     PngImagePlugin.putchunk(*(test_file, cid) + data)
     return test_file.getvalue()
 
+
 o32 = PngImagePlugin.o32
 
 IHDR = chunk(b"IHDR", o32(1), o32(1), b'\x08\x02', b'\0\0\0')
@@ -45,7 +46,6 @@ def roundtrip(im, **options):
 
 
 class TestFilePng(PillowTestCase):
-
     def setUp(self):
         if "zip_encoder" not in codecs or "zip_decoder" not in codecs:
             self.skipTest("zip/deflate support not available")
@@ -53,8 +53,8 @@ class TestFilePng(PillowTestCase):
     def test_sanity(self):
 
         # internal version number
-        self.assertRegexpMatches(
-            Image.core.zlib_version, "\d+\.\d+\.\d+(\.\d+)?$")
+        self.assertRegexpMatches(Image.core.zlib_version,
+                                 "\d+\.\d+\.\d+(\.\d+)?$")
 
         test_file = self.tempfile("temp.png")
 
@@ -110,7 +110,7 @@ class TestFilePng(PillowTestCase):
         self.assertEqual(im.info, {'spam': 'egg'})
 
         im = load(HEAD + chunk(b'tEXt', b'spam\0egg\0') + TAIL)
-        self.assertEqual(im.info,  {'spam': 'egg\x00'})
+        self.assertEqual(im.info, {'spam': 'egg\x00'})
 
     def test_bad_ztxt(self):
         # Test reading malformed zTXt chunks (python-pillow/Pillow#318)
@@ -127,13 +127,13 @@ class TestFilePng(PillowTestCase):
         im = load(HEAD + chunk(b'zTXt', b'spam\0\0') + TAIL)
         self.assertEqual(im.info, {'spam': ''})
 
-        im = load(HEAD + chunk(
-            b'zTXt', b'spam\0\0' + zlib.compress(b'egg')[:1]) + TAIL)
+        im = load(HEAD + chunk(b'zTXt', b'spam\0\0' + zlib.compress(
+            b'egg')[:1]) + TAIL)
         self.assertEqual(im.info, {'spam': ''})
 
-        im = load(
-            HEAD + chunk(b'zTXt', b'spam\0\0' + zlib.compress(b'egg')) + TAIL)
-        self.assertEqual(im.info,  {'spam': 'egg'})
+        im = load(HEAD + chunk(b'zTXt', b'spam\0\0' + zlib.compress(b'egg')) +
+                  TAIL)
+        self.assertEqual(im.info, {'spam': 'egg'})
 
     def test_bad_itxt(self):
 
@@ -261,13 +261,12 @@ class TestFilePng(PillowTestCase):
         #                  -14: malformed chunk
 
         for offset in (-10, -13, -14):
-            with open(TEST_PNG_FILE,'rb') as f:
+            with open(TEST_PNG_FILE, 'rb') as f:
                 test_file = f.read()[:offset]
 
             im = Image.open(BytesIO(test_file))
             self.assertTrue(im.fp is not None)
             self.assertRaises((IOError, SyntaxError), im.verify)
-
 
     def test_roundtrip_dpi(self):
         # Check dpi roundtripping
@@ -296,7 +295,8 @@ class TestFilePng(PillowTestCase):
         im = Image.new("RGB", (32, 32))
         info = PngImagePlugin.PngInfo()
         info.add_itxt("spam", "Eggs", "en", "Spam")
-        info.add_text("eggs", PngImagePlugin.iTXt("Spam", "en", "Eggs"),
+        info.add_text("eggs",
+                      PngImagePlugin.iTXt("Spam", "en", "Eggs"),
                       zip=True)
 
         im = roundtrip(im, pnginfo=info)
@@ -330,8 +330,8 @@ class TestFilePng(PillowTestCase):
 
         if str is not bytes:
             rt_text(" Aa" + chr(0xa0) + chr(0xc4) + chr(0xff))  # Latin1
-            rt_text(chr(0x400) + chr(0x472) + chr(0x4ff))       # Cyrillic
-            rt_text(chr(0x4e00) + chr(0x66f0) +                 # CJK
+            rt_text(chr(0x400) + chr(0x472) + chr(0x4ff))  # Cyrillic
+            rt_text(chr(0x4e00) + chr(0x66f0) +  # CJK
                     chr(0x9fba) + chr(0x3042) + chr(0xac00))
             rt_text("A" + chr(0xc4) + chr(0x472) + chr(0x3042))  # Combined
 
@@ -373,8 +373,7 @@ class TestFilePng(PillowTestCase):
         im2 = Image.open(f)
         self.assertIn('transparency', im2.info)
 
-        self.assert_image_equal(im2.convert('RGBA'),
-                                im.convert('RGBA'))
+        self.assert_image_equal(im2.convert('RGBA'), im.convert('RGBA'))
 
     def test_trns_null(self):
         # Check reading images with null tRNS value, issue #1239

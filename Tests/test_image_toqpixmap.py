@@ -8,7 +8,6 @@ if ImageQt.qt_is_installed:
 
 
 class TestToQPixmap(PillowQPixmapTestCase, PillowTestCase):
-
     def test_sanity(self):
         PillowQtTestCase.setUp(self)
 

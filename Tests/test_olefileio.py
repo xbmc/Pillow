@@ -6,7 +6,6 @@ import PIL.OleFileIO as OleFileIO
 
 
 class TestOleFileIo(PillowTestCase):
-
     def test_isOleFile(self):
         ole_file = "Tests/images/test-ole-file.doc"
 

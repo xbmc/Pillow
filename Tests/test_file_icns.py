@@ -12,7 +12,6 @@ enable_jpeg2k = hasattr(Image.core, 'jp2klib_version')
 
 
 class TestFileIcns(PillowTestCase):
-
     def test_sanity(self):
         # Loading this icon by default should result in the largest size
         # (512x512@2x) being loaded
@@ -22,8 +21,7 @@ class TestFileIcns(PillowTestCase):
         self.assertEqual(im.size, (1024, 1024))
         self.assertEqual(im.format, "ICNS")
 
-    @unittest.skipIf(sys.platform != 'darwin',
-                     "requires MacOS")
+    @unittest.skipIf(sys.platform != 'darwin', "requires MacOS")
     def test_save(self):
         im = Image.open(TEST_FILE)
 

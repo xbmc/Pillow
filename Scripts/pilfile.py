@@ -77,6 +77,7 @@ def globfix(files):
         return out
     return files
 
+
 for file in globfix(args):
     try:
         im = Image.open(file)

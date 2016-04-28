@@ -14,7 +14,6 @@ test_card.load()
 
 
 class TestFileJpeg2k(PillowTestCase):
-
     def setUp(self):
         if "jpeg2k_encoder" not in codecs or "jpeg2k_decoder" not in codecs:
             self.skipTest('JPEG 2000 support not available')
@@ -42,9 +41,9 @@ class TestFileJpeg2k(PillowTestCase):
     def test_invalid_file(self):
         invalid_file = "Tests/images/flower.jpg"
 
-        self.assertRaises(SyntaxError,
-                          lambda:
-                          Jpeg2KImagePlugin.Jpeg2KImageFile(invalid_file))
+        self.assertRaises(
+            SyntaxError,
+            lambda: Jpeg2KImagePlugin.Jpeg2KImageFile(invalid_file))
 
     def test_bytesio(self):
         with open('Tests/images/test-card-lossless.jp2', 'rb') as f:
@@ -81,9 +80,10 @@ class TestFileJpeg2k(PillowTestCase):
         self.assert_image_equal(im, test_card)
 
     def test_tiled_offset_rt(self):
-        im = self.roundtrip(
-            test_card, tile_size=(128, 128),
-            tile_offset=(0, 0), offset=(32, 32))
+        im = self.roundtrip(test_card,
+                            tile_size=(128, 128),
+                            tile_offset=(0, 0),
+                            offset=(32, 32))
         self.assert_image_equal(im, test_card)
 
     def test_irreversible_rt(self):
@@ -91,8 +91,9 @@ class TestFileJpeg2k(PillowTestCase):
         self.assert_image_similar(im, test_card, 2.0)
 
     def test_prog_qual_rt(self):
-        im = self.roundtrip(
-            test_card, quality_layers=[60, 40, 20], progression='LRCP')
+        im = self.roundtrip(test_card,
+                            quality_layers=[60, 40, 20],
+                            progression='LRCP')
         self.assert_image_similar(im, test_card, 2.0)
 
     def test_prog_res_rt(self):
@@ -107,7 +108,9 @@ class TestFileJpeg2k(PillowTestCase):
 
     def test_layers(self):
         out = BytesIO()
-        test_card.save(out, 'JPEG2000', quality_layers=[100, 50, 10],
+        test_card.save(out,
+                       'JPEG2000',
+                       quality_layers=[100, 50, 10],
                        progression='LRCP')
         out.seek(0)
 
@@ -182,6 +185,7 @@ class TestFileJpeg2k(PillowTestCase):
             self.assertTrue(True, 'Expecting an IO error')
         except UnboundLocalError as err:
             self.assertTrue(False, "Prepatch error")
+
 
 if __name__ == '__main__':
     unittest.main()

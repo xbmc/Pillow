@@ -4,7 +4,6 @@ from PIL.GimpPaletteFile import GimpPaletteFile
 
 
 class TestImage(PillowTestCase):
-
     def test_sanity(self):
         with open('Tests/images/test.gpl', 'rb') as fp:
             GimpPaletteFile(fp)

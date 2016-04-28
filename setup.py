@@ -483,7 +483,8 @@ class pil_build_ext(build_ext):
             if _find_include_file(self, 'tiff.h'):
                 if _find_library_file(self, "tiff"):
                     feature.tiff = "tiff"
-                if sys.platform == "win32" and _find_library_file(self, "libtiff"):
+                if sys.platform == "win32" and _find_library_file(self,
+                                                                  "libtiff"):
                     feature.tiff = "libtiff"
                 if (sys.platform == "darwin" and
                         _find_library_file(self, "libtiff")):
@@ -495,14 +496,16 @@ class pil_build_ext(build_ext):
                 # look for freetype2 include files
                 freetype_version = 0
                 for subdir in self.compiler.include_dirs:
-                    _dbg('Checking for include file %s in %s', ("ft2build.h", subdir))
+                    _dbg('Checking for include file %s in %s',
+                         ("ft2build.h", subdir))
                     if os.path.isfile(os.path.join(subdir, "ft2build.h")):
                         _dbg('Found %s in %s', ("ft2build.h", subdir))
                         freetype_version = 21
                         subdir = os.path.join(subdir, "freetype2")
                         break
                     subdir = os.path.join(subdir, "freetype2")
-                    _dbg('Checking for include file %s in %s', ("ft2build.h", subdir))
+                    _dbg('Checking for include file %s in %s',
+                         ("ft2build.h", subdir))
                     if os.path.isfile(os.path.join(subdir, "ft2build.h")):
                         _dbg('Found %s in %s', ("ft2build.h", subdir))
                         freetype_version = 21
@@ -734,7 +737,8 @@ class pil_build_ext(build_ext):
         if not all:
             print("To add a missing option, make sure you have the required")
             print("library and headers.")
-            print("See https://pillow.readthedocs.io/en/latest/installation.html#building-from-source")
+            print(
+                "See https://pillow.readthedocs.io/en/latest/installation.html#building-from-source")
             print("")
 
         print("To check the build, run the selftest.py script.")

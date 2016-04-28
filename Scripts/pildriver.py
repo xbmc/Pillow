@@ -66,7 +66,7 @@ class PILDriver(object):
 
     # The evaluation stack (internal only)
 
-    stack = []          # Stack of pending operations
+    stack = []  # Stack of pending operations
 
     def push(self, item):
         "Push an argument onto the evaluation stack."
@@ -97,7 +97,7 @@ class PILDriver(object):
 
         Duplicate the top-of-stack item.
         """
-        if hasattr(self, 'format'):     # If it's an image, do a real copy
+        if hasattr(self, 'format'):  # If it's an image, do a real copy
             dup = self.stack[0].copy()
         else:
             dup = self.stack[0]
@@ -496,6 +496,7 @@ class PILDriver(object):
                 self.do_pop()
                 func = getattr(self, funcname)
                 func()
+
 
 if __name__ == '__main__':
     import sys

@@ -24,9 +24,15 @@ def _mp_compile_one(tp):
     return
 
 
-def _mp_compile(self, sources, output_dir=None, macros=None,
-                include_dirs=None, debug=0, extra_preargs=None,
-                extra_postargs=None, depends=None):
+def _mp_compile(self,
+                sources,
+                output_dir=None,
+                macros=None,
+                include_dirs=None,
+                debug=0,
+                extra_preargs=None,
+                extra_postargs=None,
+                depends=None):
     """Compile one or more source files.
 
     see distutils.ccompiler.CCompiler.compile for comments.
@@ -81,5 +87,6 @@ def install():
     else:
         print("Single threaded build, not installing mp_compile:"
               "%s processes" % MAX_PROCS)
+
 
 install()

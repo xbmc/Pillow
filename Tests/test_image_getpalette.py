@@ -2,13 +2,13 @@ from helper import unittest, PillowTestCase, hopper
 
 
 class TestImageGetPalette(PillowTestCase):
-
     def test_palette(self):
         def palette(mode):
             p = hopper(mode).getpalette()
             if p:
                 return p[:10]
             return None
+
         self.assertEqual(palette("1"), None)
         self.assertEqual(palette("L"), None)
         self.assertEqual(palette("I"), None)

@@ -37,7 +37,6 @@ def register(viewer, order=1):
     elif order < 0:
         _viewers.insert(0, viewer)
 
-
 ##
 # Displays a given image.
 #
@@ -46,15 +45,16 @@ def register(viewer, order=1):
 # @param **options Additional viewer options.
 # @return True if a suitable viewer was found, false otherwise.
 
+
 def show(image, title=None, **options):
     for viewer in _viewers:
         if viewer.show(image, title=title, **options):
             return 1
     return 0
 
-
 ##
 # Base class for viewers.
+
 
 class Viewer(object):
 

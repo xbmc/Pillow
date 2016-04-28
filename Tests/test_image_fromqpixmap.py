@@ -5,7 +5,6 @@ from PIL import ImageQt
 
 
 class TestFromQPixmap(PillowQPixmapTestCase, PillowTestCase):
-
     def roundtrip(self, expected):
         PillowQtTestCase.setUp(self)
         result = ImageQt.fromqpixmap(ImageQt.toqpixmap(expected))

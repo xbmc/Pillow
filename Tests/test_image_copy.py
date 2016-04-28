@@ -4,7 +4,6 @@ import copy
 
 
 class TestImageCopy(PillowTestCase):
-
     def test_copy(self):
         croppedCoordinates = (10, 10, 20, 20)
         croppedSize = (10, 10)
@@ -32,6 +31,7 @@ class TestImageCopy(PillowTestCase):
             out = copy.copy(im.crop(croppedCoordinates))
             self.assertEqual(out.mode, im.mode)
             self.assertEqual(out.size, croppedSize)
+
 
 if __name__ == '__main__':
     unittest.main()

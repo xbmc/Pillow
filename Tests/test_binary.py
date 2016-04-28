@@ -4,7 +4,6 @@ from PIL import _binary
 
 
 class TestBinary(PillowTestCase):
-
     def test_standard(self):
         self.assertEqual(_binary.i8(b'*'), 42)
         self.assertEqual(_binary.o8(42), b'*')
@@ -22,6 +21,7 @@ class TestBinary(PillowTestCase):
 
         self.assertEqual(_binary.o16be(65535), b'\xff\xff')
         self.assertEqual(_binary.o32be(65535), b'\x00\x00\xff\xff')
+
 
 if __name__ == '__main__':
     unittest.main()

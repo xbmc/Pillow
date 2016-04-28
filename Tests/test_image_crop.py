@@ -4,17 +4,16 @@ from PIL import Image
 
 
 class TestImageCrop(PillowTestCase):
-
     def test_crop(self):
         def crop(mode):
             out = hopper(mode).crop((50, 50, 100, 100))
             self.assertEqual(out.mode, mode)
             self.assertEqual(out.size, (50, 50))
+
         for mode in "1", "P", "L", "RGB", "I", "F":
             crop(mode)
 
     def test_wide_crop(self):
-
         def crop(*bbox):
             i = im.crop(bbox)
             h = i.histogram()

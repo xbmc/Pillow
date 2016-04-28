@@ -55,9 +55,7 @@ class PSDraw(object):
 
     def end_document(self):
         """Ends printing. (Write Postscript DSC footer.)"""
-        self._fp_write("%%EndDocument\n"
-                       "restore showpage\n"
-                       "%%End\n")
+        self._fp_write("%%EndDocument\n" "restore showpage\n" "%%End\n")
         if hasattr(self.fp, "flush"):
             self.fp.flush()
 
@@ -107,7 +105,7 @@ class PSDraw(object):
         """
         text = "\\(".join(text.split("("))
         text = "\\)".join(text.split(")"))
-        xy = xy + (text,)
+        xy = xy + (text, )
         self._fp_write("%d %d M (%s) S\n" % xy)
 
     def image(self, box, im, dpi=None):

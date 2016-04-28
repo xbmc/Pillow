@@ -8,7 +8,6 @@ TEST_FILE = "Tests/images/hopper.spider"
 
 
 class TestImageSpider(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(TEST_FILE)
         im.load()

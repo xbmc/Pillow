@@ -25,13 +25,11 @@
 # See the README file for information on usage and redistribution.
 #
 
-
 import re
 from PIL import Image, ImageFile, ImagePalette
 from PIL._binary import i8
 
 __version__ = "0.7"
-
 
 # --------------------------------------------------------------------
 # Standard tags
@@ -46,8 +44,15 @@ SCALE = "Scale (x,y)"
 SIZE = "Image size (x*y)"
 MODE = "Image type"
 
-TAGS = {COMMENT: 0, DATE: 0, EQUIPMENT: 0, FRAMES: 0, LUT: 0, NAME: 0,
-        SCALE: 0, SIZE: 0, MODE: 0}
+TAGS = {COMMENT: 0,
+        DATE: 0,
+        EQUIPMENT: 0,
+        FRAMES: 0,
+        LUT: 0,
+        NAME: 0,
+        SCALE: 0,
+        SIZE: 0,
+        MODE: 0}
 
 OPEN = {
     # ifunc93/p3cfunc formats
@@ -88,7 +93,6 @@ for i in ["32S"]:
 for i in range(2, 33):
     OPEN["L*%s image" % i] = ("F", "F;%s" % i)
 
-
 # --------------------------------------------------------------------
 # Read IM directory
 
@@ -101,9 +105,9 @@ def number(s):
     except ValueError:
         return float(s)
 
-
 ##
 # Image plugin for the IFUNC IM file format.
+
 
 class ImImageFile(ImageFile.ImageFile):
 
@@ -188,8 +192,8 @@ class ImImageFile(ImageFile.ImageFile):
 
             else:
 
-                raise SyntaxError("Syntax error in IM header: " +
-                                  s.decode('ascii', 'replace'))
+                raise SyntaxError("Syntax error in IM header: " + s.decode(
+                    'ascii', 'replace'))
 
         if not n:
             raise SyntaxError("Not an IM file")
@@ -210,7 +214,7 @@ class ImImageFile(ImageFile.ImageFile):
             greyscale = 1  # greyscale palette
             linear = 1  # linear greyscale palette
             for i in range(256):
-                if palette[i] == palette[i+256] == palette[i+512]:
+                if palette[i] == palette[i + 256] == palette[i + 512]:
                     if i8(palette[i]) != i:
                         linear = 0
                 else:
@@ -242,8 +246,8 @@ class ImImageFile(ImageFile.ImageFile):
                 # use bit decoder (if necessary)
                 bits = int(self.rawmode[2:])
                 if bits not in [8, 16, 32]:
-                    self.tile = [("bit", (0, 0)+self.size, offs,
-                                 (bits, 8, 3, 0, -1))]
+                    self.tile = [("bit", (0, 0) + self.size, offs,
+                                  (bits, 8, 3, 0, -1))]
                     return
             except ValueError:
                 pass
@@ -252,13 +256,15 @@ class ImImageFile(ImageFile.ImageFile):
             # Old LabEye/3PC files.  Would be very surprised if anyone
             # ever stumbled upon such a file ;-)
             size = self.size[0] * self.size[1]
-            self.tile = [("raw", (0, 0)+self.size, offs, ("G", 0, -1)),
-                         ("raw", (0, 0)+self.size, offs+size, ("R", 0, -1)),
-                         ("raw", (0, 0)+self.size, offs+2*size, ("B", 0, -1))]
+            self.tile = [("raw", (0, 0) + self.size, offs, ("G", 0, -1)),
+                         ("raw", (0, 0) + self.size, offs + size,
+                          ("R", 0, -1)), ("raw",
+                                          (0, 0) + self.size, offs + 2 * size,
+                                          ("B", 0, -1))]
         else:
             # LabEye/IFUNC files
-            self.tile = [("raw", (0, 0)+self.size, offs,
-                         (self.rawmode, 0, -1))]
+            self.tile = [("raw", (0, 0) + self.size, offs,
+                          (self.rawmode, 0, -1))]
 
     @property
     def n_frames(self):
@@ -288,7 +294,7 @@ class ImImageFile(ImageFile.ImageFile):
 
         self.fp = self.__fp
 
-        self.tile = [("raw", (0, 0)+self.size, offs, (self.rawmode, 0, -1))]
+        self.tile = [("raw", (0, 0) + self.size, offs, (self.rawmode, 0, -1))]
 
     def tell(self):
 
@@ -340,10 +346,10 @@ def _save(im, fp, filename, check=0):
     fp.write(("File size (no of images): %d\r\n" % frames).encode('ascii'))
     if im.mode == "P":
         fp.write(b"Lut: 1\r\n")
-    fp.write(b"\000" * (511-fp.tell()) + b"\032")
+    fp.write(b"\000" * (511 - fp.tell()) + b"\032")
     if im.mode == "P":
         fp.write(im.im.getpalette("RGB", "RGB;L"))  # 768 bytes
-    ImageFile._save(im, fp, [("raw", (0, 0)+im.size, 0, (rawmode, 0, -1))])
+    ImageFile._save(im, fp, [("raw", (0, 0) + im.size, 0, (rawmode, 0, -1))])
 
 #
 # --------------------------------------------------------------------

@@ -4,7 +4,6 @@ from PIL import Image
 
 
 class TestFileWebpMetadata(PillowTestCase):
-
     def setUp(self):
         try:
             from PIL import _webp
@@ -51,8 +50,8 @@ class TestFileWebpMetadata(PillowTestCase):
         webp_exif = webp_image.info.get('exif', None)
         self.assertTrue(webp_exif)
         if webp_exif:
-            self.assertEqual(
-                webp_exif, expected_exif, "WebP EXIF didn't match")
+            self.assertEqual(webp_exif, expected_exif,
+                             "WebP EXIF didn't match")
 
     def test_read_icc_profile(self):
 
@@ -87,9 +86,8 @@ class TestFileWebpMetadata(PillowTestCase):
 
         self.assertTrue(webp_icc_profile)
         if webp_icc_profile:
-            self.assertEqual(
-                webp_icc_profile, expected_icc_profile,
-                "Webp ICC didn't match")
+            self.assertEqual(webp_icc_profile, expected_icc_profile,
+                             "Webp ICC didn't match")
 
     def test_read_no_exif(self):
         from io import BytesIO

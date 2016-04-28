@@ -41,7 +41,7 @@ def linear(middle, pos):
 
 
 def curved(middle, pos):
-    return pos ** (log(0.5) / log(max(middle, EPSILON)))
+    return pos**(log(0.5) / log(max(middle, EPSILON)))
 
 
 def sine(middle, pos):
@@ -49,11 +49,12 @@ def sine(middle, pos):
 
 
 def sphere_increasing(middle, pos):
-    return sqrt(1.0 - (linear(middle, pos) - 1.0) ** 2)
+    return sqrt(1.0 - (linear(middle, pos) - 1.0)**2)
 
 
 def sphere_decreasing(middle, pos):
-    return 1.0 - sqrt(1.0 - linear(middle, pos) ** 2)
+    return 1.0 - sqrt(1.0 - linear(middle, pos)**2)
+
 
 SEGMENTS = [linear, curved, sine, sphere_increasing, sphere_decreasing]
 
@@ -71,7 +72,7 @@ class GradientFile(object):
 
         for i in range(entries):
 
-            x = i / float(entries-1)
+            x = i / float(entries - 1)
 
             while x1 < x:
                 ix += 1
@@ -95,12 +96,11 @@ class GradientFile(object):
 
         return b"".join(palette), "RGBA"
 
-
 ##
 # File handler for GIMP's gradient format.
 
-class GimpGradientFile(GradientFile):
 
+class GimpGradientFile(GradientFile):
     def __init__(self, fp):
 
         if fp.readline()[:13] != b"GIMP Gradient":

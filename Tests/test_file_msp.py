@@ -6,7 +6,6 @@ TEST_FILE = "Tests/images/hopper.msp"
 
 
 class TestFileMsp(PillowTestCase):
-
     def test_sanity(self):
         file = self.tempfile("temp.msp")
 

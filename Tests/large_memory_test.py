@@ -18,7 +18,6 @@ XDIM = 48000
 
 @unittest.skipIf(sys.maxsize <= 2**32, "requires 64-bit system")
 class LargeMemoryTest(PillowTestCase):
-
     def _write_png(self, xdim, ydim):
         f = self.tempfile('temp.png')
         im = Image.new('L', (xdim, ydim), (0))

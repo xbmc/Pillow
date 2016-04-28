@@ -28,12 +28,11 @@ class Test_scipy_resize(PillowTestCase):
             self.assertEqual(im1.shape, (11, 22))
 
     def test_imresize4(self):
-        im = np.array([[1, 2],
-                       [3, 4]])
-        res = np.array([[1.,   1.25,  1.75,  2.],
-                        [1.5,  1.75,  2.25,  2.5],
-                        [2.5,  2.75,  3.25,  3.5],
-                        [3.,   3.25,  3.75,  4.]], dtype=np.float32)
+        im = np.array([[1, 2], [3, 4]])
+        res = np.array(
+            [[1., 1.25, 1.75, 2.], [1.5, 1.75, 2.25, 2.5],
+             [2.5, 2.75, 3.25, 3.5], [3., 3.25, 3.75, 4.]],
+            dtype=np.float32)
         # Check that resizing by target size, float and int are the same
         im2 = misc.imresize(im, (4, 4), mode='F')  # output size
         im3 = misc.imresize(im, 2., mode='F')  # fraction

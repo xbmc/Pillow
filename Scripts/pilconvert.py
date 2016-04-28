@@ -40,6 +40,7 @@ def usage():
     print("  -f           list supported file formats")
     sys.exit(1)
 
+
 if len(sys.argv) == 1:
     usage()
 
@@ -62,7 +63,7 @@ for o, a in opt:
         print("Supported formats (* indicates output format):")
         for i in id:
             if i in Image.SAVE:
-                print(i+"*", end=' ')
+                print(i + "*", end=' ')
             else:
                 print(i, end=' ')
         sys.exit(1)

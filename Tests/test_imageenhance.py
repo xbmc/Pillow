@@ -5,7 +5,6 @@ from PIL import ImageEnhance
 
 
 class TestImageEnhance(PillowTestCase):
-
     def test_sanity(self):
 
         # FIXME: assert_image
@@ -26,7 +25,7 @@ class TestImageEnhance(PillowTestCase):
         im = hopper('RGB')
 
         transparent = Image.new('L', im.size, 0)
-        solid = Image.new('L', (im.size[0]//2, im.size[1]), 255)
+        solid = Image.new('L', (im.size[0] // 2, im.size[1]), 255)
         transparent.paste(solid, (0, 0))
         im.putalpha(transparent)
 
@@ -45,8 +44,9 @@ class TestImageEnhance(PillowTestCase):
 
         for op in ['Color', 'Brightness', 'Contrast', 'Sharpness']:
             for amount in [0, 0.5, 1.0]:
-                self._check_alpha(getattr(ImageEnhance, op)(original).enhance(amount),
-                                  original, op, amount)
+                self._check_alpha(
+                    getattr(ImageEnhance, op)(original).enhance(amount),
+                    original, op, amount)
 
 
 if __name__ == '__main__':

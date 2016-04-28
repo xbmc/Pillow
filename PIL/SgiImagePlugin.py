@@ -17,7 +17,6 @@
 # See the README file for information on usage and redistribution.
 #
 
-
 from PIL import Image, ImageFile, _binary
 
 __version__ = "0.2"
@@ -29,9 +28,9 @@ i16 = _binary.i16be
 def _accept(prefix):
     return len(prefix) >= 2 and i16(prefix) == 474
 
-
 ##
 # Image plugin for SGI images.
+
 
 class SgiImageFile(ImageFile.ImageFile):
 
@@ -67,11 +66,11 @@ class SgiImageFile(ImageFile.ImageFile):
         # decoder info
         if compression == 0:
             offset = 512
-            pagesize = self.size[0]*self.size[1]*layout[0]
+            pagesize = self.size[0] * self.size[1] * layout[0]
             self.tile = []
             for layer in self.mode:
-                self.tile.append(
-                    ("raw", (0, 0)+self.size, offset, (layer, 0, -1)))
+                self.tile.append(("raw", (0, 0) + self.size, offset, (layer, 0,
+                                                                      -1)))
                 offset = offset + pagesize
         elif compression == 1:
             raise ValueError("SGI RLE encoding not supported")

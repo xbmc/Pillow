@@ -10,11 +10,10 @@ def color(mode):
     if bands == 1:
         return 1
     else:
-        return tuple(range(1, bands+1))
+        return tuple(range(1, bands + 1))
 
 
 class TestImageGetPixel(PillowTestCase):
-
     def check(self, mode, c=None):
         if not c:
             c = color(mode)
@@ -33,18 +32,18 @@ class TestImageGetPixel(PillowTestCase):
             "initial color failed for mode %s, color %s " % (mode, color))
 
     def test_basic(self):
-        for mode in ("1", "L", "LA", "I", "I;16", "I;16B", "F",
-                     "P", "PA", "RGB", "RGBA", "RGBX", "CMYK", "YCbCr"):
+        for mode in ("1", "L", "LA", "I", "I;16", "I;16B", "F", "P", "PA",
+                     "RGB", "RGBA", "RGBX", "CMYK", "YCbCr"):
             self.check(mode)
 
     def test_signedness(self):
         # see https://github.com/python-pillow/Pillow/issues/452
         # pixelaccess is using signed int* instead of uint*
         for mode in ("I;16", "I;16B"):
-            self.check(mode, 2**15-1)
+            self.check(mode, 2**15 - 1)
             self.check(mode, 2**15)
-            self.check(mode, 2**15+1)
-            self.check(mode, 2**16-1)
+            self.check(mode, 2**15 + 1)
+            self.check(mode, 2**16 - 1)
 
 
 if __name__ == '__main__':

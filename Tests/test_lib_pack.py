@@ -4,12 +4,10 @@ from PIL import Image
 
 
 class TestLibPack(PillowTestCase):
-
     def pack(self):
         pass  # not yet
 
     def test_pack(self):
-
         def pack(mode, rawmode):
             if len(mode) == 1:
                 im = Image.new(mode, (1, 1), 1)
@@ -56,14 +54,13 @@ class TestLibPack(PillowTestCase):
         self.assertEqual(pack("YCbCr", "YCbCr"), [1, 2, 3])
 
     def test_unpack(self):
-
         def unpack(mode, rawmode, bytes_):
             im = None
 
             if py3:
-                data = bytes(range(1, bytes_+1))
+                data = bytes(range(1, bytes_ + 1))
             else:
-                data = ''.join(chr(i) for i in range(1, bytes_+1))
+                data = ''.join(chr(i) for i in range(1, bytes_ + 1))
 
             im = Image.frombytes(mode, (1, 1), data, "raw", rawmode, 0, 1)
 
@@ -74,11 +71,11 @@ class TestLibPack(PillowTestCase):
             im = None
 
             if py3:
-                im = Image.frombytes(
-                    mode, (8, 1), bytes([value]), "raw", rawmode, 0, 1)
+                im = Image.frombytes(mode, (8, 1), bytes([value]), "raw",
+                                     rawmode, 0, 1)
             else:
-                im = Image.frombytes(
-                    mode, (8, 1), chr(value), "raw", rawmode, 0, 1)
+                im = Image.frombytes(mode, (8, 1), chr(value), "raw", rawmode,
+                                     0, 1)
 
             return tuple(im.getdata())
 

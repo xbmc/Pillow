@@ -7,7 +7,7 @@ import glob
 # monkey with the path, removing the local directory but adding the Tests/
 # directory for helper.py and the other local imports there.
 
-del(sys.path[0])
+del (sys.path[0])
 sys.path.insert(0, os.path.abspath('./Tests'))
 
 # if there's no test selected (mostly) choose a working default.

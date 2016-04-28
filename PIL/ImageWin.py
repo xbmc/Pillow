@@ -26,6 +26,7 @@ class HDC(object):
     :py:meth:`~PIL.ImageWin.Dib.draw` and :py:meth:`~PIL.ImageWin.Dib.expose`
     methods.
     """
+
     def __init__(self, dc):
         self.dc = dc
 
@@ -39,6 +40,7 @@ class HWND(object):
     :py:meth:`~PIL.ImageWin.Dib.draw` and :py:meth:`~PIL.ImageWin.Dib.expose`
     methods, instead of a DC.
     """
+
     def __init__(self, wnd):
         self.wnd = wnd
 
@@ -190,16 +192,14 @@ class Dib(object):
         raise Exception("tostring() has been removed. " +
                         "Please use tobytes() instead.")
 
-
 ##
 # Create a Window with the given title size.
 
-class Window(object):
 
+class Window(object):
     def __init__(self, title="PIL", width=None, height=None):
-        self.hwnd = Image.core.createwindow(
-            title, self.__dispatcher, width or 0, height or 0
-            )
+        self.hwnd = Image.core.createwindow(title, self.__dispatcher, width or
+                                            0, height or 0)
 
     def __dispatcher(self, action, *args):
         return getattr(self, "ui_handle_" + action)(*args)
@@ -222,12 +222,11 @@ class Window(object):
     def mainloop(self):
         Image.core.eventloop()
 
-
 ##
 # Create an image window which displays the given image.
 
-class ImageWindow(Window):
 
+class ImageWindow(Window):
     def __init__(self, image, title="PIL"):
         if not isinstance(image, Dib):
             image = Dib(image)

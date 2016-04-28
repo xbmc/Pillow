@@ -16,7 +16,6 @@ Image.USE_CFFI_ACCESS = True
 
 
 class TestCffiPutPixel(TestImagePutPixel):
-
     def setUp(self):
         try:
             import cffi
@@ -28,7 +27,6 @@ class TestCffiPutPixel(TestImagePutPixel):
 
 
 class TestCffiGetPixel(TestImageGetPixel):
-
     def setUp(self):
         try:
             import cffi
@@ -41,7 +39,6 @@ class TestCffiGetPixel(TestImageGetPixel):
 
 
 class TestCffi(PillowTestCase):
-
     def setUp(self):
         try:
             import cffi
@@ -63,7 +60,7 @@ class TestCffi(PillowTestCase):
 
         # Access an out-of-range pixel
         self.assertRaises(ValueError,
-                          lambda: access[(access.xsize+1, access.ysize+1)])
+                          lambda: access[(access.xsize + 1, access.ysize + 1)])
 
     def test_get_vs_c(self):
         rgb = hopper('RGB')

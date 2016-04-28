@@ -2,7 +2,6 @@ from helper import unittest, PillowTestCase, hopper, fromstring
 
 
 class TestImageToBitmap(PillowTestCase):
-
     def test_sanity(self):
 
         self.assertRaises(ValueError, lambda: hopper().tobitmap())

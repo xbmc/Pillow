@@ -166,19 +166,16 @@ if __name__ == "__main__":
 
     exit_status = 0
 
-    print("-"*68)
+    print("-" * 68)
     print("Pillow", Image.PILLOW_VERSION, "TEST SUMMARY ")
-    print("-"*68)
+    print("-" * 68)
     print("Python modules loaded from", os.path.dirname(Image.__file__))
     print("Binary modules loaded from", os.path.dirname(Image.core.__file__))
-    print("-"*68)
+    print("-" * 68)
     for name, feature in [
-        ("pil", "PIL CORE"),
-        ("tkinter", "TKINTER"),
-        ("freetype2", "FREETYPE2"),
-        ("littlecms2", "LITTLECMS2"),
-        ("webp", "WEBP"),
-        ("transp_webp", "Transparent WEBP")
+        ("pil", "PIL CORE"), ("tkinter", "TKINTER"),
+        ("freetype2", "FREETYPE2"), ("littlecms2", "LITTLECMS2"),
+        ("webp", "WEBP"), ("transp_webp", "Transparent WEBP")
     ]:
         supported = features.check_module(name)
 
@@ -191,16 +188,14 @@ if __name__ == "__main__":
         else:
             print("***", feature, "support not installed")
     for name, feature in [
-        ("jpg", "JPEG"),
-        ("jpg_2000", "OPENJPEG (JPEG2000)"),
-        ("zlib", "ZLIB (PNG/ZIP)"),
-        ("libtiff", "LIBTIFF")
+        ("jpg", "JPEG"), ("jpg_2000", "OPENJPEG (JPEG2000)"),
+        ("zlib", "ZLIB (PNG/ZIP)"), ("libtiff", "LIBTIFF")
     ]:
         if features.check_codec(name):
             print("---", feature, "support ok")
         else:
             print("***", feature, "support not installed")
-    print("-"*68)
+    print("-" * 68)
 
     # use doctest to make sure the test program behaves as documented!
     import doctest

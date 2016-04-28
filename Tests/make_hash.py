@@ -4,15 +4,26 @@ from __future__ import print_function
 
 modes = [
     "1",
-    "L", "LA",
-    "I", "I;16", "I;16L", "I;16B", "I;32L", "I;32B",
+    "L",
+    "LA",
+    "I",
+    "I;16",
+    "I;16L",
+    "I;16B",
+    "I;32L",
+    "I;32B",
     "F",
-    "P", "PA",
-    "RGB", "RGBA", "RGBa", "RGBX",
+    "P",
+    "PA",
+    "RGB",
+    "RGBA",
+    "RGBa",
+    "RGBX",
     "CMYK",
     "YCbCr",
-    "LAB", "HSV",
-    ]
+    "LAB",
+    "HSV",
+]
 
 
 def hash(s, i):
@@ -31,6 +42,7 @@ def check(size, i0):
             return 0
         h[i] = m
     return h
+
 
 min_start = 0
 

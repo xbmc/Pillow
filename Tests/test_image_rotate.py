@@ -3,7 +3,6 @@ from PIL import Image
 
 
 class TestImageRotate(PillowTestCase):
-
     def test_rotate(self):
         def rotate(im, mode, angle):
             out = im.rotate(angle)
@@ -12,6 +11,7 @@ class TestImageRotate(PillowTestCase):
             out = im.rotate(angle, expand=1)
             self.assertEqual(out.mode, mode)
             self.assertNotEqual(out.size, im.size)
+
         for mode in "1", "P", "L", "RGB", "I", "F":
             im = hopper(mode)
             rotate(im, mode, 45)

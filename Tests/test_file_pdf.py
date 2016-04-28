@@ -4,7 +4,6 @@ import os.path
 
 
 class TestFilePdf(PillowTestCase):
-
     def helper_save_as_pdf(self, mode, save_all=False):
         # Arrange
         im = hopper(mode)

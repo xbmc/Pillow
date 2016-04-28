@@ -10,7 +10,6 @@ except ImportError:
 
 
 class TestFileWebpAlpha(PillowTestCase):
-
     def setUp(self):
         try:
             from PIL import _webp

@@ -31,8 +31,13 @@ class UI(Frame):
         self.canvas.create_image(0, 0, image=self.backdrop, anchor=NW)
         self.canvas.pack()
 
-        scale = Scale(self, orient=HORIZONTAL, from_=0, to=255,
-                      resolution=1, command=self.update_scale, length=256)
+        scale = Scale(self,
+                      orient=HORIZONTAL,
+                      from_=0,
+                      to=255,
+                      resolution=1,
+                      command=self.update_scale,
+                      length=256)
         scale.set(value)
         scale.bind("<ButtonRelease-1>", self.redraw)
         scale.pack()
@@ -54,7 +59,10 @@ class UI(Frame):
 
         # update canvas
         self.canvas.delete("overlay")
-        self.canvas.create_image(0, 0, image=self.overlay, anchor=NW,
+        self.canvas.create_image(0,
+                                 0,
+                                 image=self.overlay,
+                                 anchor=NW,
                                  tags="overlay")
 
 # --------------------------------------------------------------------

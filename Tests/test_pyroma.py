@@ -10,7 +10,6 @@ except ImportError:
 
 
 class TestPyroma(PillowTestCase):
-
     def setUp(self):
         try:
             import pyroma
@@ -30,7 +29,8 @@ class TestPyroma(PillowTestCase):
             # Pyroma needs to chill about RC versions
             # and not kill all our tests.
             self.assertEqual(rating, (9, [
-                "The package's version number does not comply with PEP-386."]))
+                "The package's version number does not comply with PEP-386."
+            ]))
 
         else:
             # Should have a perfect score
